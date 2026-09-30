@@ -1,10 +1,10 @@
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
-> GitHub distribution copy: private owner identifiers have been removed. This file embeds the complete plan and workflow. The owner retains the unredacted V001 locally. Current task authorizes publishing planning documentation to the specified repository only; application implementation and cloud deployment are not authorized.
+> GitHub distribution copy: owner private identifiers removed. Includes the complete master plan and workflow. This update publishes documentation only; no application source or cloud deployment.
 
 ```yaml
 document_version: V001
-revision: approved_viability_financial_gates_targeted_verification_2026_09_30
+revision: minimal_core_database_growth_AI_authority_2026_09_30
 document_status: complete_planning_snapshot
 updated_at: 2026-09-30
 timezone: Asia/Saigon
@@ -57,7 +57,7 @@ Không tự mở implementation, account creation, ngân hàng, deploy hoặc au
 ---
 
 
-> Đọc nhanh: mục 106 là override hướng khả dụng/kiểm chứng hiện hành; mục 103 là chỉ mục nền, mục 104 là đầu vào còn thiếu và mục 105 là điểm bàn giao trước override. Toàn bộ master/workflow nhúng dưới đây, không cần phiên bản trước.
+> Đọc nhanh: mục 107 là hướng tối giản/database-first/quyền AI; mục 106 là override khả dụng/kiểm chứng; mục 103 là chỉ mục nền, mục 104 là đầu vào còn thiếu và mục 105 là điểm bàn giao trước override. Toàn bộ master/workflow nhúng dưới đây, không cần phiên bản trước.
 
 # PHẦN A — MASTER PLAN ĐẦY ĐỦ
 
@@ -3769,6 +3769,39 @@ Runtime evidence/status trung thực: not-run/failed/verified/partial theo actua
 Khóa first-release capability matrix → dòng tiền mẫu có values/sources thực → CP/VC/VCS funding/eligibility → checkout/refund/settlement contracts → provider/access/resource readiness → verification/recovery plans → scoped task grants → implementation chỉ khi owner giao. Các phần độc lập vẫn tiếp tục, không fill missing actual data từ competitor. Source safety/isolation/no-egress/least-privilege/model optional giữ nguyên. Tài liệu coverage không nghĩa tất cả gates đạt.
 
 
+## 107. Quyết định triển khai tối giản, database-first và quyền AI rộng
+
+### 107.1 Owner direction
+
+Owner muốn sản phẩm đơn giản nhất chạy ổn, tuân thủ hệ thống, ưu tiên khả dụng khi database lớn, code tinh gọn/không trùng và AI được cấp toàn quyền quản trị Cootton. Áp dụng hướng này thay ưu tiên mở rộng tính năng không cần thiết; không xóa phạm vi dài hạn đã chốt. Chưa có credentials/resources actual hoặc lệnh giao dịch/ngân hàng/production deletion từ quyết định kiến trúc này.
+
+### 107.2 Minimal deployable core
+
+Một NestJS modular monolith API, Cloud SQL PostgreSQL canonical, một monorepo private-capable theo current repo thực và shared packages cho API types/validation contracts/UI primitives khi thích hợp. Ba Web Next.js giữ domains/roles Buyer/Seller/Admin, dùng chung modules/auth clients nhưng backend sở hữu pricing/inventory/order/ledger/permissions. Có thể chung một Web codebase/artefact với host-aware routes khi domain/security/deployment contracts được review; không bắt buộc ba implementations trùng nhau. Host routing không authorization. Apps vẫn dài hạn, chưa scaffold sáu targets cùng lúc.
+
+Version đầu dùng catalog/SKU/shared stock, B2C home/B2B entry, seller Admin permissions/prices/minimum, buyer cart/order journey và Admin vận hành tối thiểu. Payment/points/fulfillment production chỉ bật sau actual contracts/capabilities/funding; features chưa ready disabled rõ, không mocks/trạng thái success giả. Chưa tự chọn gateway/carrier hoặc coi CP/VC/VCS mandatory launch. Extensions/social/trend/advanced AI không critical core; không xây full orchestration platform trước sản phẩm.
+
+Không microservices/Kafka/Kubernetes/Redis/search cluster mặc định; outbox/Cloud Tasks chỉ khi effect async cần durable processing. Shared logic theo domain ownership, không giant generic framework hoặc abstraction mọi thứ. Database AI riêng theo model vẫn giữ nếu tích hợp; không mở nhiều model DB trước model thực được duyệt. Core chạy khi AI off.
+
+### 107.3 Database growth design
+
+Query paths/pagination/index contracts theo workload thực; stable IDs, unique constraints/foreign keys phù hợp approved schema, exact financial values, transaction boundaries ngắn và version/concurrency guards. Không client direct business DB writes. Public listing/search projections tách transactional reads; scoped field selection/cursor pagination cho collections lớn, no full table load/Admin full scans. Connection pooling/concurrency caps bảo vệ Cloud SQL trước API autoscaling; numeric values cần actual instance/runtime inputs, không unlimited.
+
+Record growth/retention/storage/query/lock/connection metrics, indexes reviewed migrations không auto DDL tùy ý. Archive audit/media/business records theo retention/references/contracts, không purge ledger vì table lớn. Partitioning/read replicas/cache/sharding chỉ sau actual workload/bottleneck evidence và lifecycle design, không áp mọi table từ đầu. HA/backup/RPO/RTO readiness riêng trước launch, budget owner cần cung cấp. Business integrity không đổi để tăng speed.
+
+### 107.4 AI authority hiện hành
+
+Owner cho phép hướng AI quyền rộng trên Cootton: ADMIN có thể cấp principal vận hành quyền cần thiết across modules/source/config/releases khi task được giao. AI_SUB_ADMIN vẫn dưới ADMIN duy nhất; owner có kill switch/revoke/audit và no self-escalation. Permission mapping cụ thể phải gắn resource/environment/tool actual, không biến câu 'toàn quyền' thành credentials chưa có hoặc production write access không cần thiết. Không hỏi lại routine actions trong scope đã giao; thiếu actual access/human-only verification hoặc unresolved financial values thì báo đúng blocker.
+
+Core source/config actions có contracts/review/history; bank/external funds transfers/production irreversible delete/security-sensitive access changes theo explicit action authority và platform-required human confirmation, không inferred từ broad architecture grant. No cross-model memory/no-egress vẫn áp dụng; owner broad quyền không tự hủy các hạn chế xử lý dữ liệu đã chốt. Không AI direct ledger overwrite, bypass auth/financial invariants hoặc fake runtime results.
+
+### 107.5 Code readiness bước đầu
+
+Có thể giao task nền móng: pnpm monorepo/shared contracts/NestJS API/Next.js host-role shells, build/static validation và targeted verification theo mục 106. Không viết lại pricing/permissions giữa clients. Implementation task cần explicit deliverables/branch/resource access và contract cho phần thực hiện; scaffolding không giải quyết missing payment/funding/return sources. Các contracts còn thiếu ở mục 104 phải giữ, có thể cấu hình Admin sau nhưng không actual values giả.
+
+Hướng giản lược được ghi vào V001; lần này cập nhật kiến trúc/readiness, chưa source/resources/Cloud deploy hoặc cấp tài khoản thật. Next action đề xuất: owner giao foundation task với repo source scope; financial/core launch readiness khóa song song. Không tự tạo version mới.
+
+
 ---
 
 # PHẦN B — AI WORKFLOW ĐẦY ĐỦ
@@ -4457,5 +4490,10 @@ Mục 106 owner-approved ưu tiên khi mâu thuẫn: backend/3 Web trước apps
 Cấm tests tuyệt đối trước đây được thay bằng targeted verification khi owner giao implementation/verification task, đặc biệt duplicate/concurrency/allocations/auth/recovery. Planning không execute. Task scope/permission/safe resources/non-sensitive fixtures/limits/cleanup/evidence mandatory; no arbitrary production restore/load/attack/real customer money. Safe verification environment không product sandbox deliverable. Historical no-tests phrases không govern khi conflict; statuses truthful.
 
 Next planning first-release matrix → actual unit economics → points/funding → checkout/refund/settlement → providers/resources → verification/grants; core independent AI/least privilege/no-egress/isolation unchanged. V001 tại chỗ, no code/runtime tests/provision/deploy hiện tại.
+
+
+## 71. Minimal core/database-first và AI authority
+
+Mục 107 ưu tiên hướng owner mới: modular monolith, PostgreSQL canonical, shared Web/backend contracts và minimal features trước extensions/apps. No unnecessary microservices/tools/duplicate logic; DB workload-aware pagination/indexes/connection caps/retention, scaling upgrades evidence-based. AI broad Cootton task authority khi grant/access actual, ADMIN revoke/audit, no fabricated credentials/financial values/no forbidden egress/ledger edits. Targeted checks allowed theo 106; phase/task scope cần rõ, chưa source/deploy trong cập nhật kiến trúc này. V001 tại chỗ.
 
 
