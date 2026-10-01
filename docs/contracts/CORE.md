@@ -20,3 +20,7 @@ Baseline owner: 10% phí, đổi trả 15 ngày, 1 CP = 1.000 VND, B2B MOQ 10 t�
 Pending: fee basis/rounding, return start/eligibility/return shipping amount, MOQ unit, price precision/tier gaps, VC conversion/funding/expiry, VCS funding/backing, tender combinations, trusted payment confirmation/provider, order/ledger state machines, inventory reserve TTL, payout/retention, PostgreSQL tables/constraints. Không DDL/migrations hoặc money operations khi chưa có contracts này.
 
 Breaking changes cần explicit contract version + migration/consumer compatibility decision trước merge. Git diff và ADR là evidence; cập nhật V001 tại chỗ.
+
+## D01 catalog design locked
+
+See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unified Variant/SKU identity, global immutable SKU codes, logical PostgreSQL schema, publication and canonical URL contracts. D01 resolves its scoped design decisions; executable tables/migrations and D02 financial/quantity decisions remain gated. No new API routes are implemented by this document.
