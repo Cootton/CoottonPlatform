@@ -40,3 +40,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D05 direct-sale launch override
 
 [D05.orders.v1](D05_ORDER_SHIPPING.md) and V001 section 117 supersede historical launch/payment/return-start pending statements: single Cootton seller, website before payment, CP top-up paused, launch points inactive, VNPAY recommendation only. Refund baseline original method/net allocations, 15 days from verified delivery; remaining eligibility/cutoff/provider/config gates persist. Marketplace fee contracts remain future scope; no self-fee in direct-sale launch. Order/shipping design only, no handlers/migrations/actual transactions.
+
+## D06 return/refund/restock design
+
+[D06.returns.v1](D06_RETURN_REFUND_RESTOCK.md) and V001 section 118 define bounded original-unit claims, exact partial refund allocation, private evidence, carrier uncertainty and inspection-backed restock. Owner approved inclusive 15x24h request cutoff from verified delivery, unused/unwashed/tag/accessory condition for personal returns, and separate wrong/defective/damaged complaint review without automatic rejection for tags/deadline. This supersedes older pending cutoff/condition statements. Remaining actual operational/provider gates persist; design only, no transactions.

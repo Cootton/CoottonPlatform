@@ -125,3 +125,7 @@ D04 deliverable: financial assets/provenance, ledger/holds, funding/quota, payme
 ## 12. Latest owner override — D05 launch/refund
 
 Read [D05.orders.v1](D05_ORDER_SHIPPING.md) and V001 section 117. Owner now selects one-seller Cootton direct-sale launch and website before payment, CP top-up paused/launch point tenders inactive. VNPAY is recommendation pending onboarding, not activated provider. Owner approved original-method VND refund, future original-unit CP refund, partial original net amounts/no tier repricing, corresponding capped original fee reversal if charged, 15-day window from confirmed delivery and Cootton-paid fixed return transport. Eligibility/precise cutoff/operational amounts and provider remain gated D06; deposit refunds separate inactive. Existing marketplace 10% formula remains future contract, not internal Cootton self-fee. This override does not execute financial actions.
+
+## D06 dependency update — 2026-10-01
+
+See [D06.returns.v1](D06_RETURN_REFUND_RESTOCK.md) and V001 section 118 for owner-approved inclusive delivery+15x24h submission cutoff, clothing/complaint conditions, exact original unit allocation/caps and verified disposition/restock. These replace historical pending cutoff/conditions; actual processing deadlines/return cost units/provider/grants remain gated. No financial or inventory execution from these documents.

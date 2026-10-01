@@ -19,3 +19,5 @@
 - Owner authorized D04 financial contract/logical design on 2026-10-01. Read docs/contracts/D04_FINANCE_PAYMENT_RECONCILIATION.md. CP_MILLI precision, single tender and seller-net commission floor are owner-approved; VC/VCS activation explicitly blocked pending source/rate/backing. No real ledger/payment/top-up/migration or D03 execution from this task.
 
 - Owner authorized D05 direct-sale order/shipping design on 2026-10-01. Read docs/contracts/D05_ORDER_SHIPPING.md and V001 section 117: one Cootton seller, website before payment, CP top-up paused and points inactive for launch. Refund baseline updated; no real order/carrier/payment writes or migrations authorized.
+
+- Owner authorized D06 return/refund/restock design on 2026-10-01. Read docs/contracts/D06_RETURN_REFUND_RESTOCK.md and V001 section 118. Owner approved inclusive delivery+15x24h request cutoff and clothing/complaint conditions. No actual refund/restock/return booking or migrations authorized; points remain inactive.
