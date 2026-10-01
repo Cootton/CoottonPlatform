@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d02_pricing_contract_2026_10_01
+revision: d03_checkout_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d02_pricing_contract
+current_task: d03_checkout_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4558,3 +4558,15 @@ B2B all-unit per SKU, B2C giá SKU/offering riêng; cùng inventory. Price versi
 Pipeline canonical giá→discount eligibility/allocation→seller B2B minimum→buyer shipping zero→payable→tender→quote. Integer VND/bigint, discount allocation largest-remainder deterministic có conservation; CP/VC tender khác discount và VCS là funding riêng. Không rate/campaign/funding thật nào được tự seed; chưa stacking rõ không tự cộng benefit.
 
 Quote có immutable breakdown/private snapshot, version/TTL/stale/blocker, bounded 100 lines/20 sellers và no PII/private funding trong public response. Preview không order, reserve/debit stock/points/quota/budget. CONFIRMABLE phải D03/D04 và readiness thực; chưa triển khai nên không claim mua bán hoạt động. Logical pricing/offering/tier/minimum/discount/quote tables được thiết kế, chưa migration. CP precision/remainder, VC/VCS funding/rates, fee basis/rounding, buyer B2B eligibility và actual financial/provider policies vẫn cần contracts trước activation. Tiếp theo D03 cùng dependency D04.
+
+## 115. D03 Cart/Checkout/Inventory — 2026-10-01
+
+Owner giao D03 với D04 financial contracts trước thực thi. Specification hiện hành docs/contracts/D03_CART_CHECKOUT_INVENTORY.md, D03.checkout.v1. Chỉ contracts/logical schema, chưa API/migration/holds/payments/orders/workers thật.
+
+Cart buyer-owned/versioned, absolute quantity PIECE, unique offering lines; guest chỉ local cart/public preview, explicit import sau login. Một nonterminal checkout attempt mỗi buyer. V1 mỗi attempt một salesMode, nhiều seller all-or-nothing; không tự mixed mode/tender/partial capture. SKU/tồn chung D01 và D02 pricing/Minimum sau ưu đãi giữ nguyên.
+
+Pipeline quote consent→canonical revalidate→atomic stock/financial/quota holds→trusted payment evidence→atomic stock/ledger/order/audit/outbox commit→async notify/cart cleanup. Cart/quote không hold. Idempotency principal+operation+key và fingerprint/result; stable lock order; no network calls trong DB transaction. Sellable onHand/reserved counters và reservation state/movements có conservation; seller không trực tiếp sửa reserved. Refund không tự restock hàng chưa có evidence.
+
+Technical hold TTL thiết kế mặc định 10 phút, effective deadline min các source/D04 limits; không config runtime/auto sliding renewal. Payment timeout/unknown là PAYMENT_REVIEW, không fake fail/paid hoặc auto release khi có thể đã thu tiền. Late capture sau terminal phải exception/liability/reconcile theo D04; không resurrect đơn thiếu stock. External payment chưa có bounded reconciliation contract không enable. Cart cleanup chỉ selected lines còn khớp version/qty, không xóa edits mới.
+
+D04 gate register đã bao gồm asset precision/conversions/funding, wallet holds/commit/release, campaign/quota backing, same DB transaction ports, trusted provider/evidence/idempotency, expiry/unknown/late-payment compensation, fee/settlement, audit/retention/runtime role. Thiếu D04/D05 dependencies giữ checkout execution disabled; không tạo fake adapters. Acceptance scenarios có races/replay/crash/late callbacks và multi-device, chưa tuyên bố runtime checks đã chạy. Next D04.
