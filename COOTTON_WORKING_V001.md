@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d08_admin_access_policy_2026_10_01
+revision: d09_ux_seo_help_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d08_admin_access_policy
+current_task: d09_ux_seo_help
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4626,3 +4626,15 @@ Shared backend deny-default action+scope+ownership+state+policy+feature checks; 
 Admin D01-D10 config chỉ typed fields/bounds/domain contracts, không schema bypass. Policy draft→review→approved→scheduled/active immutable version, scope overlap lock/precedence, accepted order/lot/case/report snapshots protected, rollback new approved version không rewrite past effects. Feature readiness khác role/checkbox; CP paused/VNPAY recommendation không enabled. Auto-run dùng actual runbook/resource/bounds, unknown external effect hoặc thiếu evidence/grant phải review.
 
 Audit append-only safe metadata mandatory atomic mutation/outbox, secrets/OTP/bank/customer raw no logs/Git/model. Runtime least privilege/migration separate, no Neon owner service/SQL admin console. Capability matrix/schema logical, grant/session/retention/operational values actual và targeted verification gates chưa provisioned. Next D09 UX/SEO/help và D10 readiness theo owner assignment.
+
+## 121. D09 UX/SEO/Help — 2026-10-01
+
+Owner giao D09 documentation/logical design. D09.ux.discovery.v1 tại docs/contracts/D09_UX_SEO_HELP.md; một seller Cootton, B2C mặc định/B2B entry riêng, website trước payment và points inactive. Không runtime/UI/metadata/robots/sitemap/DB/deploy changes.
+
+Một public canonical /p/{productId}/{slug} theo D01 cho B2C/B2B/SKU context, opaque UUID không encryption/security. No customer/token URLs; private account/order/case/seller/admin vẫn auth/scope/noindex và không public cache/sitemap. Published/index eligibility riêng purchase readiness; giữ foundation noindex đến actual approved release. Product snippets/merchant listings eligibility khác nhau, không fake offers/reviews/GTIN/availability hoặc claim checkout enabled.
+
+Public HTML/projections facts thống nhất, deterministic versioned meta description từ approved facts, AI offline proposal không critical render path; thiếu dữ liệu không bịa. Entity→Canonical URL→Anchor variants→Contextual Link Rules→Internal Link Graph bounded approved edges. Search/filter combinations không mass SEO pages; useful curated landing allowlist. Structured data/help shipping/returns đúng actual configuration, không hứa free return hay worldwide shipping.
+
+Mobile/keyboard/controlled empty-error UX, media safe derivatives/EXIF stripping/responsive dimensions/LCP priority, bounded queries/keyset20 max50/cache invalidation versioned, private no-store. LCP≤2.5s/INP≤200ms/CLS≤0.1 p75 goals chưa đo đạt; D10 actual budgets/observability/release gates. AI/trend/help/SEO jobs background; existing modular system, không thêm duplicated canonical DB/service.
+
+Buyer/staff/Admin guides versioned từ D01–D08; 15x24h inclusive delivery cutoff và personal-condition/complaint review đúng D06. CP/VC/VCS explicitly inactive, no redemption promises; CSKH authorized minimal sources, no fabricated scarcity or refund evidence. Google AI SEO không special-schema/AI-text-file requirement, không guaranteed ranking/index/citation. AI scoped runbooks/proposals không tự bỏ auth/noindex hoặc quyền tài chính. Next D10 operations/backup/DR/readiness theo owner assignment, không tự code/payment/deploy.

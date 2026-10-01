@@ -25,3 +25,5 @@
 - Owner authorized D07 single-seller Cootton management/business-reporting design on 2026-10-01. Read docs/contracts/D07_SELLER_BUSINESS_REPORTING.md and V001 section 119. Unknown costs/COGS must remain incomplete, no fake profit/self-commission/payout. No actual staff/seller/cost/report jobs, migrations or application handlers authorized.
 
 - Owner authorized D08 Admin/RBAC/policy design on 2026-10-01. Read docs/contracts/D08_ADMIN_RBAC_POLICY.md and V001 section 120. No actual accounts/grants/claims/policy activation or security-sensitive access provisioned. Admin/AI roles do not bypass feature readiness, immutable contracts, evidence or owner bootstrap.
+
+- Owner authorized D09 UX/SEO/help documentation and logical design on 2026-10-01. Read docs/contracts/D09_UX_SEO_HELP.md and V001 section 121. Keep current noindex until assigned release readiness; indexable catalog does not enable purchase. No runtime UI/metadata/robots/sitemap/accounts/migrations or deployment authorized by D09.
