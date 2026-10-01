@@ -1,6 +1,6 @@
 # Instructions for AI contributors
 
-- Start with COOTTON_WORKING_V001.md. This repository publication task is documentation-only.
+- Start with COOTTON_WORKING_V001.md, docs/contracts/CORE.md and docs/adr/0001-foundation.md. The owner authorized repository foundation and core transport contracts on 2026-10-01. This scope does not authorize production commerce or deployment.
 - Follow the latest explicit owner decisions and section 106 overrides; do not interpret historical no-tests phrases as the current absolute rule.
 - Do not invent executable schemas, business policies, providers, rates or missing actual data. Mark unresolved decisions explicitly.
 - No application coding, provisioning, migrations, financial actions or deployment until the owner assigns that scope.

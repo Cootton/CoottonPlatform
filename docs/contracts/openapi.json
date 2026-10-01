@@ -1,0 +1,5 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Cootton Foundation API", "version": "0.1.0", "description": "Liveness only; no business or database readiness claim." },
+  "paths": { "/v1/health/live": { "get": { "operationId": "getLiveness", "responses": { "200": { "description": "API process responds", "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["status", "contractVersion"], "properties": { "status": { "const": "alive" }, "contractVersion": { "const": "0.1.0" } } } } } } } } } }
+}
