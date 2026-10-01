@@ -44,3 +44,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D06 return/refund/restock design
 
 [D06.returns.v1](D06_RETURN_REFUND_RESTOCK.md) and V001 section 118 define bounded original-unit claims, exact partial refund allocation, private evidence, carrier uncertainty and inspection-backed restock. Owner approved inclusive 15x24h request cutoff from verified delivery, unused/unwashed/tag/accessory condition for personal returns, and separate wrong/defective/damaged complaint review without automatic rejection for tags/deadline. This supersedes older pending cutoff/condition statements. Remaining actual operational/provider gates persist; design only, no transactions.
+
+## D07 seller/reporting design
+
+[D07.seller.reporting.v1](D07_SELLER_BUSINESS_REPORTING.md) and V001 section 119 define one Cootton seller/staff capability boundaries, cost provenance, metric/time/source dictionaries and bounded projections. Unknown COGS/costs give incomplete contribution, not profit or zero costs. No marketplace self-commission/payout; website-before-payment metrics distinguish inactive/unavailable from true zero. Design only; actual permissions, accounting/cost basis, budgets and source facts remain gates.
