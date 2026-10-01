@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d01_catalog_contract_2026_10_01
+revision: d02_pricing_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d01_catalog_contract
+current_task: d02_pricing_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4548,3 +4548,13 @@ Field dictionary khóa title/description/brand/category/form/design/origin/care/
 Canonical product /p/{productId}/{slug}, B2C mặc định, /b2b là entry riêng cùng catalog. Mode/SKU query canonical về product; không PII/evidence trên URL, private fields không public DTO. Slug cũ redirect về URL hiện hành; current Web vẫn noindex cho tới D09 triển khai. Logical design này thay pending identity/SKU/form/URL của các mục trước trong phạm vi đã mô tả; chưa thay policies tài chính.
 
 D02 tiếp theo: tiers all-unit per SKU, MOQ unit/pack, seller minimum precedence, quote và financial precision/policies. D01 không tự chốt đơn vị MOQ từ size chart hoặc SKU. Executable migration phải có contracts seller/media/dictionary, mutation storage và rollback riêng; không dùng Neon owner làm runtime. Không thao tác database trong task D01.
+
+## 114. D02 Giá/MOQ/Quote — 2026-10-01
+
+Owner giao D02 và chốt MOQ theo chiếc (PIECE), tổng quantity SKU trong phần đơn B2B của từng seller; chưa pack. Đây thay pending MOQ unit ở các mục trước. Specification: docs/contracts/D02_PRICING_MOQ_QUOTE.md, contract D02.pricing.v1; design contracts/logical schema, chưa runtime hoặc database writes.
+
+B2B all-unit per SKU, B2C giá SKU/offering riêng; cùng inventory. Price versions immutable, intervals không overlap; tier thresholds tăng chặt bắt đầu 1, chọn ngưỡng cao nhất ≤quantity, giá không tăng theo quantity. Admin override/default minimum precedence, seller minimum cao hơn nếu configured; seller không hạ policy Admin. MOQ baseline 10 chiếc và minimum 1.000.000 VND sau discounts đều phải đạt; actual configured policies có version. B2C/khác seller không góp minimum; không tự bỏ ưu đãi để đạt ngưỡng.
+
+Pipeline canonical giá→discount eligibility/allocation→seller B2B minimum→buyer shipping zero→payable→tender→quote. Integer VND/bigint, discount allocation largest-remainder deterministic có conservation; CP/VC tender khác discount và VCS là funding riêng. Không rate/campaign/funding thật nào được tự seed; chưa stacking rõ không tự cộng benefit.
+
+Quote có immutable breakdown/private snapshot, version/TTL/stale/blocker, bounded 100 lines/20 sellers và no PII/private funding trong public response. Preview không order, reserve/debit stock/points/quota/budget. CONFIRMABLE phải D03/D04 và readiness thực; chưa triển khai nên không claim mua bán hoạt động. Logical pricing/offering/tier/minimum/discount/quote tables được thiết kế, chưa migration. CP precision/remainder, VC/VCS funding/rates, fee basis/rounding, buyer B2B eligibility và actual financial/provider policies vẫn cần contracts trước activation. Tiếp theo D03 cùng dependency D04.
