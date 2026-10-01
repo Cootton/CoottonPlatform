@@ -1,17 +1,19 @@
-# Cootton Platform — Architecture and Planning
+# Cootton Platform
 
-Current self-contained plan: [COOTTON_WORKING_V001.md](COOTTON_WORKING_V001.md).
+Nền móng monorepo cho sàn thời trang Web + Android/iOS. Core dùng chung, AI tùy chọn. Đây chưa phải sản phẩm commerce đã triển khai.
 
-## Status and scope
+## Cấu trúc
 
-Documentation only. No application source, infrastructure, database migrations, real transactions, account creation or deployment is authorized by this publication task. The plan's section 106 supersedes historical absolute no-testing instructions: targeted verification can be authorized in a future scoped task.
+- apps/api: NestJS modular monolith, hiện chỉ /v1/health/live.
+- apps/web: Next.js shared Web shell, chưa mở mua bán hoặc seller/admin; noindex trong giai đoạn foundation.
+- packages/contracts: ID, VND, API types dùng chung; không là schema database.
+- docs/contracts: contract boundaries, OpenAPI và pending business decisions.
+- COOTTON_WORKING_V001.md: plan đầy đủ hiện hành, dữ liệu riêng đã che.
 
-## Read order
+## Chạy nền móng
 
-Read the current authorization header, section 106, the current-decision index (103), unresolved decisions (104), and the full embedded master plan and AI workflow before a relevant task. The document is self-contained; previous working versions are not required.
+Node 24 và pnpm 10.34.6. `pnpm install --frozen-lockfile`, `pnpm build`, `pnpm check`, `pnpm verify:contracts`. Dùng `pnpm dev:api` (localhost:3001) và `pnpm dev:web` (localhost:3000). Development commands không là deployment; CI chạy kiểm tra, không ghi Cloud/database.
 
-## Privacy and versioning
+Đọc [contracts](docs/contracts/CORE.md), [ADR](docs/adr/0001-foundation.md) và [plan](COOTTON_WORKING_V001.md) trước task. Không tạo schema, migrations, credentials hay tính toán thanh toán bằng các giá trị chưa chốt. Chưa kết nối Firebase/Cloud SQL hoặc provider.
 
-Owner email, bank account/login, personal tax and registration identifiers and contact configuration values are redacted. Retrieve required values only from an owner-authorized configuration or secret store during a future task. Never invent them or commit credentials/customer data.
-
-Update V001 in place; create another working version only when the owner explicitly requests it. Public or private repository visibility does not grant permission to publish confidential values.
+Không commit secrets, dữ liệu khách hàng hay thông tin ngân hàng. Chỉ cập nhật V001 tại chỗ; snapshot mới cần owner yêu cầu. AI không có quyền tự nâng quyền hoặc chia sẻ model memory.

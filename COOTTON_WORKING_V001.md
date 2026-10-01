@@ -1,16 +1,14 @@
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
-> GitHub distribution copy: owner private identifiers removed. Includes the complete master plan and workflow. This update publishes documentation only; no application source or cloud deployment.
-
 ```yaml
 document_version: V001
-revision: minimal_core_database_growth_AI_authority_2026_09_30
+revision: repository_foundation_core_contracts_2026_10_01
 document_status: complete_planning_snapshot
-updated_at: 2026-09-30
+updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
-authorization_scope: architecture_and_documentation_only
-current_task: maintain_and_review_Cootton_plan
+authorization_scope: repository_foundation_and_core_transport_contracts
+current_task: repository_foundation_core_contracts
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -3804,8 +3802,6 @@ Hướng giản lược được ghi vào V001; lần này cập nhật kiến t
 
 ---
 
-# PHẦN B — AI WORKFLOW ĐẦY ĐỦ
-
 # COOTTON AI WORKFLOW
 
 > **Override hiện hành:** đọc mục 106 master/mục 70 workflow: targeted verification được phép khi có task/grant; historical no-tests không còn tuyệt đối. Hiện chỉ planning, không execute.
@@ -4497,3 +4493,10 @@ Next planning first-release matrix → actual unit economics → points/funding 
 Mục 107 ưu tiên hướng owner mới: modular monolith, PostgreSQL canonical, shared Web/backend contracts và minimal features trước extensions/apps. No unnecessary microservices/tools/duplicate logic; DB workload-aware pagination/indexes/connection caps/retention, scaling upgrades evidence-based. AI broad Cootton task authority khi grant/access actual, ADMIN revoke/audit, no fabricated credentials/financial values/no forbidden egress/ledger edits. Targeted checks allowed theo 106; phase/task scope cần rõ, chưa source/deploy trong cập nhật kiến trúc này. V001 tại chỗ.
 
 
+## 108. Repository foundation và core contracts — 01/10/2026
+
+Owner đã giao tạo nền móng repository và contracts core. Phạm vi này cho phép source nền tảng pnpm/TypeScript/NestJS/Next.js, shared transport contracts và CI verification; supersedes các câu documentation-only/implementation-not-authorized đối với riêng task này. Không cấp commerce production, database DDL/migrations, payment, cloud provisioning/deployment hay social actions.
+
+Canonical technical contracts của task nằm ở docs/contracts/CORE.md và docs/adr/0001-foundation.md: UUID v4 opaque internal entity ID, exact VND decimal integer strings, /v1 API, process liveness. Firebase UID external riêng; public ID không thay authorization. Financial policies/schema/state machines chưa chốt vẫn pending, không tự phát minh.
+
+Source hiện có API liveness và Web shell noindex; chưa seller/admin UI, auth adapter hoặc business/database routes. Không claim hoàn thiện marketplace hoặc deployment. TypeScript checks/API compile/shared contracts verification đã chạy local; Web compile thành công nhưng full Next build bị giới hạn spawn EPERM tại bước TypeScript worker của môi trường. CI Linux sẽ xác minh full build; không báo CI pass trước actual run.
