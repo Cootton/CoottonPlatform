@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: neon_secure_connection_github_sync_2026_10_01
+revision: github_repository_security_setup_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: publish_secure_neon_connector
+current_task: github_repository_security_setup
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4521,3 +4521,18 @@ Owner đã cho phép cấu hình kết nối và lưu DATABASE_URL trong apps/ap
 Lệnh kiểm tra thực tế đã thành công: BEGIN READ ONLY → SELECT 1 AS value → kết quả 1 → ROLLBACK → đóng kết nối. Không tạo schema/bảng, không sửa dữ liệu, không thay đổi role, không deploy. Credential cootton_owner chỉ dành cho xác nhận kết nối tại máy; chưa được duyệt làm runtime production. Role tối thiểu phải chuẩn bị sau khi khóa schema. Endpoint liveness hiện hành không phụ thuộc database.
 
 Code connector và tài liệu ADR 0002 được chuẩn bị để đồng bộ vào repository GitHub Cootton/CoottonPlatform theo yêu cầu owner ngày 2026-10-01. Build và typecheck API thành công. Git xác nhận apps/api/.env bị ignore. Môi trường từ chối siết Windows ACL của file; chưa xác nhận quyền file chỉ dành cho user.
+
+## 112. GitHub repository setup — 2026-10-01
+
+Repository Cootton/CoottonPlatform đã có nền móng source và connector Neon trên main (PR #1, #2). Owner yêu cầu hoàn thiện cài đặt GitHub; các cấu hình dưới đây đã được lưu và đọc lại từ Settings.
+
+- Main là default branch. Classic protection rule 84031281 áp dụng main: bắt buộc pull request, check verify từ GitHub Actions, nhánh up-to-date, conversation resolution; áp dụng cả admin; không cho force push hoặc xóa main. Không bắt buộc người duyệt thứ hai trong giai đoạn owner tự vận hành. Không bypass để hoàn thành task.
+- Bật gợi ý cập nhật nhánh PR và tự xóa head branch sau merge (GitHub cho phép phục hồi).
+- Actions chỉ cho action nội bộ Cootton và action do GitHub tạo. Default GITHUB_TOKEN chỉ đọc contents/packages; Actions không được tạo/approve PR bằng token mặc định. PR của toàn bộ external contributors cần owner duyệt workflow trước khi chạy.
+- Dependency graph, Dependabot alerts, malware alerts và security updates đã bật. Security updates tạo PR, không tự merge. Chưa bật cập nhật version đại trà.
+- Private vulnerability reporting bật. Secret Protection và push protection đã có sẵn và tiếp tục bật.
+- CodeQL default setup đã bật cho GitHub Actions và JavaScript/TypeScript; scan push/PR trên main/protected branches và hàng tuần. Kết quả quét ban đầu phải được kiểm tra riêng; bật tính năng không có nghĩa toàn bộ source không có lỗ hổng.
+- CI foundation hiện chạy frozen install, build, typecheck và contract verification. CI không nhận credential Neon owner, không deploy, không migration. Việc deploy cần task riêng, runtime role tối thiểu và secret manager/environment theo contract.
+- Repository vẫn public theo trạng thái hiện tại. AI không tự thêm collaborator, token, deploy key, cloud write permission, trả phí hoặc thay đổi visibility.
+
+Luồng duy nhất: owner giao task → đọc V001/contracts → sửa trên nhánh riêng → PR → checks thành công và nhánh cập nhật → resolve conversations → merge main → ghi lại kết quả. Không coi CI pass là xác nhận schema hoặc chính sách nghiệp vụ chưa chốt.
