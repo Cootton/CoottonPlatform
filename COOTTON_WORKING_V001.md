@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d05_order_shipping_contract_2026_10_01
+revision: d06_return_refund_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d05_order_shipping_contract
+current_task: d06_return_refund_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4593,3 +4593,14 @@ Owner chốt quy tắc refund đã đề xuất: VND original method; CP future 
 D05.orders.v1 tại docs/contracts/D05_ORDER_SHIPPING.md: one-seller/one-mode immutable order snapshots, unique attempt→order, payment authority D04/stock D03, one initial outbound shipment/order; states/evidence riêng order/payment/fulfillment. Carrier booking không physical handoff; timeout REVIEW/query same reference, no duplicate booking. SuccessfulDeliveryAt authoritative giữ nguyên khi event đến muộn, conflict incident, không auto-deny dispute. Address ownership/private snapshots/serviceability registry/version; shipping buyer zero, carrier actual cost separate; cancellation/handoff races, refund không restock, D06 evidence-controlled restock.
 
 Scope D05 chỉ contracts/logical design. Chưa DDL/migrations/orders/API/carrier/payment/deploy. Core/AGENTS/D04 pointers đồng bộ với override launch/refund này; D05 technical design không biến cổng/nguồn/actual policies thành approved. Website sections độc lập có thể coding khi được giao; real order/ship/refund phải đủ gates D04/D06/D08/D10. Next D06 và access/privacy readiness theo task owner.
+## 118. D06 Return/Refund/Restock — 2026-10-01
+
+Owner giao D06 contracts/logical design một seller Cootton, website trước payment, CP top-up/points inactive. Specification D06.returns.v1 tại docs/contracts/D06_RETURN_REFUND_RESTOCK.md. Không migrations/API/case/refund/restock/carrier thật hoặc deploy.
+
+Owner chốt cutoff yêu cầu đổi trả = confirmed delivery UTC +15×24h, inclusive tại deadline, server durable submission receivedAt quyết định. Yêu cầu timely không mất eligibility vì inspection/transport xử lý sau deadline. Hàng vì nhu cầu cá nhân chưa mặc/giặt, còn tem/phụ kiện; giao sai/lỗi/hư hỏng là complaint review riêng, không tự từ chối thiếu tem/quá hạn, không tuyên bố chấm dứt quyền pháp lý. Đây thay pending D05 exact-cutoff/condition. Quyền giao dịch thực vẫn cần đủ contracts/provider/grants.
+
+Case có qty claim caps theo original line, độc lập return transport/refund/disposition. Partial refund dùng deterministic unit ordinal entitlements floor(net/qty) và original remainder, conserve total (100/3→34/33/33), không per-piece record explosion/B2B repricing. Refund confirmed+active allocations không vượt original capture/source; unknown giữ cap/query same key, no second send. Cootton chịu return cost, amount/unit/provider/return location và processing SLA vẫn pending actual policies.
+
+Received goods quarantine trước inspection; restock chỉ verified sellable actual SKU/location/qty, unique receipt entitlements+action+stock movement atomically. Refund không stock release/restock; cancellation unpick không double-restock với return receipt; wrong SKU/overages/damaged/lost hàng review. AI support/read/propose scoped, không giả physical evidence/approve monetary transfers/direct SQL. Exchanges/replacements/alternative refund destinations riêng pending, chưa bật.
+
+D06 logical schema/state/evidence/concurrency/UX/gates hoàn thành design, acceptance scenarios chưa runtime evidence. D04/D05 pointers và CORE đồng bộ; retention/deadlines/cost/grants/provider/inspection procedures vẫn chặn dependent execution. Next policy/access/website planning theo owner task, không tự triển khai production.
