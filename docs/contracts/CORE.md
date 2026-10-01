@@ -28,3 +28,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D02 pricing design
 
 [D02.pricing.v1](D02_PRICING_MOQ_QUOTE.md) specifies offering price versions, all-unit tiers, seller B2B minimum and quote conservation/eligibility. Owner locked MOQ unit PIECE; no packs. This replaces the older pending MOQ unit statement. CP/VC/VCS financial decisions and execution gates remain pending; no pricing endpoint or migration is implemented.
+
+## D03 checkout design
+
+[D03.checkout.v1](D03_CART_CHECKOUT_INVENTORY.md) defines versioned carts, one-mode all-or-nothing checkout attempts, canonical stock holds, atomicity/idempotency, deadline/recovery states and explicit D04 financial execution gates. No checkout/stock endpoint or worker is currently implemented. D04/D05 dependencies and operational configuration must be locked before execution.
