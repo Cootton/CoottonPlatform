@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: github_repository_security_setup_2026_10_01
+revision: d01_catalog_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: github_repository_security_setup
+current_task: d01_catalog_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4536,3 +4536,15 @@ Repository Cootton/CoottonPlatform đã có nền móng source và connector Neo
 - Repository vẫn public theo trạng thái hiện tại. AI không tự thêm collaborator, token, deploy key, cloud write permission, trả phí hoặc thay đổi visibility.
 
 Luồng duy nhất: owner giao task → đọc V001/contracts → sửa trên nhánh riêng → PR → checks thành công và nhánh cập nhật → resolve conversations → merge main → ghi lại kết quả. Không coi CI pass là xác nhận schema hoặc chính sách nghiệp vụ chưa chốt.
+
+## 113. D01 Product/Catalog/SKU — contract design locked 2026-10-01
+
+Owner chốt luồng triển khai đề xuất và giao D01. Specification hiện hành: docs/contracts/D01_PRODUCT_CATALOG_SKU.md, ID D01.catalog.v1. Đây là hợp đồng thiết kế kỹ thuật và logical PostgreSQL schema; không là migration đã chạy, endpoint đã triển khai hoặc production-ready commerce.
+
+Product thuộc một seller; Variant/SKU là một sellable identity UUID ổn định theo màu/size, SKU code SELLER-MODEL-COLOR-SIZE immutable và unique toàn sàn kể cả archived. Product/color/size tuple unique; B2B/B2C dùng chung SKU/tồn, offering giá riêng do D02. Không merge seller listings theo tên. Category: CREWNECK_TSHIRT/HOODIE/SWEATER/SHORTS/TROUSERS; Raglan là design attribute. Form chuẩn Cootton: Boxy/Regular/Slim Fit; Cleanfit reserved inactive đến khi Admin duyệt definition/applicability; không custom form seller. Tất cả actual facts/dictionary rows phải có nguồn, không tự seed.
+
+Field dictionary khóa title/description/brand/category/form/design/origin/care/fabric components/composition/GSM/size chart/media/version/ownership. GSM explicit UNKNOWN hoặc exact/range theo vải, decimal strings; size chart đơn vị CM, số đo thật. Publish không tự điền claims. Logical tables, constraints, indexes, no-delete references, bounded keyset pagination và lifecycle DRAFT→IN_REVIEW→APPROVED/ARCHIVED được ghi đầy đủ. Mutation tương lai dùng RBAC/idempotency/expected version/transactional audit+outbox; chưa tạo handlers/workers.
+
+Canonical product /p/{productId}/{slug}, B2C mặc định, /b2b là entry riêng cùng catalog. Mode/SKU query canonical về product; không PII/evidence trên URL, private fields không public DTO. Slug cũ redirect về URL hiện hành; current Web vẫn noindex cho tới D09 triển khai. Logical design này thay pending identity/SKU/form/URL của các mục trước trong phạm vi đã mô tả; chưa thay policies tài chính.
+
+D02 tiếp theo: tiers all-unit per SKU, MOQ unit/pack, seller minimum precedence, quote và financial precision/policies. D01 không tự chốt đơn vị MOQ từ size chart hoặc SKU. Executable migration phải có contracts seller/media/dictionary, mutation storage và rollback riêng; không dùng Neon owner làm runtime. Không thao tác database trong task D01.
