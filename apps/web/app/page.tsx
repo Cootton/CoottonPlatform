@@ -1,3 +1,7 @@
-export default function Home() {
-  return <main><h1>Cootton</h1><p>Nền tảng đang được xây dựng. Chức năng mua bán chưa mở.</p></main>;
+import Link from 'next/link';
+import { Catalog } from '../components/catalog';
+export const dynamic='force-dynamic';
+export const metadata={title:'Cootton — Khám phá danh mục thời trang',description:'Khám phá danh mục thời trang Cootton: áo thun cổ tròn, hoodie, sweater, quần short và quần dài. Website chưa nhận đơn hoặc thanh toán.'};
+export default async function Home({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){
+  return <main id="main"><section className="hero"><div className="hero-copy"><span className="eyebrow">COOTTON / THỜI TRANG</span><h1>Đơn giản.<br/>Theo cách <em>của bạn.</em></h1><p>Một nơi để khám phá áo thun, hoodie, sweater và những lựa chọn cho tủ đồ của bạn.</p><Link className="button" href="#catalog">Khám phá danh mục <span aria-hidden="true">↗</span></Link><div className="hero-note">B2C · Danh mục bán lẻ</div></div><div className="hero-art" aria-hidden="true"><div className="art-ring"/><span className="art-title">C</span><span className="art-caption">COOTTON<br/>A NEW CHAPTER.</span></div></section><Catalog mode="B2C" search={await searchParams}/><section className="split-banner"><div><span className="eyebrow">MUA THEO SỐ LƯỢNG</span><h2>Khám phá danh mục bán sỉ.</h2><p>Thông tin giá và điều kiện mua sẽ được công bố theo từng sản phẩm khi sẵn sàng.</p></div><Link className="button secondary" href="/b2b">Đến trang B2B →</Link></section></main>;
 }
