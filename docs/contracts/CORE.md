@@ -36,3 +36,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D04 finance design
 
 [D04.finance.v1](D04_FINANCE_PAYMENT_RECONCILIATION.md) defines asset lots, balanced append-only journals, holds/funding/quota, payment evidence and reconciliation. Owner locked CP_MILLI (0.001 CP = 1 VND), single tender per attempt, and floor(10% of seller net after discounts before tender) per seller suborder. These replace older pending statements for those choices; VC/VCS activation is explicitly blocked pending issuance/conversion/backing. Other provider/refund/settlement/operational gates remain. This documentation does not implement financial writes or unlock D03 execution.
+
+## D05 direct-sale launch override
+
+[D05.orders.v1](D05_ORDER_SHIPPING.md) and V001 section 117 supersede historical launch/payment/return-start pending statements: single Cootton seller, website before payment, CP top-up paused, launch points inactive, VNPAY recommendation only. Refund baseline original method/net allocations, 15 days from verified delivery; remaining eligibility/cutoff/provider/config gates persist. Marketplace fee contracts remain future scope; no self-fee in direct-sale launch. Order/shipping design only, no handlers/migrations/actual transactions.

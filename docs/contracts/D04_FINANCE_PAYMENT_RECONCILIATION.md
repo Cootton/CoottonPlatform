@@ -121,3 +121,7 @@ Future acceptance scenarios: concurrent last CP/VC/VCS/quota/budget consumption;
 Technical references: [PostgreSQL 18 exact numeric types](https://www.postgresql.org/docs/18/datatype-numeric.html) and [transaction locks/deadlock ordering](https://www.postgresql.org/docs/18/explicit-locking.html). These support storage/concurrency choices, not business rates, accounting certification or provider/legal authorization.
 
 D04 deliverable: financial assets/provenance, ledger/holds, funding/quota, payment evidence and uncertainty, refund caps, reconciliation, logical relations, least-privilege boundaries và decision gates. Unresolved owner/provider decisions remain visible; no financial write or D03 execution is authorized by this document.
+
+## 12. Latest owner override — D05 launch/refund
+
+Read [D05.orders.v1](D05_ORDER_SHIPPING.md) and V001 section 117. Owner now selects one-seller Cootton direct-sale launch and website before payment, CP top-up paused/launch point tenders inactive. VNPAY is recommendation pending onboarding, not activated provider. Owner approved original-method VND refund, future original-unit CP refund, partial original net amounts/no tier repricing, corresponding capped original fee reversal if charged, 15-day window from confirmed delivery and Cootton-paid fixed return transport. Eligibility/precise cutoff/operational amounts and provider remain gated D06; deposit refunds separate inactive. Existing marketplace 10% formula remains future contract, not internal Cootton self-fee. This override does not execute financial actions.
