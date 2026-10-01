@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d10_operations_readiness_2026_10_02
+revision: catalog_read_implementation_2026_10_02
 document_status: complete_planning_snapshot
 updated_at: 2026-10-02
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d10_operations_readiness
+current_task: catalog_read_implementation
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4654,3 +4654,15 @@ Proposed catalog RPO≤24h/RTO≤4h with exports/safety margin/coverage and meas
 GitHub Linux Actions can deploy without local PowerShell only explicit provisioning/release; current CI no deploy. Immutable artifact/least permissions/OIDC exact trust/first-party action-policy compatibility/migration guards. App rollback preserves DB history; incompatible schema roll-forward/contained mode, no destructive auto down/restore. Actual owner/MFA/session/grants/secrets/notification/backups/hosting/billing pending gates remain.
 
 D01–D10 design baseline complete, not commerce implementation/deployed website. Next proposed owner-assigned smallest public catalog vertical slice with executable schema review/actual data/readiness; payment later. No automatic source/migration/provider/cloud access from D10.
+
+## 123. Catalog website + Neon read implementation — 2026-10-02
+
+Owner authorized catalog website with database; confirmed empty catalog, actual data later. Implemented SSR buyer homepage/category filters/B2B/help/product-SKU read and301 canonical redirect. Shared catalog DTO allowlist/slug validation, bounded API cursor20/max50, controlled400/404/503, no-store, noindex retained. No invented price/stock/product/approval, no checkout/payment/points.
+
+ADR0003 locks executable D09 public read projection only, not canonical D01/D02 write tables. Actual empty Neon inspection before migration001; additive transactional schema/migration record and restricted reader role created. Digest5ce15497289ae15ededa61b31dbc4e3e7813094ae59a492dba91b43804b78c9e; seededProducts0. Runtime SELECT visible views only, no source reads/INSERT/schemaCREATE; tested current visible count0. Private apps/api/.env.catalog ignored, no credentials public; original owner .env unchanged, not runtime role. Mode0600 does not prove Windows user-only ACL.
+
+No public writer/importer/publisher/media upload/authAdmin installed; actual canonical source validation/sizechart/media/dictionary/seller/D02 offering data remain before publication. Short verified projection receipts bound stale visibility, cannot replace canonical authority or source approvals. Catalog read slice works without AI/commerce.
+
+Type checks and shared privacy/media/slug/money/ID verification passed, actual B2C/B2B empty200, invalidqueries400/unknownproduct404, responsive390px no overflow, Web noindex/no DATABASE_URL in HTML. Windows childprocess restriction handled via documented custom Next local verification server/workerThreads option, normal Linux CI still required. Current running localhost3000 is verification using actual Neon, not cootton.com production release.
+
+Production hosting/DNS/TLS/billingbudget/region/runtime secrets, deploy workflow, independent backup/key custody+restore evidence, notification/monitoring/duty and D10 acceptance still unresolved. CATALOG_SETUP.md records evidence/commands/blockers. No paid cloud resources, financial mutations, legacy Firestore deletes or production index/deploy claimed.

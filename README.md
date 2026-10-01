@@ -17,3 +17,7 @@ Node 24 và pnpm 10.34.6. `pnpm install --frozen-lockfile`, `pnpm build`, `pnpm 
 Đọc [contracts](docs/contracts/CORE.md), [ADR](docs/adr/0001-foundation.md) và [plan](COOTTON_WORKING_V001.md) trước task. Không tạo schema, migrations, credentials hay tính toán thanh toán bằng các giá trị chưa chốt. Đã chuẩn bị connector Neon PostgreSQL và xác nhận SELECT 1 chỉ đọc. Xem [cấu hình kết nối](docs/adr/0002-neon-connection.md). Chưa tạo schema, kết nối commerce hoặc triển khai ứng dụng.
 
 Không commit secrets, dữ liệu khách hàng hay thông tin ngân hàng. Chỉ cập nhật V001 tại chỗ; snapshot mới cần owner yêu cầu. AI không có quyền tự nâng quyền hoặc chia sẻ model memory.
+
+## Catalog website
+
+Read-only buyer catalog now connects to Neon PostgreSQL through a restricted API role. Home/category/B2B/help/product pages implemented; actual catalog starts empty. See [setup and evidence](CATALOG_SETUP.md). No purchase/payment activation or public production deployment claimed. Runtime private .env.catalog is ignored; original owner read-check .env is not the API runtime identity.

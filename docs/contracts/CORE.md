@@ -60,3 +60,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D10 operations/recovery/release design
 
 [D10.operations.readiness.v1](D10_OPERATIONS_BACKUP_RELEASE.md) and V001 section 122 define bounded monitoring/incident runbooks, independent backup/recovery, app-version archive separation and scoped release gates. Free-plan capability is not proven backup readiness; provider/idempotency reconciliation required after restore. Documentation only: no provisioning, actual backup/drill/migration/deploy or next-task implementation.
+
+## Catalog read implementation — 2026-10-02
+
+Owner assigned empty catalog website with database. GET /v1/catalog/products and /v1/catalog/products/:id now read restricted public PostgreSQL views; keyset20/max50, safe DTOs, controlled400/404/503, no mutations. See ADR0003/CATALOG_SETUP and V001 section123. Migration001 is a derived D09 projection, not canonical D01/D02 business schema; no products/prices/stock seeded or publisher installed. Current Web noindex and payment/private/production release gates persist.
