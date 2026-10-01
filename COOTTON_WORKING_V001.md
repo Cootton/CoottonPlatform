@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d04_finance_contract_2026_10_01
+revision: d05_order_shipping_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d04_finance_contract
+current_task: d05_order_shipping_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4582,3 +4582,14 @@ Owner xác nhận VC/VCS chưa quyết định nguồn phát hành, tỷ lệ v�
 D04 khóa kỹ thuật append-only balanced journals mỗi asset, immutable issuance lots/conversion/source, wallet available/held/blocked, same-DB D03 reserve/commit/release, quota/funding/obligation guards, provider evidence purpose uniqueness, top-up khác order payment, payment/refund uncertainty và late-effect liabilities, original-allocation refund caps, bounded reconciliation/incident workflow. Không direct ledger edits/SQL AI repair; AI read/propose theo grant, core không phụ thuộc AI.
 
 Chưa business execution-ready: trusted provider/merchant/API statement channel, top-up/chargeback/deposit refund rules, VC/VCS source/rate/protection, D05 order/shipping, D06 refund eligibility/expired assets, D07 posting templates/seller settlement/tax, D08 grants, D10 deadlines/retention/runtime least privilege. Không tự tuyên bố D03 unlocked hay mọi tài chính đã chốt. Next planning: đóng provider/top-up và D05/D06/D07 dependencies theo task owner; chưa triển khai trong scope này.
+## 117. D05 Direct-sale Order/Shipping — 2026-10-01
+
+Owner chuyển launch thành Cootton bán trực tiếp hàng của mình, một seller canonical; Hộ kinh doanh Cootton đứng tên đơn vị bán/nhận tiền. Multi-seller/thu hộ/split payout để sau. Giữ sellerId/core contracts, B2C/B2B và portal Cootton staff, không tự tạo seller/warehouse/provider thật. Phí marketplace 10% giữ future contracts, không tự tính internal self-fee trong direct-sale launch.
+
+Owner chọn hoàn thiện website trước task payment để có cơ sở duyệt hồ sơ. VNPAY recommendation pending merchant acceptance, chưa approved adapter. CP top-up paused; launch VND direct, CP tender/VC/VCS inactive; chưa submit order/hold/payment/shipping production. Cart/preview/review screen có truthful payment-unavailable state, không gọi yêu cầu mua hàng là paid/confirmed order hoặc fake seed orders.
+
+Owner chốt quy tắc refund đã đề xuất: VND original method; CP future original units; partial original net allocation không reprice tier/MOQ; corresponding original commission reversal capped nếu có actual fee; 15 ngày từ confirmed successful delivery; Cootton fixed return shipping cost theo Admin config; pending+confirmed refund không vượt original payment; unknown reconcile trước resend, late money without order exception/refund verified; CP deposit refunds separate inactive. Eligibility/deadline boundary/amount/unit/processing promises vẫn D06 pending.
+
+D05.orders.v1 tại docs/contracts/D05_ORDER_SHIPPING.md: one-seller/one-mode immutable order snapshots, unique attempt→order, payment authority D04/stock D03, one initial outbound shipment/order; states/evidence riêng order/payment/fulfillment. Carrier booking không physical handoff; timeout REVIEW/query same reference, no duplicate booking. SuccessfulDeliveryAt authoritative giữ nguyên khi event đến muộn, conflict incident, không auto-deny dispute. Address ownership/private snapshots/serviceability registry/version; shipping buyer zero, carrier actual cost separate; cancellation/handoff races, refund không restock, D06 evidence-controlled restock.
+
+Scope D05 chỉ contracts/logical design. Chưa DDL/migrations/orders/API/carrier/payment/deploy. Core/AGENTS/D04 pointers đồng bộ với override launch/refund này; D05 technical design không biến cổng/nguồn/actual policies thành approved. Website sections độc lập có thể coding khi được giao; real order/ship/refund phải đủ gates D04/D06/D08/D10. Next D06 và access/privacy readiness theo task owner.
