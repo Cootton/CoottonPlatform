@@ -13,3 +13,5 @@
 - Owner authorized D01 Product/Catalog/SKU contract and logical schema design on 2026-10-01. Read docs/contracts/D01_PRODUCT_CATALOG_SKU.md before catalog work. This authorization does not execute DDL/migrations, publish actual catalog data or expose business handlers.
 
 - Owner authorized D02 pricing/MOQ/quote design on 2026-10-01 and confirmed PIECE quantities, no packs. Read docs/contracts/D02_PRICING_MOQ_QUOTE.md. Logical schema/documentation only; do not activate unspecified financial policies or execute database migrations.
+
+- Owner authorized D03 cart/checkout/stock-reservation design on 2026-10-01 with D04 financial contracts required before execution. Read docs/contracts/D03_CART_CHECKOUT_INVENTORY.md. No migrations, actual holds/orders/payments or fake financial ports from this scope.
