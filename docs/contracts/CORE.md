@@ -52,3 +52,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D08 access/policy design
 
 [D08.access.policy.v1](D08_ADMIN_RBAC_POLICY.md) and V001 section 120 define verified owner identity, scoped capabilities, revocation/approval guards, typed immutable policies and feature readiness. Email/host/role alone is not authorization. AI cannot self-escalate or bypass financial/security evidence; runtime roles/bootstrap/session/grants remain unprovisioned. Design only, no actual permissions or policies changed.
+
+## D09 UX/discovery/help design
+
+[D09.ux.discovery.v1](D09_UX_SEO_HELP.md) and V001 section 121 define canonical/public index eligibility, truthful projections/metadata, bounded discovery links/media and versioned help. Purchase readiness stays separate from catalog indexing; private auth and current foundation noindex remain. Documentation only, no runtime page/SEO/deployment changes.
