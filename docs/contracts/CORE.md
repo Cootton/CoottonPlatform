@@ -24,3 +24,7 @@ Breaking changes cần explicit contract version + migration/consumer compatibil
 ## D01 catalog design locked
 
 See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unified Variant/SKU identity, global immutable SKU codes, logical PostgreSQL schema, publication and canonical URL contracts. D01 resolves its scoped design decisions; executable tables/migrations and D02 financial/quantity decisions remain gated. No new API routes are implemented by this document.
+
+## D02 pricing design
+
+[D02.pricing.v1](D02_PRICING_MOQ_QUOTE.md) specifies offering price versions, all-unit tiers, seller B2B minimum and quote conservation/eligibility. Owner locked MOQ unit PIECE; no packs. This replaces the older pending MOQ unit statement. CP/VC/VCS financial decisions and execution gates remain pending; no pricing endpoint or migration is implemented.
