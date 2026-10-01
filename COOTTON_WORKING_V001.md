@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d03_checkout_contract_2026_10_01
+revision: d04_finance_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d03_checkout_contract
+current_task: d04_finance_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4570,3 +4570,15 @@ Pipeline quote consent→canonical revalidate→atomic stock/financial/quota hol
 Technical hold TTL thiết kế mặc định 10 phút, effective deadline min các source/D04 limits; không config runtime/auto sliding renewal. Payment timeout/unknown là PAYMENT_REVIEW, không fake fail/paid hoặc auto release khi có thể đã thu tiền. Late capture sau terminal phải exception/liability/reconcile theo D04; không resurrect đơn thiếu stock. External payment chưa có bounded reconciliation contract không enable. Cart cleanup chỉ selected lines còn khớp version/qty, không xóa edits mới.
 
 D04 gate register đã bao gồm asset precision/conversions/funding, wallet holds/commit/release, campaign/quota backing, same DB transaction ports, trusted provider/evidence/idempotency, expiry/unknown/late-payment compensation, fee/settlement, audit/retention/runtime role. Thiếu D04/D05 dependencies giữ checkout execution disabled; không tạo fake adapters. Acceptance scenarios có races/replay/crash/late callbacks và multi-device, chưa tuyên bố runtime checks đã chạy. Next D04.
+
+## 116. D04 Finance/Payment/Reconciliation — 2026-10-01
+
+Owner giao D04 contracts, không giao thực thi checkout/tài chính. Specification D04.finance.v1 tại docs/contracts/D04_FINANCE_PAYMENT_RECONCILIATION.md; logical design only, chưa DDL/migrations/provider/API/worker/ledger giao dịch thật.
+
+Owner chốt CP precision 0,001 CP = 1 VND, canonical CP_MILLI integer units (1.000 units/CP); unitsCP=payableVnd, không ceil/free remainder. Một tender toàn checkout: VND hoặc CP hoặc VC, không mixed. Phí 10% = floor(sellerNetVnd × 1000/10000), net sau discount/trước tender, tính mỗi phần đơn seller; line fee allocation largest-remainder giữ tổng. Đây thay các pending precision/tender/fee-basis/rounding cũ, không đổi baseline 1 CP=1.000 VND.
+
+Owner xác nhận VC/VCS chưa quyết định nguồn phát hành, tỷ lệ và bảo chứng: chặn activation, không tự cấp điểm/rate hoặc coi promotional VCS là seller cash. VCS trước/Cootton phần vượt giữ ở approved mapping future; VCS seller-only, một benefit tài trợ một lần, VC tender khác voucher discount. Actual campaigns/source/protected terms/budgets còn gate.
+
+D04 khóa kỹ thuật append-only balanced journals mỗi asset, immutable issuance lots/conversion/source, wallet available/held/blocked, same-DB D03 reserve/commit/release, quota/funding/obligation guards, provider evidence purpose uniqueness, top-up khác order payment, payment/refund uncertainty và late-effect liabilities, original-allocation refund caps, bounded reconciliation/incident workflow. Không direct ledger edits/SQL AI repair; AI read/propose theo grant, core không phụ thuộc AI.
+
+Chưa business execution-ready: trusted provider/merchant/API statement channel, top-up/chargeback/deposit refund rules, VC/VCS source/rate/protection, D05 order/shipping, D06 refund eligibility/expired assets, D07 posting templates/seller settlement/tax, D08 grants, D10 deadlines/retention/runtime least privilege. Không tự tuyên bố D03 unlocked hay mọi tài chính đã chốt. Next planning: đóng provider/top-up và D05/D06/D07 dependencies theo task owner; chưa triển khai trong scope này.
