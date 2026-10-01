@@ -9,3 +9,5 @@
 - Use only necessary scoped permissions. AI_SUB_ADMIN cannot self-escalate.
 - Never commit secrets, owner private identifiers, customer data or banking login information.
 - Maintain V001 in place. Do not create a new working version without explicit owner instruction.
+
+- Owner authorized D01 Product/Catalog/SKU contract and logical schema design on 2026-10-01. Read docs/contracts/D01_PRODUCT_CATALOG_SKU.md before catalog work. This authorization does not execute DDL/migrations, publish actual catalog data or expose business handlers.
