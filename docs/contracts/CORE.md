@@ -56,3 +56,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D09 UX/discovery/help design
 
 [D09.ux.discovery.v1](D09_UX_SEO_HELP.md) and V001 section 121 define canonical/public index eligibility, truthful projections/metadata, bounded discovery links/media and versioned help. Purchase readiness stays separate from catalog indexing; private auth and current foundation noindex remain. Documentation only, no runtime page/SEO/deployment changes.
+
+## D10 operations/recovery/release design
+
+[D10.operations.readiness.v1](D10_OPERATIONS_BACKUP_RELEASE.md) and V001 section 122 define bounded monitoring/incident runbooks, independent backup/recovery, app-version archive separation and scoped release gates. Free-plan capability is not proven backup readiness; provider/idempotency reconciliation required after restore. Documentation only: no provisioning, actual backup/drill/migration/deploy or next-task implementation.
