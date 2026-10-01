@@ -96,3 +96,7 @@ Gates before execution: explicit coding scope; actual seller/pickup/catalog/stoc
 Future acceptance: wrong seller attempt denied; same attempt only one order; snapshots survive SKU edits; no fake order pre-payment; payment/stock/order atomicity with lost response; carrier send crash/query duplicate prevention; cancellation vs submission/handoff race; out-of-order/conflicting delivery facts; successfulDeliveryAt stable return anchor; partial return no tier/MOQ repricing; cancelled/refunded goods not auto restocked; shipping zero buyer despite actual fee; address ownership/change/serviceability; queue/notification/AI outage independent core. Planning acceptance requirements, not runtime evidence.
 
 D05 design deliverable complete: direct-sale launch boundary, order/shipment identities and state/evidence contracts, website-before-payment behavior, addresses/serviceability, cost/recovery/cancellation and integration gates. Next D06 return/refund details and D08 access boundaries before corresponding implementation; no carrier/payment activation from this task.
+
+## D06 dependency update — 2026-10-01
+
+See [D06.returns.v1](D06_RETURN_REFUND_RESTOCK.md) and V001 section 118 for owner-approved inclusive delivery+15x24h submission cutoff, clothing/complaint conditions, exact original unit allocation/caps and verified disposition/restock. These replace historical pending cutoff/conditions; actual processing deadlines/return cost units/provider/grants remain gated. No financial or inventory execution from these documents.
