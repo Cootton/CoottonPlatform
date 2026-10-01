@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d09_ux_seo_help_2026_10_01
+revision: d10_operations_readiness_2026_10_02
 document_status: complete_planning_snapshot
-updated_at: 2026-10-01
+updated_at: 2026-10-02
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d09_ux_seo_help
+current_task: d10_operations_readiness
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4638,3 +4638,19 @@ Public HTML/projections facts thống nhất, deterministic versioned meta descr
 Mobile/keyboard/controlled empty-error UX, media safe derivatives/EXIF stripping/responsive dimensions/LCP priority, bounded queries/keyset20 max50/cache invalidation versioned, private no-store. LCP≤2.5s/INP≤200ms/CLS≤0.1 p75 goals chưa đo đạt; D10 actual budgets/observability/release gates. AI/trend/help/SEO jobs background; existing modular system, không thêm duplicated canonical DB/service.
 
 Buyer/staff/Admin guides versioned từ D01–D08; 15x24h inclusive delivery cutoff và personal-condition/complaint review đúng D06. CP/VC/VCS explicitly inactive, no redemption promises; CSKH authorized minimal sources, no fabricated scarcity or refund evidence. Google AI SEO không special-schema/AI-text-file requirement, không guaranteed ranking/index/citation. AI scoped runbooks/proposals không tự bỏ auth/noindex hoặc quyền tài chính. Next D10 operations/backup/DR/readiness theo owner assignment, không tự code/payment/deploy.
+
+## 122. D10 Operations/Monitoring/Backup/DR/Readiness — 2026-10-02
+
+Owner giao D10 documentation/logical design. D10.operations.readiness.v1 tại docs/contracts/D10_OPERATIONS_BACKUP_RELEASE.md. Một seller, website trước payment, points/marketplace inactive; không jobs/grants/migrations/restore/delete/deploy từ design.
+
+Giữ modular monolith/shared backend/PostgreSQL/public projections. Actual hosting/region/budget/identity manifest trước provisioning; catalog/index/private/transactional/future scope gates riêng. READY khác ENABLED, index không checkout; current noindex giữ. Existing Neon owner local read-only không runtime role, liveness không DB dependency/keepalive cron.
+
+Minimal redacted logs/metrics/bounded queries/watermarks/asOf; inactive NOT_ENABLED, unavailable không0. Internal availability99.5%30days/warmAPIp95≤500ms/CWV D09 targets chưa measured, retained connector max5/process cần total-instance capacity guard. Quotas warning70/urgent85/critical95+forecast, no auto paid upgrade/data delete. Incident P0/P1 actionable alert, AI approved runbooks max3attempts then checkpoint/escalate, no security/money/SQL bypass.
+
+Three hot APP releases current+twocompatible; older compressed private archive/download receipt verified before online removal. Git history/canonical financial/audit retention không3versions. Independent encrypted DB/media/identity/config/key backup manifests, separate scoped permissions. Free Neon short history/no scheduled native backup không tested independent DR; no actual backup enabled claim.
+
+Proposed catalog RPO≤24h/RTO≤4h with exports/safety margin/coverage and measured restore; transactional canonical RPO≤15min/RTO≤4h needs validated continuous+independent protection/actual budget before enablement, daily dump insufficient. Retention/legalHold/purge actual purpose policy riêng. Restore isolated/outbounddisabled, verify integrity/current revocations/deletion tombstones, reconcile post-snapshot provider/idempotency effects, no replay or erase accepted history; single-writer fencing before cutover.
+
+GitHub Linux Actions can deploy without local PowerShell only explicit provisioning/release; current CI no deploy. Immutable artifact/least permissions/OIDC exact trust/first-party action-policy compatibility/migration guards. App rollback preserves DB history; incompatible schema roll-forward/contained mode, no destructive auto down/restore. Actual owner/MFA/session/grants/secrets/notification/backups/hosting/billing pending gates remain.
+
+D01–D10 design baseline complete, not commerce implementation/deployed website. Next proposed owner-assigned smallest public catalog vertical slice with executable schema review/actual data/readiness; payment later. No automatic source/migration/provider/cloud access from D10.
