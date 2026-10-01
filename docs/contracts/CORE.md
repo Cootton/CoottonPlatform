@@ -48,3 +48,7 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## D07 seller/reporting design
 
 [D07.seller.reporting.v1](D07_SELLER_BUSINESS_REPORTING.md) and V001 section 119 define one Cootton seller/staff capability boundaries, cost provenance, metric/time/source dictionaries and bounded projections. Unknown COGS/costs give incomplete contribution, not profit or zero costs. No marketplace self-commission/payout; website-before-payment metrics distinguish inactive/unavailable from true zero. Design only; actual permissions, accounting/cost basis, budgets and source facts remain gates.
+
+## D08 access/policy design
+
+[D08.access.policy.v1](D08_ADMIN_RBAC_POLICY.md) and V001 section 120 define verified owner identity, scoped capabilities, revocation/approval guards, typed immutable policies and feature readiness. Email/host/role alone is not authorization. AI cannot self-escalate or bypass financial/security evidence; runtime roles/bootstrap/session/grants remain unprovisioned. Design only, no actual permissions or policies changed.

@@ -23,3 +23,5 @@
 - Owner authorized D06 return/refund/restock design on 2026-10-01. Read docs/contracts/D06_RETURN_REFUND_RESTOCK.md and V001 section 118. Owner approved inclusive delivery+15x24h request cutoff and clothing/complaint conditions. No actual refund/restock/return booking or migrations authorized; points remain inactive.
 
 - Owner authorized D07 single-seller Cootton management/business-reporting design on 2026-10-01. Read docs/contracts/D07_SELLER_BUSINESS_REPORTING.md and V001 section 119. Unknown costs/COGS must remain incomplete, no fake profit/self-commission/payout. No actual staff/seller/cost/report jobs, migrations or application handlers authorized.
+
+- Owner authorized D08 Admin/RBAC/policy design on 2026-10-01. Read docs/contracts/D08_ADMIN_RBAC_POLICY.md and V001 section 120. No actual accounts/grants/claims/policy activation or security-sensitive access provisioned. Admin/AI roles do not bypass feature readiness, immutable contracts, evidence or owner bootstrap.
