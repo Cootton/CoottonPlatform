@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: repository_foundation_core_contracts_2026_10_01
+revision: neon_secure_connection_github_sync_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
-authorization_scope: repository_foundation_and_core_transport_contracts
-current_task: repository_foundation_core_contracts
+authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
+current_task: publish_secure_neon_connector
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -20,8 +20,8 @@ completed_work_with_evidence:
 pending_work:
   - resolve_execution_prerequisites_when_owner_assigns_implementation
 blockers_for_implementation:
-  - implementation_not_authorized
-  - repository_and_cloud_resource_access_not_verified
+  - production_commerce_and_deployment_not_authorized
+  - restricted_production_database_runtime_role_not_provisioned
   - business_policies_and_executable_contracts_not_fully_locked
 approved_decisions: see_embedded_master_plan_overrides_and_sections
 conceptual_contracts: not_approved_production_schema
@@ -4500,3 +4500,24 @@ Owner đã giao tạo nền móng repository và contracts core. Phạm vi này 
 Canonical technical contracts của task nằm ở docs/contracts/CORE.md và docs/adr/0001-foundation.md: UUID v4 opaque internal entity ID, exact VND decimal integer strings, /v1 API, process liveness. Firebase UID external riêng; public ID không thay authorization. Financial policies/schema/state machines chưa chốt vẫn pending, không tự phát minh.
 
 Source hiện có API liveness và Web shell noindex; chưa seller/admin UI, auth adapter hoặc business/database routes. Không claim hoàn thiện marketplace hoặc deployment. TypeScript checks/API compile/shared contracts verification đã chạy local; Web compile thành công nhưng full Next build bị giới hạn spawn EPERM tại bước TypeScript worker của môi trường. GitHub Actions run 36796385202 đã completed successfully cho commit 6cdc817: full build, TypeScript checks và hai contract checks. Đây là foundation verification, không evidence commerce production.
+## 109. Neon Free cho PostgreSQL giai đoạn đầu — 01/10/2026
+
+Owner chọn Neon Free thay đề xuất tạo Cloud SQL có phí hiện tại. PostgreSQL vẫn canonical backend; Cloud SQL là hướng chuyển sau khi owner duyệt. Không submit Cloud SQL instance, không upgrade Neon hoặc xóa Firestore. Cloud SQL Admin API đã bật nhưng không có paid instance được tạo trong task.
+
+Đọc COOTTON_NEON_FREE_SETUP.md và COOTTON_DATABASE_TASKS.md (local outputs hiện tại). Đã chuẩn bị Neon Free setup/env template; chưa login/provision/connect/API adapter. Neon project đề xuất cootton-core tách Google project cootton-firebase; region Singapore nếu actual Free console hỗ trợ. Không bịa URL/credentials/schema. App pooled connection/TLS verified, backend pg, bounded pool, read-only SELECT 1 sau actual resource/grants; business migrations và roles cần contracts đã khóa.
+
+Free limits official checked 01/10/2026: 0.5 GB/project, 100 CU-hours/project/month, 5 GB transfer/project/month; compute sleeps after 5 minutes, quota exhaustion suspends compute, no overage billing Free. Restore history chỉ 6 giờ có giới hạn; không coi free là HA/backup đủ cho financial production. No auto upgrade/no quota evasion/no keepalive cron. Owner login/terms và project setup pending; secrets không chat/GitHub. Firestore cleanup separate inventory/export/exact-scope confirmation, chưa xóa.
+
+## 110. Neon PostgreSQL đã tạo — 01/10/2026
+
+Official console xác nhận project cootton-core, ID bitter-wildflower-38641184, Free plan, AWS Asia Pacific 1 (Singapore), PostgreSQL 18. Database cootton được yêu cầu và project dashboard báo 1 database/1 compute. Default branch production, ID br-cool-poetry-b3euwas0; đây là tên branch do Neon tạo, không evidence Cootton production launch. Compute mặc định 0.25–2 CU, restore history 6 giờ. Object storage/Functions/AI gateway/Neon Auth không bật trong creation form.
+
+Owner existing project Cootton Database tại Ohio giữ nguyên. Không tạo paid Cloud SQL instance, không xóa Firestore/Auth/Storage, không business schema/migration/import. API repository chưa nối Neon; secrets/runtime identity và actual read-only SELECT 1 cần xử lý ở connection task. Không claim database connection hoặc commerce readiness từ dashboard. Project URL: https://console.neon.tech/app/projects/bitter-wildflower-38641184/branches/br-cool-poetry-b3euwas0 .
+
+## 111. Kết nối Neon bảo mật đã xác nhận — 2026-10-01
+
+Owner đã cho phép cấu hình kết nối và lưu DATABASE_URL trong apps/api/.env riêng trên máy. File được Git ignore; không đưa mật khẩu vào GitHub, plan, log hoặc frontend. Connector dùng pg 8.23.1, TLS xác minh chứng chỉ, tối thiểu TLS 1.2, channel binding khi server hỗ trợ; pool tối đa 5 mỗi process, connect timeout 15 giây, idle 30 giây, statement timeout 10 giây. Không giữ Neon thức bằng cron.
+
+Lệnh kiểm tra thực tế đã thành công: BEGIN READ ONLY → SELECT 1 AS value → kết quả 1 → ROLLBACK → đóng kết nối. Không tạo schema/bảng, không sửa dữ liệu, không thay đổi role, không deploy. Credential cootton_owner chỉ dành cho xác nhận kết nối tại máy; chưa được duyệt làm runtime production. Role tối thiểu phải chuẩn bị sau khi khóa schema. Endpoint liveness hiện hành không phụ thuộc database.
+
+Code connector và tài liệu ADR 0002 được chuẩn bị để đồng bộ vào repository GitHub Cootton/CoottonPlatform theo yêu cầu owner ngày 2026-10-01. Build và typecheck API thành công. Git xác nhận apps/api/.env bị ignore. Môi trường từ chối siết Windows ACL của file; chưa xác nhận quyền file chỉ dành cho user.
