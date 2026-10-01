@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d07_seller_reporting_contract_2026_10_01
+revision: d08_admin_access_policy_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d07_seller_reporting_contract
+current_task: d08_admin_access_policy
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4615,3 +4615,14 @@ Reports tách confirmed merchandise net, trusted collection/refunds/chargebacks,
 Cost provenance/approval/source dedupe, budget/estimated/accrued/actual/cash paid riêng; không triple subtract. COGS/economic valuation/accounting templates chưa approved thì operational contribution null INCOMPLETE có missing components, không tuyên bố profit/cash/tax hoặc zero cost. Contribution khác statutory/net profit. Direct-sale không marketplace 10% income/deduction/payout; deferred commission contracts giữ.
 
 Bounded PostgreSQL projections/events source dedupe/watermarks/backfill, interactive window≤366 days, keyset20/max50, historical jobs gated; báo cáo/AI outside checkout critical path. Private drilldown/export scoped grants/retention, no bank/PII public/model by default. AI read/report/propose không financial/SQL repair. D08 permissions/D10 budgets/retention và actual sources cần trước executable private/report features. Next D08 Admin/RBAC/policy theo owner task.
+## 120. D08 Admin/RBAC/Policy — 2026-10-01
+
+Owner giao D08 documentation/logical design. D08.access.policy.v1 tại docs/contracts/D08_ADMIN_RBAC_POLICY.md; một seller Cootton, website trước payment, points/marketplace inactive. Không actual accounts/grants/Firebase claims/policies/migrations/API/secrets/payment/deploy.
+
+ADMIN human owner cao nhất, AI_SUB_ADMIN dưới ADMIN; seller staff scoped capabilities không platform Admin. Verified Firebase issuer/project/subject→principal UUID, email/host/frontend/UUID không permission. Owner bootstrap identity/MFA/session/recovery actual cần provisioning task, không tự đăng ký owner theo email. Không remove last owner qua command thường, no auto AI elevate khi owner unavailable.
+
+Shared backend deny-default action+scope+ownership+state+policy+feature checks; grant revoke/expiry guards serialize với mutation, queued actions reauthorize, irreversible already-sent effects reconcile. Sensitive approval exact payload/hash/version/expiry/step-up; solo owner có thể approve/execute approved runbook, không invent second approver. AI không approve own security/financial change, no self-grant/SQL/ledger repair/PII egress.
+
+Admin D01-D10 config chỉ typed fields/bounds/domain contracts, không schema bypass. Policy draft→review→approved→scheduled/active immutable version, scope overlap lock/precedence, accepted order/lot/case/report snapshots protected, rollback new approved version không rewrite past effects. Feature readiness khác role/checkbox; CP paused/VNPAY recommendation không enabled. Auto-run dùng actual runbook/resource/bounds, unknown external effect hoặc thiếu evidence/grant phải review.
+
+Audit append-only safe metadata mandatory atomic mutation/outbox, secrets/OTP/bank/customer raw no logs/Git/model. Runtime least privilege/migration separate, no Neon owner service/SQL admin console. Capability matrix/schema logical, grant/session/retention/operational values actual và targeted verification gates chưa provisioned. Next D09 UX/SEO/help và D10 readiness theo owner assignment.
