@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: d06_return_refund_contract_2026_10_01
+revision: d07_seller_reporting_contract_2026_10_01
 document_status: complete_planning_snapshot
 updated_at: 2026-10-01
 timezone: Asia/Saigon
 product_release_status: not_implemented_in_this_task
 authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: d06_return_refund_contract
+current_task: d07_seller_reporting_contract
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -4604,3 +4604,14 @@ Case có qty claim caps theo original line, độc lập return transport/refund
 Received goods quarantine trước inspection; restock chỉ verified sellable actual SKU/location/qty, unique receipt entitlements+action+stock movement atomically. Refund không stock release/restock; cancellation unpick không double-restock với return receipt; wrong SKU/overages/damaged/lost hàng review. AI support/read/propose scoped, không giả physical evidence/approve monetary transfers/direct SQL. Exchanges/replacements/alternative refund destinations riêng pending, chưa bật.
 
 D06 logical schema/state/evidence/concurrency/UX/gates hoàn thành design, acceptance scenarios chưa runtime evidence. D04/D05 pointers và CORE đồng bộ; retention/deadlines/cost/grants/provider/inspection procedures vẫn chặn dependent execution. Next policy/access/website planning theo owner task, không tự triển khai production.
+## 119. D07 Seller/Business Reporting — 2026-10-01
+
+Owner giao D07 contracts một seller Cootton, website trước payment. Specification D07.seller.reporting.v1 tại docs/contracts/D07_SELLER_BUSINESS_REPORTING.md. Chỉ documentation/logical design, chưa seller/staff/grants/cost records/report jobs/API/migrations/payment/deploy thật.
+
+Seller UUID canonical/profile verified readiness khác provider payment readiness; seller portal staff Cootton scoped grants, không marketplace registration/payout/self-commission. Pause new sales giữ existing fulfillment/returns/obligations; AI không tự verified/grant self/bank actions. Catalog/pricing/stock/order/return sources D01-D06 giữ authority chung, không duplicate frontend logic.
+
+Reports tách confirmed merchandise net, trusted collection/refunds/chargebacks, refund exposure, delivered/received/refunded units, actual cost và reconciliation; event-period vs order cohort rõ ràng, Asia/Saigon bounds→UTC/asOf/coverage/formulaVersion. Zero chỉ khi valid source confirms0, unavailable/unconfigured/inactive metrics null/status, không fake orders/dashboard.
+
+Cost provenance/approval/source dedupe, budget/estimated/accrued/actual/cash paid riêng; không triple subtract. COGS/economic valuation/accounting templates chưa approved thì operational contribution null INCOMPLETE có missing components, không tuyên bố profit/cash/tax hoặc zero cost. Contribution khác statutory/net profit. Direct-sale không marketplace 10% income/deduction/payout; deferred commission contracts giữ.
+
+Bounded PostgreSQL projections/events source dedupe/watermarks/backfill, interactive window≤366 days, keyset20/max50, historical jobs gated; báo cáo/AI outside checkout critical path. Private drilldown/export scoped grants/retention, no bank/PII public/model by default. AI read/report/propose không financial/SQL repair. D08 permissions/D10 budgets/retention và actual sources cần trước executable private/report features. Next D08 Admin/RBAC/policy theo owner task.

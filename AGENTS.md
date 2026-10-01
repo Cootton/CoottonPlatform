@@ -21,3 +21,5 @@
 - Owner authorized D05 direct-sale order/shipping design on 2026-10-01. Read docs/contracts/D05_ORDER_SHIPPING.md and V001 section 117: one Cootton seller, website before payment, CP top-up paused and points inactive for launch. Refund baseline updated; no real order/carrier/payment writes or migrations authorized.
 
 - Owner authorized D06 return/refund/restock design on 2026-10-01. Read docs/contracts/D06_RETURN_REFUND_RESTOCK.md and V001 section 118. Owner approved inclusive delivery+15x24h request cutoff and clothing/complaint conditions. No actual refund/restock/return booking or migrations authorized; points remain inactive.
+
+- Owner authorized D07 single-seller Cootton management/business-reporting design on 2026-10-01. Read docs/contracts/D07_SELLER_BUSINESS_REPORTING.md and V001 section 119. Unknown costs/COGS must remain incomplete, no fake profit/self-commission/payout. No actual staff/seller/cost/report jobs, migrations or application handlers authorized.
