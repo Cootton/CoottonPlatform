@@ -1,5 +1,7 @@
 # Instructions for AI contributors
 
+- Latest owner assignment 2026-10-03 supersedes historical design-only scope for this task: synchronize V001/OpenAPI and implement minimal human Admin plus canonical catalog draft/review/publication workflow. Owner has no actual product data yet; do not seed fictional products or publish invented facts. Bootstrap requires verified Firebase subject/project, never email authority. Existing D01/D08/D10 boundaries and inactive commerce remain. Read ADR0004 before implementation; no unrestricted runtime SQL/owner role or public deployment from this assignment.
+
 - Start with COOTTON_WORKING_V001.md, docs/contracts/CORE.md and docs/adr/0001-foundation.md. The owner authorized repository foundation and core transport contracts on 2026-10-01. Owner additionally authorized secure Neon connectivity, read-only SELECT 1 and GitHub publication on 2026-10-01. This scope does not authorize schema/migrations, production commerce, runtime owner-role use or deployment.
 - Follow the latest explicit owner decisions and section 106 overrides; do not interpret historical no-tests phrases as the current absolute rule.
 - Do not invent executable schemas, business policies, providers, rates or missing actual data. Mark unresolved decisions explicitly.

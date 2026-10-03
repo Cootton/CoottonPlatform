@@ -1,5 +1,420 @@
 {
   "openapi": "3.1.0",
-  "info": { "title": "Cootton Foundation API", "version": "0.1.0", "description": "Liveness only; no business or database readiness claim." },
-  "paths": { "/v1/health/live": { "get": { "operationId": "getLiveness", "responses": { "200": { "description": "API process responds", "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["status", "contractVersion"], "properties": { "status": { "const": "alive" }, "contractVersion": { "const": "0.1.0" } } } } } } } } } }
+  "info": {
+    "title": "Cootton Foundation API",
+    "version": "0.1.0",
+    "description": "Implemented read-only catalog and process liveness; commerce and public production release remain inactive."
+  },
+  "paths": {
+    "/v1/health/live": {
+      "get": {
+        "operationId": "getLiveness",
+        "responses": {
+          "200": {
+            "description": "API process responds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "status",
+                    "contractVersion"
+                  ],
+                  "properties": {
+                    "status": {
+                      "const": "alive"
+                    },
+                    "contractVersion": {
+                      "const": "0.1.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalog/products": {
+      "get": {
+        "operationId": "listCatalogProducts",
+        "parameters": [
+          {
+            "name": "mode",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "B2C",
+                "B2B"
+              ],
+              "default": "B2C"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "CREWNECK_TSHIRT",
+                "HOODIE",
+                "SWEATER",
+                "SHORTS",
+                "TROUSERS"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safe public catalog response. No price, inventory or purchase authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "items",
+                    "nextCursor",
+                    "mode",
+                    "commerceEnabled"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "$ref": "#/components/schemas/PublicProduct"
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "mode": {
+                      "enum": [
+                        "B2C",
+                        "B2B"
+                      ]
+                    },
+                    "commerceEnabled": {
+                      "const": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalog/products/{id}": {
+      "get": {
+        "operationId": "getCatalogProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "skuAfter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safe public catalog response. No price, inventory or purchase authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "product",
+                    "skus",
+                    "commerceEnabled"
+                  ],
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/PublicProduct"
+                    },
+                    "commerceEnabled": {
+                      "const": false
+                    },
+                    "skus": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "items",
+                        "nextCursor"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "id",
+                              "code",
+                              "color",
+                              "size"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "code": {
+                                "type": "string",
+                                "maxLength": 64
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "nextCursor": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uuid"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SafeError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "requestId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PublicProduct": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "version",
+          "slug",
+          "category",
+          "title",
+          "brand",
+          "description",
+          "material",
+          "origin",
+          "care",
+          "images"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "category": {
+            "enum": [
+              "CREWNECK_TSHIRT",
+              "HOODIE",
+              "SWEATER",
+              "SHORTS",
+              "TROUSERS"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "form": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160
+          },
+          "material": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "origin": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "care": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "images": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "alt",
+                "width",
+                "height"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^/media/"
+                },
+                "alt": {
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8192
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8192
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

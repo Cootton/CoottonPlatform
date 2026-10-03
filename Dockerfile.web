@@ -1,0 +1,21 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /workspace
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm install --global pnpm@10.34.6
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
+COPY packages/contracts packages/contracts
+COPY apps/web apps/web
+COPY apps/api/package.json apps/api/package.json
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter @cootton/contracts build && pnpm --filter @cootton/web build
+
+FROM node:24-bookworm-slim AS runtime
+WORKDIR /workspace
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080
+COPY --from=build --chown=node:node /workspace/node_modules ./node_modules
+COPY --from=build --chown=node:node /workspace/packages/contracts/package.json ./packages/contracts/package.json
+COPY --from=build --chown=node:node /workspace/packages/contracts/dist ./packages/contracts/dist
+COPY --from=build --chown=node:node /workspace/apps/web ./apps/web
+USER node
+EXPOSE 8080
+CMD ["node", "apps/web/node_modules/next/dist/bin/next", "start", "apps/web", "--hostname", "0.0.0.0"]

@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/dist
+**/.env
+**/.env.*
+**/*.tsbuildinfo
+.git
+.github
+outputs
+coverage
+**/*credentials*.json
+**/*service-account*.json
+**/*.pem
+**/*.key

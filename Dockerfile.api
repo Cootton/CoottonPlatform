@@ -1,0 +1,21 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /workspace
+RUN npm install --global pnpm@10.34.6
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
+COPY packages/contracts packages/contracts
+COPY apps/api apps/api
+COPY apps/web/package.json apps/web/package.json
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter @cootton/contracts build && pnpm --filter @cootton/api build
+
+FROM node:24-bookworm-slim AS runtime
+WORKDIR /workspace
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=8080
+COPY --from=build --chown=node:node /workspace/node_modules ./node_modules
+COPY --from=build --chown=node:node /workspace/packages/contracts/package.json ./packages/contracts/package.json
+COPY --from=build --chown=node:node /workspace/packages/contracts/dist ./packages/contracts/dist
+COPY --from=build --chown=node:node /workspace/apps/api/node_modules ./apps/api/node_modules
+COPY --from=build --chown=node:node /workspace/apps/api/dist ./apps/api/dist
+USER node
+EXPOSE 8080
+CMD ["node", "apps/api/dist/main.js"]
