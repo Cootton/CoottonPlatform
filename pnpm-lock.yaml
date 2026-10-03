@@ -41,6 +41,9 @@ importers:
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
+      sharp:
+        specifier: ^0.35.5
+        version: 0.35.5(@types/node@24.10.1)
     devDependencies:
       '@types/pg':
         specifier: 8.23.1
@@ -2108,8 +2111,7 @@ snapshots:
       yargs: 17.7.3
     optional: true
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.5':
     optionalDependencies:
@@ -2491,8 +2493,7 @@ snapshots:
 
   depd@2.0.0: {}
 
-  detect-libc@2.1.2:
-    optional: true
+  detect-libc@2.1.2: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -3372,7 +3373,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
       '@types/node': 24.10.1
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:

@@ -4,7 +4,7 @@ export const dynamic='force-dynamic';
 const safe=(code:string,status:number)=>NextResponse.json({code,message:code,requestId:crypto.randomUUID()},{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
 async function forward(request:NextRequest,context:{params:Promise<{path:string[]}>}){
   const {path}=await context.params,relative=path.join('/');
-  if(!['session','catalog/products','catalog/dictionaries','catalog/commands'].includes(relative)&&!/^catalog\/products\/[0-9a-f-]{36}$/.test(relative))return safe('NOT_FOUND',404);
+  if(!['session','catalog/products','catalog/dictionaries','catalog/commands'].includes(relative)&&!/^catalog\/products\/[0-9a-f-]{36}(?:\/images\/[0-9a-f-]{36})?$/.test(relative))return safe('NOT_FOUND',404);
   const authorization=request.headers.get('authorization');
   if(!authorization||!/^Bearer [A-Za-z0-9_.-]{1,8192}$/.test(authorization))return safe('AUTHENTICATION_REQUIRED',401);
   const origin=process.env.ADMIN_WEB_ORIGIN??(process.env.NODE_ENV==='development'?'http://127.0.0.1:3000':null);
@@ -14,9 +14,9 @@ async function forward(request:NextRequest,context:{params:Promise<{path:string[
   if(request.method==='GET'&&relative==='catalog/commands')return safe('NOT_FOUND',404);
   let body:string|undefined;
   if(request.method==='POST'){
-    const length=Number(request.headers.get('content-length')??'0');if(length>65536)return safe('INVALID_INPUT',413);
+    const length=Number(request.headers.get('content-length')??'0');if(length>5242880)return safe('INVALID_INPUT',413);
     const reader=request.body?.getReader();let total=0;const chunks:Uint8Array[]=[];
-    if(reader){while(true){const {done,value}=await reader.read();if(done)break;total+=value.length;if(total>65536){await reader.cancel();return safe('INVALID_INPUT',413);}chunks.push(value);}}
+    if(reader){while(true){const {done,value}=await reader.read();if(done)break;total+=value.length;if(total>5242880){await reader.cancel();return safe('INVALID_INPUT',413);}chunks.push(value);}}
     body=Buffer.concat(chunks).toString('utf8');
   }
   try {

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
+    "verify:media": "node verification/media.cjs",
     "dev": "pnpm build && node dist/main.js",
     "start": "node dist/main.js",
     "db:check": "node --env-file=.env dist/check-database.js",
@@ -20,9 +21,11 @@
     "firebase-admin": "14.5.0",
     "pg": "8.23.1",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@types/pg": "8.23.1"
   }
 }
+

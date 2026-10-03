@@ -3,7 +3,7 @@
   "info": {
     "title": "Cootton Foundation API",
     "version": "0.1.0",
-    "description": "Implemented read-only catalog and process liveness; commerce and public production release remain inactive."
+    "description": "Canonical catalog reads and authenticated human Admin draft intake; publication, commerce and payments remain inactive."
   },
   "paths": {
     "/v1/health/live": {
@@ -284,6 +284,258 @@
           }
         }
       }
+    },
+    "/v1/admin/session": {
+      "get": {
+        "operationId": "getAdminSession",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/dictionaries": {
+      "get": {
+        "operationId": "getAdminDictionaries",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products": {
+      "get": {
+        "operationId": "getAdminProducts",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products/{id}": {
+      "get": {
+        "operationId": "getAdminProduct",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products/{id}/images/{asset}": {
+      "get": {
+        "operationId": "getAdminImage",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/commands": {
+      "post": {
+        "operationId": "executeAdminCatalogCommand",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "description": "Atomic expected-version/idempotency/audit/outbox. Images private and unapproved. Publication commands blocked pending separate readiness.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -414,6 +666,626 @@
             }
           }
         }
+      },
+      "AdminIntakePayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "declaration",
+          "fabric",
+          "gsmKind",
+          "gsmMin",
+          "gsmMax",
+          "location",
+          "variants",
+          "chart"
+        ],
+        "properties": {
+          "declaration": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          },
+          "fabric": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "gsmKind": {
+            "enum": [
+              "UNKNOWN",
+              "EXACT",
+              "RANGE"
+            ]
+          },
+          "gsmMin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "gsmMax": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "variants": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "colorId",
+                "sizeId",
+                "price",
+                "stock",
+                "tiers"
+              ],
+              "properties": {
+                "colorId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "sizeId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "price": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]{0,29}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "stock": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tiers": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "quantity",
+                      "price"
+                    ],
+                    "properties": {
+                      "quantity": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "price": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]{0,29}$"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "chart": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sizeId",
+                "measurementId",
+                "cm"
+              ],
+              "properties": {
+                "sizeId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "measurementId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "cm": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminImagePayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "base64",
+          "alt",
+          "rights"
+        ],
+        "properties": {
+          "base64": {
+            "type": "string",
+            "contentEncoding": "base64",
+            "maxLength": 4194304
+          },
+          "alt": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "rights": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          }
+        }
+      },
+      "AdminDictionaryPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "code",
+          "token",
+          "label",
+          "source"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "COLOR",
+              "SIZE",
+              "COUNTRY",
+              "MEASUREMENT"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]{1,32}$"
+          },
+          "token": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]{1,16}$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          }
+        }
+      },
+      "AdminCommand": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "createDraft"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "saveDraft"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title",
+                  "description",
+                  "care",
+                  "categoryId",
+                  "brandId",
+                  "formId",
+                  "countryId",
+                  "originEvidenceId",
+                  "careEvidenceId"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 10000
+                  },
+                  "care": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "categoryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "brandId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "formId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "countryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "originEvidenceId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "careEvidenceId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "saveIntake"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminIntakePayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "uploadImage"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminImagePayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "addDictionary"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminDictionaryPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "archive"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "submit"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "approve"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "publish"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {}
+              }
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "AdminBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Firebase ID token"
       }
     }
   }
