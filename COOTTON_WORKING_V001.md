@@ -2,13 +2,13 @@
 
 ```yaml
 document_version: V001
-revision: catalog_read_implementation_2026_10_02
-document_status: complete_planning_snapshot
-updated_at: 2026-10-02
+revision: admin_catalog_workflow_2026_10_03
+document_status: implementation_in_progress
+updated_at: 2026-10-03
 timezone: Asia/Saigon
-product_release_status: not_implemented_in_this_task
-authorization_scope: repository_foundation_core_contracts_and_secure_neon_read_check
-current_task: catalog_read_implementation
+product_release_status: catalog_read_implemented_not_publicly_deployed
+authorization_scope: minimal_admin_and_canonical_catalog_workflow
+current_task: admin_catalog_draft_review_publication
 completed_work_with_evidence:
   - consolidated_master_plan_embedded_below
   - consolidated_AI_workflow_embedded_below
@@ -18,25 +18,28 @@ completed_work_with_evidence:
   - D03_D10_detailed_planning_sections_77_84_completed_documentation_only
   - remaining_domain_detail_and_current_decision_index_sections_97_105
 pending_work:
-  - resolve_execution_prerequisites_when_owner_assigns_implementation
+  - provision_scoped_Firebase_verifier_credential_and_verify_actual_Admin_login
+  - complete_canonical_catalog_input_media_offering_and_publication
+  - Admin_schema_002_and_catalog_runtime_grants_applied_owner_UID_verified_section_129
+  - verify_private_workflow_and_publish_source_to_GitHub
 blockers_for_implementation:
-  - production_commerce_and_deployment_not_authorized
-  - restricted_production_database_runtime_role_not_provisioned
+  - production_commerce_inactive_deployment_authorized_but_runtime_not_ready
+  - Firebase_verifier_credential_and_actual_authenticated_session_pending
   - business_policies_and_executable_contracts_not_fully_locked
 approved_decisions: see_embedded_master_plan_overrides_and_sections
 conceptual_contracts: not_approved_production_schema
 superseded_rules: see_explicit_overrides_in_this_document
-next_authorized_action: review_or_update_documentation_under_owner_request
+next_authorized_action: implement_assigned_admin_catalog_workflow
 stop_conditions:
   - task_requires_source_or_external_write_without_authorization
   - required_contract_or_owner_decision_is_missing
 prior_version_dependency: none
-runtime_evidence: none_provided
+runtime_evidence: catalog_PR14_merged_f759592_Neon_reader_verified_empty_catalog
 ```
 
 ## Hướng dẫn tiếp nhận
 
-Đây là V001 hiện hành đầy đủ. AI chỉ đọc file này để hiểu dự án; không cần snapshots trước hoặc lịch sử chat. Không có nhiệm vụ implementation đang được phép chạy trong snapshot này. Ví dụ “V1 đang chạy” là tình huống thiết kế, không phải trạng thái triển khai đã xác minh.
+Đây là V001 hiện hành. Đọc khối trạng thái đầu file và các mục 123–124 để biết bằng chứng triển khai và nhiệm vụ được giao mới nhất; các đoạn design-only trước đó là phạm vi lịch sử, không phủ nhận nhiệm vụ hiện hành. Không cần snapshots trước hoặc lịch sử chat. Catalog đọc đã triển khai, chưa phát hành công khai; nhiệm vụ hiện hành là Admin tối thiểu và luồng catalog theo ADR0004.
 
 Các liên kết tới master plan/workflow trong nội dung dưới chỉ là nguồn gốc; toàn bộ nội dung của hai tài liệu được nhúng tại đây. Nguồn web là tài liệu tham khảo, không phải điều kiện phải đọc bản trước. Trước thực thi tương lai, kiểm tra thông tin nền tảng còn hiệu lực. Không coi source/resources chưa được cung cấp là đã tồn tại hoặc đã truy cập.
 
@@ -4666,3 +4669,65 @@ No public writer/importer/publisher/media upload/authAdmin installed; actual can
 Type checks and shared privacy/media/slug/money/ID verification passed, actual B2C/B2B empty200, invalidqueries400/unknownproduct404, responsive390px no overflow, Web noindex/no DATABASE_URL in HTML. Windows childprocess restriction handled via documented custom Next local verification server/workerThreads option, normal Linux CI still required. Current running localhost3000 is verification using actual Neon, not cootton.com production release.
 
 Production hosting/DNS/TLS/billingbudget/region/runtime secrets, deploy workflow, independent backup/key custody+restore evidence, notification/monitoring/duty and D10 acceptance still unresolved. CATALOG_SETUP.md records evidence/commands/blockers. No paid cloud resources, financial mutations, legacy Firestore deletes or production index/deploy claimed.
+
+
+## 124. Admin catalog task — 2026-10-03, IN_PROGRESS
+
+Owner assigned V001/OpenAPI synchronization and human Admin draft→review→publication. Owner has no actual product data/images yet; input workflow first, no fake seeds. Header/current reception updated; catalog OpenAPI describes actual read routes. Prepared Firebase revocation-aware identity guard, bearer-only no-store same-origin Web BFF, Admin input UI and transactional version/idempotency/audit draft service. Proposed additive002 UNEXECUTED. No successful Admin login/bootstrap/write role/migration/publication claimed. Full source/SKU/fabric/sizechart/media/offering review and source-authoritative publisher still pending, never claim blocked commands implemented. Actual owner Firebase UID/Web configuration/backend verifier identity pending; requested from owner. See ADMIN_CATALOG_SETUP.md and ADR0004; task remains unfinished and must continue after prerequisites. Existing catalog001/noindex/reader and paused commerce unchanged.
+
+
+## 125. Legacy replacement assignment — 2026-10-03
+
+Owner reaffirmed production targets buyer cootton.com, seller seller.cootton.com, admin admin.cootton.com, and selected removal of all legacy data after exact resource identification. This replaces prior document-only Firestore candidate scope; it is not approval to delete unspecified shared resources. Current Neon cootton-core/catalog001 and CoottonPlatform source are new-plan assets, excluded from legacy cleanup. Do not delete the Google/Firebase project, DNS/domain ownership or current account access based on hostnames alone.
+
+Inventory existing Hosting/App Hosting/other deployment mappings, exact Firestore database+recursive collections, Storage buckets/prefixes, Auth users/current-owner dependence, Functions/scheduled writers, other old SQL/Realtime databases and recovery/export locations. Prior 2026-10-01 Firestore collection inventory is historical, not current counts. Prepare resource manifest, writer cutover, recoverable private backup/retention decision and exact irreversible-deletion confirmation at action time. Build replacements before final traffic cutover; unavailable Admin/seller systems must not be presented as ready.
+
+Actual blocker 2026-10-03: authenticated Firebase console shows Cootton Firebase project in project listing but reports project nonexistent/no permission to access project/list apps. Cannot verify current hosting/database/storage/auth scope. No deletion, export, DNS change, site unbinding, new grants or deployment executed. Owner must restore/open project access before inventory. Existing Admin task remains unfinished; owner identity/bootstrap must be resolved before removing old auth identities.
+## 126. Verified legacy inventory checkpoint — 2026-10-03
+
+Project access is restored. This supersedes the access blocker in section 125; inventory remains incomplete, and no destructive action is authorized by this checkpoint.
+
+| Resource | Verified observation | Remaining before cleanup |
+|---|---|---|
+| Hosting | Site cootton-firebase serves cootton.com, seller.cootton.com and admin.cootton.com; all three custom domains Connected. Two default Firebase domains also present. Latest displayed release b23754, 2026-09-28 16:41 Asia/Saigon. | Export/recovery of configuration and releases; replacement host routing and ready buyer/seller/admin surfaces. Keep site/domain bindings. |
+| Firestore | (default), location nam5; 16 top-level collections visible. | Recursive document/subcollection counts, private export and recovery evidence. |
+| Firestore recovery | Point-in-time recovery switch OFF; daily/weekly backup retention displayed "-". | Existing backup/export history not fully inventoried; no recoverable backup proven. |
+| Storage | Firebase selector lists default cootton-firebase.firebasestorage.app, US-CENTRAL1. Root contains product-images/ and product-images-processed/. | Recursive object/generation counts, dependency review, other Google Cloud buckets and recovery settings. |
+| Authentication | Reload succeeded; pagination shows 1–3 of 3 users. Owner-contact identity exists in list. | Privately confirm owner subject and new Admin bootstrap before identity removal. Listing alone grants no Admin authority. |
+| Functions | 33 listed HTTP Request functions in asia-southeast1, including order/cart/product/stock/settings/commission/media writers. | Configuration, service dependencies, scheduled jobs, runtime recovery and writer shutdown/cutover scope. No function invoked or stopped. |
+| Realtime Database | Console shows Create Database onboarding. | No instance observed on this Firebase surface. |
+| Registered apps | Two Android apps (buyer/seller), one Web app. | Reuse/retirement dependencies; no iOS registration observed. |
+| New assets | Neon cootton-core and CoottonPlatform new-plan source. | Explicitly EXCLUDED from legacy cleanup. |
+
+Do not infer document/object totals from usage charts or top-level lists. Keep the Firebase project, domain ownership/DNS, new PostgreSQL database/source and current owner access. No deletion, export, DNS change, new grant or deployment has been performed. Admin implementation remains incomplete and unpublished.
+## 127. Owner override: selective reuse instead of full legacy reset — 2026-10-03
+
+The owner cancels exhaustive legacy inventory as a prerequisite and replaces the blanket legacy deletion direction in sections 125–126 with selective reuse. Continue implementing the new Cootton plan using existing compatible infrastructure. Preserve the Firebase project, Hosting site and domain bindings, compatible registered apps and Authentication identities. Keep new Neon cootton-core as the canonical commerce database.
+
+Write new-plan data only through approved contracts and scoped migrations. Replace identified legacy content/configuration only where the new implementation requires it; unrelated compatible resources remain. Legacy Firestore records are not automatically imported into Neon or treated as verified new-plan product data. No product data has been supplied yet: maintain an empty public catalog and build the real-data entry/review/publication workflow.
+
+Do not inspect all old records merely to decide whether development may proceed. Perform only the targeted dependency checks necessary for the specific resource being changed; unknown resources remain unchanged. Remove an old resource only when its concrete incompatibility with the new plan is established, the affected scope is explicit, and recovery/owner access dependencies are handled. A blanket purge is no longer requested. Irreversible browser deletion still requires exact confirmation at action time.
+
+Implementation sequence: synchronize V001/OpenAPI, finish minimum Admin authentication and canonical product entry/review/publication, then deploy ready buyer/admin surfaces to their intended domains. Preserve seller domain binding until its replacement is ready. New code may replace the shared Hosting release only with verified host routing and without routing private Admin functionality into the public buyer surface. Exhaustive cleanup is not a launch prerequisite.
+
+This entry changes planning instructions only. No remote data overwritten, resource deleted, permission granted or deployment performed by this update.
+## 128. Website replacement authorization — 2026-10-03
+
+Owner explicitly requests publication of current plan changes to GitHub and replacement of the legacy website with the new website (clarified scope: website replacement, not database overwrite). No actual product data provided. Preserve current database records and new Neon. Deployment is authorized, subject to working server hosting, scoped secret delivery and correct routing of buyer/seller/admin domains. The current code is server-rendered Next.js plus Nest API, not a static Firebase Hosting upload. No production runtime/deploy workflow configured yet; do not replace the existing site with local preview files or label unfinished Admin/seller as operational. Security-sensitive new runtime permissions must be presented concretely before granting. This checkpoint is not evidence that deployment has occurred.
+## 129. Sample and actual Admin bootstrap — 2026-10-03
+
+Owner authorizes one synthetic sample for verification and confirms the existing Firebase owner identity as sole catalog Admin. docs/fixtures/catalog-sample.json contains exactly one labelled incomplete DRAFT, not real merchandise or a publication receipt. Validate with shared draftFields; do not seed it into public read projection, fabricate SKU/media/source facts or enable commerce. After actual login, use createDraft/saveDraft through authenticated commands for integration verification, then retain/archive the labelled draft.
+
+Actual migration002/bootstrap executed after explicit owner approval. Digest 0347dc146e889ddcf78ac7482f8d211ddff97599a374c6ad70366cdd0156bf12. One active canonical principal maps privately verified Firebase subject, one Cootton seller with commerce modes disabled, restricted catalog runtime role and private ignored .env.admin. No products seeded. Current Firebase enables email/password and phone, not Google: Admin now uses email/password SDK login, in-memory persistence, generic login failure and sign-out on failed backend authorization. Public Firebase Web configuration saved in ignored local Web env. Owner enters password on login page, never chat.
+
+Backend still requires a least-privilege Auth read verifier credential for revoked/disabled-user checks. No successful authenticated Admin session claimed until that credential and actual login are verified. Proposed cootton-auth-verifier must not have database/Storage/user-write grants. No public deployment or legacy data removal by this task.
+## 130. Keyless verifier and deployment prerequisite — 2026-10-03
+
+Owner explicitly approved creating cootton-auth-verifier@cootton-firebase.iam.gserviceaccount.com with only roles/firebaseauth.viewer. Google Cloud confirmed creation and policy update; Keys page showed no keys. Owner declines local JSON key and chooses attached Google Cloud identity for deployment. Do not request or create a local key again.
+
+Cloud Run API/Web Dockerfiles and CLOUD_RUN_ADMIN_SETUP.md prepared; containers not built (Docker unavailable locally), no services deployed, no secrets uploaded or extra Secret Manager grants applied. Runtime needs actual image build and two version-pinned scoped Neon secrets, API secret-read grants, separate Web identity, origins and route configuration. Exact access/data-transmission actions require owner confirmation before execution. Sample remains fixture-only; authenticated login and actual draft integration test pending deployed runtime. Admin Web type-check and three Admin contract checks passed on resumption. No payment/publication activation or legacy deletion.
+## 131. Actual keyless runtime credential preparation — 2026-10-03
+
+Owner explicitly approved uploading the existing restricted Neon reader/admin URLs to Google Cloud Secret Manager and granting only per-secret Secret Accessor to cootton-auth-verifier. Created cootton-catalog-reader-url and cootton-catalog-admin-url in cootton-firebase; each has enabled version1. Both Permissions pages confirmed direct, non-inherited Secret Manager Secret Accessor for that service account. No project-wide secret-reader grant, owner credential upload or service-account JSON key. Existing inherited project permissions were not altered.
+
+Source prepared for API/Web Cloud Run images and GitHub Container build checks; build verification and deployment pending. Server uses attached service identity for Firebase revoked/disabled checks; API consumes these two secrets pinned at version1. Admin origin and catalog/Admin backend origins must use actual deployed HTTPS service URLs. No live Admin login or authenticated sample write has been verified. No legacy deletion/domain cutover/payment activation.
