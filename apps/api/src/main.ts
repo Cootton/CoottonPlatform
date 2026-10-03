@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Controller, Get, Module, Catch, HttpException, type ExceptionFilter, type ArgumentsHost } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { CatalogModule } from './catalog';
+import { AdminCatalogModule } from './admin-catalog';
 import { NestFactory } from '@nestjs/core';
 import { CONTRACT_VERSION, type Liveness } from '@cootton/contracts';
 
@@ -15,11 +16,11 @@ class SafeErrors implements ExceptionFilter {
   catch(error: unknown, host:ArgumentsHost):void {
     const response=host.switchToHttp().getResponse();
     const status=error instanceof HttpException ? error.getStatus() : 500;
-    const code=status===400?'INVALID_INPUT':status===404?'NOT_FOUND':status===503?'UNAVAILABLE':'INTERNAL_ERROR';
+    const code=status===400?'INVALID_INPUT':status===401?'AUTHENTICATION_REQUIRED':status===403?'FORBIDDEN':status===404?'NOT_FOUND':status===409?'CONFLICT':status===503?'UNAVAILABLE':'INTERNAL_ERROR';
     response.status(status).json({code,message:code,requestId:randomUUID()});
   }
 }
-@Module({ controllers: [HealthController], imports:[CatalogModule] })
+@Module({ controllers: [HealthController], imports:[CatalogModule,AdminCatalogModule] })
 class AppModule {}
 
 async function bootstrap(): Promise<void> {

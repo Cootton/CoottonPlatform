@@ -1,0 +1,15 @@
+# Keyless Admin runtime — preparation, not deployed
+
+Owner chooses attached Google Cloud identity instead of a local JSON service-account key. Created cootton-auth-verifier in cootton-firebase and applied only roles/firebaseauth.viewer with explicit approval. No keys created. Firebase API verifies signed ID tokens plus revoked/disabled status through that identity; PostgreSQL capability mapping remains separate.
+
+Proposed services: cootton-api and cootton-web, asia-southeast1, minimum instances 0, maximum 1 initially, 512MiB memory, 1 CPU, request-based billing. Dockerfiles are prepared but have not been built/run as containers. No deployment completion claimed. Build from repository root. .dockerignore excludes all local env files and key material. Containers run as non-root node and bind Cloud Run PORT. Migrations and bootstrap are never runtime startup.
+
+API environment: FIREBASE_PROJECT_ID=cootton-firebase, HOST=0.0.0.0. Attach cootton-auth-verifier. DATABASE_URL must come from version-pinned Secret Manager cootton-catalog-reader-url; ADMIN_DATABASE_URL from version-pinned cootton-catalog-admin-url. Values come from existing ignored .env.catalog/.env.admin, never owner maintenance .env. Creating secrets uploads credentials to Google Cloud Secret Manager and requires exact owner authorization. Grant Secret Accessor only on those two secrets to the API identity, not project-wide. This narrowly scoped extra grant requires confirmation before it is applied. Do not provide any service-account JSON key.
+
+Web environment: actual public Firebase Web configuration, actual HTTPS CATALOG_API_ORIGIN and ADMIN_API_ORIGIN of deployed API, and exact ADMIN_WEB_ORIGIN matching the first Admin verification URL. The Next Admin BFF uses ADMIN_API_ORIGIN and validates exact mutation origin. Web receives no database secrets. Use a separate Web identity without Auth/database/Storage access; no default Editor service identity.
+
+API public catalog and Web public entry need explicit Cloud Run invocation/access configuration before rollout; private API actions still require Firebase bearer plus canonical principal. No open arbitrary SQL or bootstrap route. The shared Firebase Hosting site/domain rewrites must be prepared and approved only after live service tests. Until correct buyer/admin/seller routing exists, do not cut over all three existing domains. Verify on deployed service URLs first; Admin remains noindex, commerce/publication inactive.
+
+Acceptance: API health and empty public catalog succeed; unauthenticated Admin returns401; owner signs in directly (password never chat/logs), session and empty draft list succeed; other identities denied; create/save the one labelled sample through authenticated commands; retry reuses persisted key/version; public catalog excludes it. Record audit and verification without private subject/tokens. Then publish reviewed source and complete domain routing/cutover.
+
+References: https://cloud.google.com/run/docs/securing/service-identity ; https://cloud.google.com/run/docs/configuring/services/secrets ; https://cloud.google.com/run/docs/container-contract
