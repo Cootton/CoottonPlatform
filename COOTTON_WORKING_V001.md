@@ -1,3 +1,5 @@
+> Current state 2026-10-04: sections132–134 supersede historical deployment/login claims. HTTPS services and authenticated Admin are live; sample draft create/edit passed. Product-intake migration003/private media scope approved and applied; new image rollout acceptance pending. Payments/publication stay inactive.
+
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
 ```yaml
@@ -4731,3 +4733,16 @@ Cloud Run API/Web Dockerfiles and CLOUD_RUN_ADMIN_SETUP.md prepared; containers 
 Owner explicitly approved uploading the existing restricted Neon reader/admin URLs to Google Cloud Secret Manager and granting only per-secret Secret Accessor to cootton-auth-verifier. Created cootton-catalog-reader-url and cootton-catalog-admin-url in cootton-firebase; each has enabled version1. Both Permissions pages confirmed direct, non-inherited Secret Manager Secret Accessor for that service account. No project-wide secret-reader grant, owner credential upload or service-account JSON key. Existing inherited project permissions were not altered.
 
 Source prepared for API/Web Cloud Run images and GitHub Container build checks; build verification and deployment pending. Server uses attached service identity for Firebase revoked/disabled checks; API consumes these two secrets pinned at version1. Admin origin and catalog/Admin backend origins must use actual deployed HTTPS service URLs. No live Admin login or authenticated sample write has been verified. No legacy deletion/domain cutover/payment activation.
+
+
+## 132. Live deployment and authenticated Admin — 2026-10-04
+
+Supersedes historical pending deployment/login claims above. API https://cootton-api-agg2nh5esq-as.a.run.app and Web https://cootton-web-agg2nh5esq-as.a.run.app are deployed. Owner login was verified; backend canonical catalog permission, dictionaries and product reads succeeded. No password/token inspected. Exact Admin origin and version1 reader/admin secrets retained. Custom domains and legacy data unchanged; commerce/publication/payments inactive.
+
+## 133. Sample create/edit acceptance — 2026-10-04
+
+One labelled non-sale sample created through Admin as DRAFT version1, edited to version2, reopened from backend with saved text. Public buyer catalog stayed empty. Keep this single sample unpublished. Audit records not separately inspected in that UI check.
+
+## 134. Complete product intake — 2026-10-04
+
+Source commit 38512162db08fb60a31ed5beb81ee328211a2314 implements sourced category/form/material/GSM/origin, color-size immutable SKU, draft retail/wholesale prices, shared inventory positions, size chart and private optimized images. See docs/contracts/ADMIN_PRODUCT_INTAKE.md and PRODUCT_INTAKE_ACTIVATION.md. Owner explicitly approved migration003 and private bucket cootton-catalog-media-524673981677 with API objectCreator/objectViewer only. Migration003 applied and rerun idempotent; existing sample v2 preserved. Bucket uniform access and public-access prevention enforced. Contracts/API/Web type checks, four intake validation checks and two image checks passed. Build335fee10-aab0-49fc-9e8a-f33b357147dc/rollout in progress; do not claim new live intake acceptance yet. Images unapproved, prices DRAFT, offerings disabled. No financial grants, service-account keys or invented real product facts.
