@@ -32,6 +32,8 @@ CREATE TABLE catalog_core.product_video (
  FOREIGN KEY(product_id,seller_id) REFERENCES catalog_core.product(id,seller_id) ON DELETE RESTRICT,
  FOREIGN KEY(video_id,seller_id) REFERENCES catalog_core.video_asset(id,seller_id) ON DELETE RESTRICT
 );
-GRANT SELECT,INSERT ON catalog_core.media_thumbnail,catalog_core.product_color_image,catalog_core.video_asset,catalog_core.product_video TO cootton_catalog_admin;
+GRANT SELECT ON catalog_core.media_thumbnail,catalog_core.product_color_image,catalog_core.video_asset,catalog_core.product_video TO cootton_catalog_admin;
+GRANT INSERT ON catalog_core.media_thumbnail,catalog_core.product_color_image,catalog_core.product_video TO cootton_catalog_admin;
+GRANT INSERT(id,seller_id,path,sha256,poster_path,width,height,duration_ms,byte_length,alt,rights_evidence_id) ON catalog_core.video_asset TO cootton_catalog_admin;
 GRANT UPDATE(asset_id,source_id) ON catalog_core.product_color_image TO cootton_catalog_admin;
 -- Runtime cannot approve assets, delete history or change video metadata.
