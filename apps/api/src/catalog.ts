@@ -1,8 +1,9 @@
-import { Controller, Get, Injectable, Module, Param, Query, BadRequestException, NotFoundException, ServiceUnavailableException, type OnModuleDestroy } from '@nestjs/common';
+import { Controller, Get, Injectable, Module, Param, Query, Res, BadRequestException, NotFoundException, ServiceUnavailableException, type OnModuleDestroy } from '@nestjs/common';
 import { parseEntityId, category, publicProduct, type CatalogPage, type CatalogDetail, type CatalogSku, type CategoryCode, type SalesMode } from '@cootton/contracts';
 import type { Pool } from 'pg';
 import { createDatabasePool } from './database';
 import { MemoryCache } from './memory-cache';
+import { previewImage } from './catalog-media';
 
 const fields = 'id,version,category,title,brand,description,form,material,origin,care,images';
 interface Cursor { readonly version: 1; readonly mode: SalesMode; readonly category: CategoryCode | null; readonly limit: number; readonly at: string; readonly id: string }
@@ -34,6 +35,14 @@ class CatalogRepository implements OnModuleDestroy {
     // Never fall back to the maintenance/owner connection.
     if (new URL(process.env.DATABASE_URL ?? '').username!=='cootton_catalog_reader') throw new Error('RUNTIME_ROLE_REQUIRED');
     return this.pool ??= createDatabasePool();
+  }
+  async image(seller:string,file:string) {
+    if(process.env.COOTTON_PUBLICATION_ENABLED!=='true')throw new NotFoundException();
+    let id:string;try{id=parseEntityId(seller);if(!/^[a-f0-9]{64}\.webp$/.test(file))throw Error();}catch{throw new BadRequestException();}
+    const path='/media/'+id+'/'+file;
+    try {if(!(await this.database().query('SELECT 1 FROM catalog_read.visible_media WHERE path=$1',[path])).rowCount)throw new NotFoundException();
+      const data=await previewImage(path);return Buffer.from(data.base64,'base64');
+    }catch(e){if(e instanceof NotFoundException)throw e;throw new ServiceUnavailableException();}
   }
   async onModuleDestroy(): Promise<void> { await this.pool?.end(); }
   async list(query: Record<string,unknown>): Promise<CatalogPage> {
@@ -75,9 +84,11 @@ class CatalogRepository implements OnModuleDestroy {
       const result=await pool.query(`SELECT ${fields} FROM catalog_read.visible_product WHERE id=$1`,[productId]);
       if(!result.rows[0]) throw new NotFoundException('NOT_FOUND');
       const product=publicProduct(result.rows[0]);
-      const skus=await pool.query<CatalogSku>('SELECT id,code,color,size FROM catalog_read.visible_sku WHERE product_id=$1 AND ($2::uuid IS NULL OR id>$2::uuid) ORDER BY id LIMIT 21',[productId,after]);
-      const items=skus.rows.slice(0,20).map(s=>({id:parseEntityId(s.id),code:s.code,color:s.color,size:s.size}));
-      return {product,skus:{items,nextCursor:skus.rows.length>20 ? items.at(-1)!.id : null},commerceEnabled:false};
+      const skus=await pool.query<CatalogSku>('SELECT id,code,color,size'+(process.env.COOTTON_PUBLICATION_ENABLED==='true'?',price':'')+' FROM catalog_read.visible_sku WHERE product_id=$1 AND ($2::uuid IS NULL OR id>$2::uuid) ORDER BY id LIMIT 21',[productId,after]);
+      const items=skus.rows.slice(0,20).map(s=>({id:parseEntityId(s.id),code:s.code,color:s.color,size:s.size,...(s.price?{price:s.price}:{})}));
+      const chart=process.env.COOTTON_PUBLICATION_ENABLED==='true'?(await pool.query('SELECT size,measurement,cm FROM catalog_read.visible_size_chart WHERE product_id=$1 ORDER BY size,measurement LIMIT 201',[productId])).rows:undefined;
+      if (!await this.visible([product])) throw new NotFoundException('NOT_FOUND');
+      return {product,...(chart?{chart}:{}),skus:{items,nextCursor:skus.rows.length>20 ? items.at(-1)!.id : null},commerceEnabled:false};
     } catch(error) { if(error instanceof NotFoundException) throw error; throw new ServiceUnavailableException('UNAVAILABLE'); }
   }
 }
@@ -87,6 +98,11 @@ class CatalogController {
   @Get() list(@Query() query:Record<string,unknown>):Promise<CatalogPage>{return this.catalog.list(query);}
   @Get(':id') detail(@Param('id') id:string,@Query() query:Record<string,unknown>):Promise<CatalogDetail>{return this.catalog.detail(id,query);}
 }
-@Module({controllers:[CatalogController],providers:[CatalogRepository]})
+@Controller('catalog/media')
+class PublicMediaController {
+  constructor(private readonly catalog:CatalogRepository) {}
+  @Get(':seller/:file') async image(@Param('seller') seller:string,@Param('file') file:string,@Res() response:{type:(v:string)=>void;send:(v:Buffer)=>void}) {const data=await this.catalog.image(seller,file);response.type('image/webp');response.send(data);}
+}
+@Module({controllers:[CatalogController,PublicMediaController],providers:[CatalogRepository]})
 export class CatalogModule {}
 

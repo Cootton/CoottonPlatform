@@ -3,7 +3,7 @@
   "info": {
     "title": "Cootton Foundation API",
     "version": "0.1.0",
-    "description": "Canonical catalog reads and authenticated human Admin draft intake; publication, commerce and payments remain inactive."
+    "description": "Canonical catalog reads and authenticated human Admin intake/review/publication. Publication requires explicit runtime activation; commerce and payments remain inactive."
   },
   "paths": {
     "/v1/health/live": {
@@ -182,7 +182,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Safe public catalog response. No price, inventory or purchase authority.",
+            "description": "Allowlisted catalog facts, approved reference retail prices and garment measurements; no inventory or purchase authority.",
             "content": {
               "application/json": {
                 "schema": {
@@ -234,6 +234,11 @@
                               },
                               "size": {
                                 "type": "string"
+                              },
+                              "price": {
+                                "type": "string",
+                                "pattern": "^[1-9][0-9]{0,29}$",
+                                "description": "Reviewed reference VND price; not an effective purchase offer."
                               }
                             }
                           }
@@ -244,6 +249,30 @@
                             "null"
                           ],
                           "format": "uuid"
+                        }
+                      }
+                    },
+                    "chart": {
+                      "type": "array",
+                      "maxItems": 201,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "size",
+                          "measurement",
+                          "cm"
+                        ],
+                        "properties": {
+                          "size": {
+                            "type": "string"
+                          },
+                          "measurement": {
+                            "type": "string"
+                          },
+                          "cm": {
+                            "type": "string"
+                          }
                         }
                       }
                     }
@@ -501,7 +530,7 @@
             "AdminBearer": []
           }
         ],
-        "description": "Atomic expected-version/idempotency/audit/outbox. Images private and unapproved. Publication commands blocked pending separate readiness.",
+        "description": "Atomic expected-version/idempotency/audit/outbox. Catalog-only submit/approve/publish/returnDraft/unpublish gated by configured publication capability. No commerce activation.",
         "requestBody": {
           "required": true,
           "content": {
@@ -679,6 +708,51 @@
         },
         "summary": "Authenticated WebP poster preview",
         "operationId": "getAdminVideoPoster"
+      }
+    },
+    "/v1/catalog/media/{seller}/{file}": {
+      "get": {
+        "operationId": "getPublishedCatalogImage",
+        "description": "Only WebP linked to currently visible publication; private bucket remains private, no signed URLs.",
+        "parameters": [
+          {
+            "name": "seller",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}\\.webp$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published WebP",
+            "content": {
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not published"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        }
       }
     }
   },
@@ -1190,6 +1264,12 @@
                         "type": "null"
                       }
                     ]
+                  },
+                  "careDeclaration": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000,
+                    "description": "Required when replacing nonempty care content; Cootton advisory source permitted when truthfully identified."
                   }
                 }
               }
@@ -1383,8 +1463,20 @@
               "payload": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": [],
-                "properties": {}
+                "required": [
+                  "declaration",
+                  "confirmed"
+                ],
+                "properties": {
+                  "declaration": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000
+                  },
+                  "confirmed": {
+                    "const": true
+                  }
+                }
               }
             }
           },
@@ -1481,6 +1573,90 @@
               },
               "payload": {
                 "$ref": "#/components/schemas/VideoPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "returnDraft"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "unpublish"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "minLength": 1
+                  }
+                }
               }
             }
           }

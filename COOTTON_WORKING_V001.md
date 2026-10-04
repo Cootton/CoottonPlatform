@@ -1,42 +1,19 @@
-> Current state 2026-10-04: sections132–134 supersede historical deployment/login claims. HTTPS services and authenticated Admin are live; sample draft create/edit passed. Product-intake migration003/private media scope approved and applied; new image rollout acceptance pending. Payments/publication stay inactive.
-
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
 ```yaml
 document_version: V001
-revision: admin_catalog_workflow_2026_10_03
-document_status: implementation_in_progress
-updated_at: 2026-10-03
+revision: catalog_review_publication_2026_10_04
+updated_at: 2026-10-04
 timezone: Asia/Saigon
-product_release_status: catalog_read_implemented_not_publicly_deployed
-authorization_scope: minimal_admin_and_canonical_catalog_workflow
-current_task: admin_catalog_draft_review_publication
-completed_work_with_evidence:
-  - consolidated_master_plan_embedded_below
-  - consolidated_AI_workflow_embedded_below
-  - self_contained_version_contract_embedded_below
-  - readiness_dossier_and_phase_task_templates_added_sections_57_and_39
-  - fashion_scope_T01_T16_approved_and_Raglan_design_clarified_section_58
-  - D03_D10_detailed_planning_sections_77_84_completed_documentation_only
-  - remaining_domain_detail_and_current_decision_index_sections_97_105
-pending_work:
-  - provision_scoped_Firebase_verifier_credential_and_verify_actual_Admin_login
-  - complete_canonical_catalog_input_media_offering_and_publication
-  - Admin_schema_002_and_catalog_runtime_grants_applied_owner_UID_verified_section_129
-  - verify_private_workflow_and_publish_source_to_GitHub
-blockers_for_implementation:
-  - production_commerce_inactive_deployment_authorized_but_runtime_not_ready
-  - Firebase_verifier_credential_and_actual_authenticated_session_pending
-  - business_policies_and_executable_contracts_not_fully_locked
-approved_decisions: see_embedded_master_plan_overrides_and_sections
-conceptual_contracts: not_approved_production_schema
-superseded_rules: see_explicit_overrides_in_this_document
-next_authorized_action: implement_assigned_admin_catalog_workflow
-stop_conditions:
-  - task_requires_source_or_external_write_without_authorization
-  - required_contract_or_owner_decision_is_missing
-prior_version_dependency: none
-runtime_evidence: catalog_PR14_merged_f759592_Neon_reader_verified_empty_catalog
+document_status: implementation_in_progress
+current_task: synchronize_GitHub_and_complete_catalog_review_publication
+deployed: keyless_Admin_product_intake_private_media_API_memory_cache
+real_product_status: DRAFT_v14_16_SKU_5_gallery_images_private_30s_video
+publication_status: source_prepared_pending_005_activation
+commerce_enabled: false
+search_indexing_enabled: false
+authoritative_checkpoint: section_141
+historical_sections: preserve_history_latest_explicit_checkpoint_overrides
 ```
 
 ## Hướng dẫn tiếp nhận
@@ -4746,3 +4723,51 @@ One labelled non-sale sample created through Admin as DRAFT version1, edited to 
 ## 134. Complete product intake — 2026-10-04
 
 Source commit 38512162db08fb60a31ed5beb81ee328211a2314 implements sourced category/form/material/GSM/origin, color-size immutable SKU, draft retail/wholesale prices, shared inventory positions, size chart and private optimized images. See docs/contracts/ADMIN_PRODUCT_INTAKE.md and PRODUCT_INTAKE_ACTIVATION.md. Owner explicitly approved migration003 and private bucket cootton-catalog-media-524673981677 with API objectCreator/objectViewer only. Migration003 applied and rerun idempotent; existing sample v2 preserved. Bucket uniform access and public-access prevention enforced. Contracts/API/Web type checks, four intake validation checks and two image checks passed. Build335fee10-aab0-49fc-9e8a-f33b357147dc/rollout in progress; do not claim new live intake acceptance yet. Images unapproved, prices DRAFT, offerings disabled. No financial grants, service-account keys or invented real product facts.
+
+## 135. Product intake deployed and live acceptance complete — 2026-10-04
+
+This checkpoint supersedes activation-pending statements in section134. Owner approved the exact activation manifest. Migration003 applied idempotently, private image bucket provisioned with enforced public access prevention and bucket-only create/read grants. Fixed source38512162db08fb60a31ed5beb81ee328211a2314 built successfully in Cloud Build335fee10-aab0-49fc-9e8a-f33b357147dc. API cootton-api-00002-9zx and Web cootton-web-00004-cnl ready,100% traffic. HTTPS and unauthenticated rejection probes passed.
+
+Existing non-sale sample is DRAFT v5: basic edit v3, detailed intake v4, private image upload v5. Authenticated preview and audit history verified. One SKU, one unapproved media, zero enabled offers, zero stock rows and zero public-eligible products. Synthetic prices/chart/image are technical fixtures only; origin/GSM unknown, no actual warehouse/stock entered. Inventory save and unchanged SKU identity were verified with every temporary write rolled back. Buyer catalog remains empty. Real merchandise, publication, payment and domain cutover await separate tasks. See outputs/COOTTON_PRODUCT_INTAKE_CHECKPOINT.md for handoff and outputs/COOTTON_PRODUCT_INTAKE_LIVE.png for UI evidence.
+
+## 136. Real Boxy product and media design — 2026-10-04
+
+Owner supplies round-neck Cootton Boxy 100% Cotton 250 GSM, Vietnam, WHITE/BLACK/RED/YELLOW x S/M/L/XL, 16 SKU. Owner sets retail=production cost x3, wholesale=cost x2 and retail range177000–199000 VND. Proposed size prices177000/183000/192000/198000 and wholesale118000/122000/128000/132000 are design proposals; inferred costs are NOT verified COGS. No actual stock/measurements supplied. See outputs/COOTTON_BOXY_PRODUCT_SPEC.md for exact matrix and missing facts.
+
+Owner media rule interpreted as maximum9 gallery images plus maximum1 optional video. Every SKU references a matching-color image; same-color sizes share asset, generated thumbnails do not consume extra gallery slots. Two supplied photos are collar details in red/white, no black/yellow assets yet. Plan requires transactional server cap, concurrency/idempotency, approved color associations and async private video processing. MP4 H.264720p/30fps faststart, lightweight poster, no autoplay/preload, fetch on play, CDN range support. Performance limits are proposed; supplied MOV not yet inspected/transcoded. This section is design only, no upload/migration/deployment or merchandise publication performed; existing image-only Admin does not yet enforce this new video workflow.
+
+## 137. Boxy wholesale multiplier and supplied color images — 2026-10-04
+
+Owner overrides wholesale multiplier from2 to1.5 for this product. Target costs59000/61000/64000/66000 remain unverified; retail177000/183000/192000/198000 unchanged; proposed wholesale88500/91500/96000/99000 by size across16 SKU. Exact source-of-truth owner decision supersedes section136 x2. Maintain both B2B quantity and post-discount monetary thresholds;10 units at these wholesale prices do not reach1000000 VND.
+
+Owner supplies dencotruoc.JPG BLACK and vangcotruoc.JPG YELLOW, completing collar-detail photos for four colors. Shared per-color thumbnail associations/alt text and descriptive content added to outputs/COOTTON_BOXY_PRODUCT_SPEC.md. Full-garment images, actual measurements, physical stock, verified costs and media rights declaration remain incomplete. No invented actual facts, merchandise publication, database writes, processing or deployment. Document status only; do not invent runtime schema values from planning labels.
+
+## 138. Owner size chart and initial inventory — 2026-10-04
+
+Supersedes unknown size/stock in sections136–137 for this Boxy product. Owner S: garment length66cm,width54cm,sleeve20cm; fit height150–155cm,weight45–55kg. Each subsequent size adds2cm length/width,1cm sleeve,10cm to both height endpoints and10kg to both weight endpoints. M68/56/21,160–165,55–65; L70/58/22,170–175,65–75; XL72/60/23,180–185,75–85. Body fit guidance is distinct from garment cm measurements; typed kg/range contract required, no invented schema or automatic gap filling.
+
+Owner requests initial100 units per color-size SKU:16 SKU,total1600,shared B2B/B2C. This is owner-directed initialization, not verified physical count and not a global default/reset on save. Real warehouse unspecified; do not fabricate. Newly attached full-black-shirt image is reference only pending confirmation of actual Cootton product and rights. Local documentation updated only, no database/GitHub/publication actions. See outputs/COOTTON_BOXY_PRODUCT_SPEC.md.
+
+## 139. Owner confirms full black-shirt image — 2026-10-04
+
+Owner confirms the supplied full black-shirt photograph is the Cootton product image and authorizes GitHub documentation synchronization. Supersedes reference-only status in section138. Original media not uploaded to GitHub; media rights declaration follows application intake. No database write, product publication or deployment in this documentation update.
+
+
+## 140. Media implementation prepared — 2026-10-04
+
+Owner requests completion:9 gallery images plus1 video; color-shared SKU thumbnails. Source implements media contracts, additive004, bounded optimized MP4 intake, thumbnail association and private previews. Owner chooses first30s from original82.32s454MB clip; local preparedMP4 is720x406/30fps/30s,1873705bytes. Original preserved. Initial v1 accepts preparedMP4<=8MiB rather than background250MiB MOV upload; approved public delivery/CDN remains separate publication scope. SQL cap/cross-product FK/one-video and grant introspection checks passed with allDDL/data rolled back. Compile passed; image checks2passed; real normalization on localWindows blocked by subprocessEPERM, Linux container execution pending. Reviewed activation scope:MEDIA_ACTIVATION.md. Source readiness does not imply deployed004.
+
+Current real Boxy DRAFTv9 has16SKU,5private unapprovedimages,12garmentmeasurements and owner-initialized100/SKU at Kho Cootton — TP.HCM01(total1600). Body fit recommendations in description, not kg values in cm schema. Technical sample DRAFTv5 retained. No offers/publication/payment activation.
+
+## API cache implementation — 2026-10-04
+Owner assigned shared API memory cache. Source implements bounded singleton, catalog list30s/detail60s, coalesced reads and post-COMMIT generation invalidation. Existing receipt-based visibility requires DB ID/version revalidation on positive cache hits. No private/Auth/financial/media caching. TypeScript build and three focused cache verification scenarios passed. Source implementation only; no production deployment or migration from this task. See docs/contracts/API_MEMORY_CACHE.md.
+
+## 141. Authoritative deployment and review/publication checkpoint — 2026-10-04
+
+Supersedes historical pending statements above. Migrations001–004 applied with owner approvals. Real Boxy product is DRAFT v14:16 stable color-size SKUs, owner-selected prices,12 garment measurements,100 units/SKU at owner-requested Kho Cootton — TP.HCM01,5 private gallery images and matching-color thumbnails, one normalized private30s video. Stock initialization is not a verified physical count; inferred costs are not verified COGS. Sample remains DRAFTv5, never for sale.
+
+Keyless Admin sign-in and private image/video previews were verified. API shared bounded cache deployed from9e15de92b67eb131565313397a83eee62c74cbf8: Cloud Build b05636b1-4944-407c-becb-121c3fe88d73 SUCCESS; API cootton-api-00004-nqv100%Ready. Web cootton-web-00005-chq retained. Health and empty catalog probes passed; unauthenticated Admin rejected. This is not positive published-catalog acceptance.
+
+Owner requests Cootton-authored conservative care advice and confirms commercial permission for the full black shirt photo. No new third-party image substitution. Care advice is a Cootton recommendation with label priority, not a manufacturer/testing certificate; see docs/planning/COOTTON_BOXY_CARE.md.
+
+Review/publication source and OpenAPI prepared under ADR0005 and docs/contracts/CATALOG_PUBLICATION.md. Catalog-only reference prices can be shown after review; effective purchase offerings and seller transaction flags remain inactive. The exact005 migration/grants/flag/deployment/product activation scope is CATALOG_PUBLICATION_ACTIVATION.md. Compile checks and13 focused publication/cache/Admin/intake scenarios pass locally. Migration005, public-image route, care save, actual review and publication have NOT executed yet. Public video remains deferred/private; noindex, payments, CP/VC/VCS and orders remain inactive. Source completion must not be reported as live acceptance.

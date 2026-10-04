@@ -4,6 +4,7 @@ import type { Pool, PoolClient } from 'pg';
 import { parseEntityId, inputObject, inputText, inputVersion, draftFields, imageColorFields, PRODUCT_MEDIA_LIMITS } from '@cootton/contracts';
 import { createDatabasePool } from './database';
 import { MemoryCache } from './memory-cache';
+import { isPublicationAction, publicationCommand, publicationFacts, publicationIssues } from './catalog-publication';
 import { addDictionary, intakeDetail, saveIntake } from './product-intake';
 import { prepareImage, previewImage, prepareThumbnail, prepareVideo, previewVideo } from './catalog-media';
 import { AdminIdentityGuard, type AdminRequest } from './admin-auth';
@@ -42,7 +43,7 @@ class AdminCatalogService implements OnModuleDestroy {
     }
     async session(request: AdminRequest) {
         try {
-            return { principalId: await this.actor(this.database(), request), capabilities: ['catalog.read', 'catalog.draft'], commerceEnabled: false };
+            return { principalId: await this.actor(this.database(), request), capabilities: ['catalog.read', 'catalog.draft', ...(process.env.COOTTON_PUBLICATION_ENABLED==='true'?['catalog.review','catalog.publish']:[])], commerceEnabled: false };
         }
         catch (e) {
             this.safe(e);
@@ -94,7 +95,10 @@ class AdminCatalogService implements OnModuleDestroy {
             const row = (await db.query(`SELECT ${productFields},description,care,category_id,brand_id,form_id,country_id,origin_evidence_id,care_evidence_id FROM catalog_core.product WHERE id=$1`, [id])).rows[0];
             if (!row)
                 throw new NotFoundException();
-            const result = { ...row, intake: await intakeDetail(db, id) };
+            const full=(await db.query('SELECT * FROM catalog_core.product WHERE id=$1',[id])).rows[0];
+            const enabled=process.env.COOTTON_PUBLICATION_ENABLED==='true';
+            const published=enabled && Boolean((await db.query('SELECT 1 FROM catalog_core.publication WHERE product_id=$1 AND visible',[id])).rowCount);
+            const result = { ...row, intake: await intakeDetail(db, id), publication: {enabled,published,issues:publicationIssues(await publicationFacts(db,full))} };
             await db.query('COMMIT');
             return result;
         }
@@ -113,7 +117,7 @@ class AdminCatalogService implements OnModuleDestroy {
             input = inputObject(body, ['key', 'action', 'id', 'expectedVersion', 'payload']);
             key = parseEntityId(input.key);
             action = inputText(input.action, 40);
-            if (!['createDraft', 'saveDraft', 'saveIntake', 'addDictionary', 'uploadImage', 'setImageColor', 'uploadVideo', 'submit', 'approve', 'publish', 'archive'].includes(action))
+            if (!['createDraft', 'saveDraft', 'saveIntake', 'addDictionary', 'uploadImage', 'setImageColor', 'uploadVideo', 'submit', 'approve', 'publish', 'returnDraft', 'unpublish', 'archive'].includes(action))
                 throw new Error();
             id = ['createDraft', 'addDictionary'].includes(action) ? null : parseEntityId(input.id);
             version = ['createDraft', 'addDictionary'].includes(action) ? null : inputVersion(input.expectedVersion);
@@ -215,6 +219,9 @@ class AdminCatalogService implements OnModuleDestroy {
                 await client.query('INSERT INTO catalog_core.product_video(product_id,seller_id,video_id) VALUES($1,$2,$3)', [id,product!.seller_id,key]);
                 result = (await client.query('UPDATE catalog_core.product SET version=version+1,updated_at=clock_timestamp() WHERE id=$1 RETURNING ' + productFields, [id])).rows[0];
             }
+            else if (isPublicationAction(action)) {
+                result = await publicationCommand(client, product!, action, input.payload, actor);
+            }
             else if (action === 'createDraft') {
                 const payload = inputObject(input.payload, ['title']);
                 const title = inputText(payload.title, 160);
@@ -228,6 +235,10 @@ class AdminCatalogService implements OnModuleDestroy {
                 if (product!.lifecycle !== 'DRAFT')
                     throw new ConflictException('DRAFT_REQUIRED');
                 const fields = draftFields(input.payload);
+                if(fields.care!==product!.care && fields.care) {
+                    if(!fields.careDeclaration)throw new BadRequestException('CARE_SOURCE_REQUIRED');
+                    const source=randomUUID();await client.query('INSERT INTO catalog_core.evidence(id,seller_id,declaration,actor_id) VALUES($1,$2,$3,$4)',[source,product!.seller_id,fields.careDeclaration,actor]);fields.careEvidenceId=source;
+                }
                 const refs = [fields.categoryId, fields.brandId, fields.formId, fields.countryId];
                 const found = (await client.query('SELECT id,kind FROM catalog_core.dictionary WHERE active AND id=ANY($1::uuid[])', [refs.filter(Boolean)])).rows;
                 if (fields.formId && (!fields.categoryId || !(await client.query('SELECT 1 FROM catalog_core.form_category WHERE form_id=$1 AND category_id=$2', [fields.formId, fields.categoryId])).rowCount))
@@ -250,6 +261,7 @@ class AdminCatalogService implements OnModuleDestroy {
                     result = (await client.query(`UPDATE catalog_core.product SET lifecycle='ARCHIVED',version=version+1,updated_at=clock_timestamp() WHERE id=$1 RETURNING ${productFields}`, [id])).rows[0];
                     // Withdraw public data atomically; immutable source/history retained.
                     await client.query('UPDATE catalog_read.public_product SET b2c_eligible=false,b2b_eligible=false WHERE id=$1', [id]);
+                    if(process.env.COOTTON_PUBLICATION_ENABLED==='true') await client.query('UPDATE catalog_core.publication SET visible=false WHERE product_id=$1',[id]);
                 }
                 else {
                     // No dishonest approval/publication while source/media/offering execution is absent.

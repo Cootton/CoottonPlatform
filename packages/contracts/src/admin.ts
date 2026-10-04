@@ -16,7 +16,8 @@ export function inputVersion(value:unknown):string {
 export function optionalId(value:unknown):string|null {return value===null?null:parseEntityId(value);}
 export const DRAFT_FIELDS=['title','description','care','categoryId','brandId','formId','countryId','originEvidenceId','careEvidenceId'] as const;
 export function draftFields(value:unknown):Record<string,string|null>{
-  const o=inputObject(value,DRAFT_FIELDS),result:Record<string,string|null>={};
+  const o=inputObject(value,[...DRAFT_FIELDS,'careDeclaration']),result:Record<string,string|null>={};
   for(const key of DRAFT_FIELDS){if(!(key in o))throw new TypeError('INVALID_INPUT');result[key]=['title','description','care'].includes(key)?inputText(o[key],key==='title'?160:key==='care'?2000:10000,false):optionalId(o[key]);}
+  if(o.careDeclaration!==undefined)result.careDeclaration=inputText(o.careDeclaration,10000);
   return result;
 }
