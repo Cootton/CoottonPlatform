@@ -2,6 +2,7 @@ import { Controller, Get, Injectable, Module, Param, Query, BadRequestException,
 import { parseEntityId, category, publicProduct, type CatalogPage, type CatalogDetail, type CatalogSku, type CategoryCode, type SalesMode } from '@cootton/contracts';
 import type { Pool } from 'pg';
 import { createDatabasePool } from './database';
+import { MemoryCache } from './memory-cache';
 
 const fields = 'id,version,category,title,brand,description,form,material,origin,care,images';
 interface Cursor { readonly version: 1; readonly mode: SalesMode; readonly category: CategoryCode | null; readonly limit: number; readonly at: string; readonly id: string }
@@ -27,6 +28,7 @@ function parameters(query: Record<string, unknown>): { mode: SalesMode; cat: Cat
 
 @Injectable()
 class CatalogRepository implements OnModuleDestroy {
+  constructor(private readonly cache: MemoryCache) {}
   private pool: Pool | undefined;
   private database(): Pool {
     // Never fall back to the maintenance/owner connection.
@@ -35,6 +37,16 @@ class CatalogRepository implements OnModuleDestroy {
   }
   async onModuleDestroy(): Promise<void> { await this.pool?.end(); }
   async list(query: Record<string,unknown>): Promise<CatalogPage> {
+    const {mode,cat,limit,cursor}=parameters(query);
+    const key = 'catalog:list:' + JSON.stringify([mode,cat,limit,cursor]);
+    return this.cache.read(key, 30000, () => this.loadList(query), page => this.visible(page.items)).catch(() => { throw new ServiceUnavailableException('UNAVAILABLE'); });
+  }
+  private async visible(products: readonly {id:string;version:string}[]): Promise<boolean> {
+    if (!products.length) return true;
+    const rows = (await this.database().query<{id:string;version:string}>('SELECT id,version FROM catalog_read.visible_product WHERE id=ANY($1::uuid[])', [products.map(p=>p.id)])).rows;
+    return rows.length === products.length && products.every(p=>rows.some(r=>r.id===p.id && r.version===p.version));
+  }
+  private async loadList(query: Record<string,unknown>): Promise<CatalogPage> {
     const {mode,cat,limit,cursor}=parameters(query);
     try {
       const eligible=mode==='B2C' ? 'b2c_eligible' : 'b2b_eligible';
@@ -54,6 +66,10 @@ class CatalogRepository implements OnModuleDestroy {
     try { productId=parseEntityId(id); if(Object.keys(query).some(k=>k!=='skuAfter')) throw new Error();
       if(query.skuAfter!==undefined) after=parseEntityId(query.skuAfter);
     } catch { throw new BadRequestException('INVALID_INPUT'); }
+    const key = 'catalog:detail:' + JSON.stringify([productId,after]);
+    return this.cache.read(key, 60000, () => this.loadDetail(productId,after), value => this.visible([value.product])).catch(error => { if(error instanceof NotFoundException) throw error; throw new ServiceUnavailableException('UNAVAILABLE'); });
+  }
+  private async loadDetail(productId:string, after:string|null): Promise<CatalogDetail> {
     try {
       const pool=this.database();
       const result=await pool.query(`SELECT ${fields} FROM catalog_read.visible_product WHERE id=$1`,[productId]);
@@ -73,3 +89,4 @@ class CatalogController {
 }
 @Module({controllers:[CatalogController],providers:[CatalogRepository]})
 export class CatalogModule {}
+

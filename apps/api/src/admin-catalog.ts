@@ -3,6 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import type { Pool, PoolClient } from 'pg';
 import { parseEntityId, inputObject, inputText, inputVersion, draftFields, imageColorFields, PRODUCT_MEDIA_LIMITS } from '@cootton/contracts';
 import { createDatabasePool } from './database';
+import { MemoryCache } from './memory-cache';
 import { addDictionary, intakeDetail, saveIntake } from './product-intake';
 import { prepareImage, previewImage, prepareThumbnail, prepareVideo, previewVideo } from './catalog-media';
 import { AdminIdentityGuard, type AdminRequest } from './admin-auth';
@@ -16,6 +17,7 @@ function canonical(value: unknown): string {
 }
 @Injectable()
 class AdminCatalogService implements OnModuleDestroy {
+    constructor(private readonly cache: MemoryCache) {}
     private pool: Pool | undefined;
     private database(): Pool {
         const url = process.env.ADMIN_DATABASE_URL;
@@ -259,6 +261,7 @@ class AdminCatalogService implements OnModuleDestroy {
             await client.query('INSERT INTO catalog_core.outbox(id,resource_id,version,action) VALUES($1,$2,$3,$4)', [randomUUID(), resource, newVersion, action]);
             await client.query('INSERT INTO catalog_core.command(actor_id,operation,key,fingerprint,result) VALUES($1,$2,$3,$4,$5)', [actor, action, key, fingerprint, JSON.stringify(result)]);
             await client.query('COMMIT');
+            this.cache.invalidate();
             return result;
         }
         catch (e) {

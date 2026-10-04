@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Controller, Get, Module, Catch, HttpException, type ExceptionFilter, type ArgumentsHost } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { CatalogModule } from './catalog';
+import { MemoryCacheModule } from './memory-cache';
 import { AdminCatalogModule } from './admin-catalog';
 import { NestFactory } from '@nestjs/core';
 import type {NestExpressApplication} from '@nestjs/platform-express';
@@ -21,7 +22,7 @@ class SafeErrors implements ExceptionFilter {
     response.status(status).json({code,message:code,requestId:randomUUID()});
   }
 }
-@Module({ controllers: [HealthController], imports:[CatalogModule,AdminCatalogModule] })
+@Module({ controllers: [HealthController], imports:[MemoryCacheModule,CatalogModule,AdminCatalogModule] })
 class AppModule {}
 
 async function bootstrap(): Promise<void> {
