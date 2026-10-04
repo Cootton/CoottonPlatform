@@ -1,10 +1,10 @@
 import { BadRequestException, Body, ConflictException, Controller, ForbiddenException, Get, Injectable, Module, NotFoundException, Param, Post, Query, Req, ServiceUnavailableException, UseGuards, type OnModuleDestroy } from '@nestjs/common';
 import { createHash, randomUUID } from 'node:crypto';
 import type { Pool, PoolClient } from 'pg';
-import { parseEntityId, inputObject, inputText, inputVersion, draftFields } from '@cootton/contracts';
+import { parseEntityId, inputObject, inputText, inputVersion, draftFields, imageColorFields, PRODUCT_MEDIA_LIMITS } from '@cootton/contracts';
 import { createDatabasePool } from './database';
 import { addDictionary, intakeDetail, saveIntake } from './product-intake';
-import { prepareImage, previewImage } from './catalog-media';
+import { prepareImage, previewImage, prepareThumbnail, prepareVideo, previewVideo } from './catalog-media';
 import { AdminIdentityGuard, type AdminRequest } from './admin-auth';
 const productFields = 'id,title,lifecycle,version::text,updated_at';
 function canonical(value: unknown): string {
@@ -111,7 +111,7 @@ class AdminCatalogService implements OnModuleDestroy {
             input = inputObject(body, ['key', 'action', 'id', 'expectedVersion', 'payload']);
             key = parseEntityId(input.key);
             action = inputText(input.action, 40);
-            if (!['createDraft', 'saveDraft', 'saveIntake', 'addDictionary', 'uploadImage', 'submit', 'approve', 'publish', 'archive'].includes(action))
+            if (!['createDraft', 'saveDraft', 'saveIntake', 'addDictionary', 'uploadImage', 'setImageColor', 'uploadVideo', 'submit', 'approve', 'publish', 'archive'].includes(action))
                 throw new Error();
             id = ['createDraft', 'addDictionary'].includes(action) ? null : parseEntityId(input.id);
             version = ['createDraft', 'addDictionary'].includes(action) ? null : inputVersion(input.expectedVersion);
@@ -124,8 +124,10 @@ class AdminCatalogService implements OnModuleDestroy {
         const fingerprint = createHash('sha256').update(canonical(input)).digest('hex');
         let client: PoolClient | undefined;
         let image: Awaited<ReturnType<typeof prepareImage>> | undefined;
+        let thumbnail: Awaited<ReturnType<typeof prepareThumbnail>> | undefined;
+        let video: Awaited<ReturnType<typeof prepareVideo>> | undefined;
         try {
-            if (action === 'uploadImage') {
+            if (['uploadImage', 'setImageColor', 'uploadVideo'].includes(action)) {
                 const db = this.database();
                 const actor = await this.actor(db, request);
                 const replay = (await db.query('SELECT fingerprint,result FROM catalog_core.command WHERE actor_id=$1 AND operation=$2 AND key=$3', [actor, action, key])).rows[0];
@@ -137,7 +139,18 @@ class AdminCatalogService implements OnModuleDestroy {
                 const target = (await db.query('SELECT lifecycle,version FROM catalog_core.product WHERE id=$1', [id])).rows[0];
                 if (!target || target.lifecycle !== 'DRAFT' || String(target.version) !== version)
                     throw new ConflictException();
-                image = await prepareImage(input.payload, key);
+                if (action === 'uploadImage') {
+                    if (Number((await db.query('SELECT count(*) AS n FROM catalog_core.product_media WHERE product_id=$1', [id])).rows[0].n) >= PRODUCT_MEDIA_LIMITS.images) throw new BadRequestException('IMAGE_LIMIT');
+                    image = await prepareImage(input.payload, key);
+                } else if (action === 'uploadVideo') {
+                    if ((await db.query('SELECT 1 FROM catalog_core.product_video WHERE product_id=$1', [id])).rowCount) throw new ConflictException('VIDEO_EXISTS');
+                    video = await prepareVideo(input.payload, key);
+                } else {
+                    const p = imageColorFields(input.payload);
+                    const asset = (await db.query('SELECT a.path,t.asset_id AS thumbnail FROM catalog_core.asset a JOIN catalog_core.product_media m ON m.asset_id=a.id LEFT JOIN catalog_core.media_thumbnail t ON t.asset_id=a.id WHERE m.product_id=$1 AND a.id=$2 AND EXISTS(SELECT 1 FROM catalog_core.sku s JOIN catalog_core.dictionary d ON d.id=s.color_id AND d.active WHERE s.product_id=$1 AND s.color_id=$3)', [id,p.assetId,p.colorId])).rows[0];
+                    if (!asset) throw new BadRequestException('INVALID_COLOR_IMAGE');
+                    if (!asset.thumbnail) thumbnail = await prepareThumbnail(asset.path, key);
+                }
             }
             client = await this.database().connect();
             await client.query('BEGIN');
@@ -173,12 +186,31 @@ class AdminCatalogService implements OnModuleDestroy {
                 if (product!.lifecycle !== 'DRAFT' || !image)
                     throw new ConflictException();
                 const position = Number((await client.query('SELECT count(*) AS n FROM catalog_core.product_media WHERE product_id=$1', [id])).rows[0].n) + 1;
-                if (position > 20)
+                if (position > PRODUCT_MEDIA_LIMITS.images)
                     throw new BadRequestException();
                 const evidence = randomUUID();
                 await client.query('INSERT INTO catalog_core.evidence(id,seller_id,declaration,actor_id) VALUES($1,$2,$3,$4)', [evidence, product!.seller_id, image.rights, actor]);
                 await client.query('INSERT INTO catalog_core.asset(id,seller_id,path,sha256,width,height,rights_evidence_id) VALUES($1,$2,$3,$4,$5,$6,$7)', [key, product!.seller_id, image.path, image.sha, image.width, image.height, evidence]);
                 await client.query('INSERT INTO catalog_core.product_media(product_id,asset_id,position,alt) VALUES($1,$2,$3,$4)', [id, key, position, image.alt]);
+                result = (await client.query('UPDATE catalog_core.product SET version=version+1,updated_at=clock_timestamp() WHERE id=$1 RETURNING ' + productFields, [id])).rows[0];
+            }
+            else if (action === 'setImageColor') {
+                if (product!.lifecycle !== 'DRAFT') throw new ConflictException('DRAFT_REQUIRED');
+                const p = imageColorFields(input.payload);
+                if (!(await client.query('SELECT 1 FROM catalog_core.product_media m WHERE m.product_id=$1 AND m.asset_id=$2 AND EXISTS(SELECT 1 FROM catalog_core.sku s JOIN catalog_core.dictionary d ON d.id=s.color_id AND d.active WHERE s.product_id=$1 AND s.color_id=$3)', [id,p.assetId,p.colorId])).rowCount) throw new BadRequestException('INVALID_COLOR_IMAGE');
+                if (thumbnail) await client.query('INSERT INTO catalog_core.media_thumbnail(asset_id,path,sha256,width,height) VALUES($1,$2,$3,$4,$5) ON CONFLICT(asset_id) DO NOTHING', [p.assetId,thumbnail.path,thumbnail.sha,thumbnail.width,thumbnail.height]);
+                const evidence = randomUUID();
+                await client.query('INSERT INTO catalog_core.evidence(id,seller_id,declaration,actor_id) VALUES($1,$2,$3,$4)', [evidence,product!.seller_id,p.declaration,actor]);
+                await client.query('INSERT INTO catalog_core.product_color_image(product_id,color_id,asset_id,source_id) VALUES($1,$2,$3,$4) ON CONFLICT(product_id,color_id) DO UPDATE SET asset_id=EXCLUDED.asset_id,source_id=EXCLUDED.source_id', [id,p.colorId,p.assetId,evidence]);
+                result = (await client.query('UPDATE catalog_core.product SET version=version+1,updated_at=clock_timestamp() WHERE id=$1 RETURNING ' + productFields, [id])).rows[0];
+            }
+            else if (action === 'uploadVideo') {
+                if (product!.lifecycle !== 'DRAFT' || !video) throw new ConflictException('DRAFT_REQUIRED');
+                if ((await client.query('SELECT 1 FROM catalog_core.product_video WHERE product_id=$1', [id])).rowCount) throw new ConflictException('VIDEO_EXISTS');
+                const evidence = randomUUID();
+                await client.query('INSERT INTO catalog_core.evidence(id,seller_id,declaration,actor_id) VALUES($1,$2,$3,$4)', [evidence,product!.seller_id,video.rights,actor]);
+                await client.query('INSERT INTO catalog_core.video_asset(id,seller_id,path,sha256,poster_path,width,height,duration_ms,byte_length,alt,rights_evidence_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)', [key,product!.seller_id,video.path,video.sha,video.posterPath,video.width,video.height,video.durationMs,video.byteLength,video.alt,evidence]);
+                await client.query('INSERT INTO catalog_core.product_video(product_id,seller_id,video_id) VALUES($1,$2,$3)', [id,product!.seller_id,key]);
                 result = (await client.query('UPDATE catalog_core.product SET version=version+1,updated_at=clock_timestamp() WHERE id=$1 RETURNING ' + productFields, [id])).rows[0];
             }
             else if (action === 'createDraft') {
@@ -241,7 +273,7 @@ class AdminCatalogService implements OnModuleDestroy {
             client?.release();
         }
     }
-    async image(request: AdminRequest, idValue: string, assetValue: string) {
+    async image(request: AdminRequest, idValue: string, assetValue: string, thumbnail = false) {
         let id: string, asset: string;
         try {
             id = parseEntityId(idValue);
@@ -253,7 +285,7 @@ class AdminCatalogService implements OnModuleDestroy {
         try {
             const db = this.database();
             await this.actor(db, request);
-            const row = (await db.query('SELECT a.path FROM catalog_core.asset a JOIN catalog_core.product_media m ON m.asset_id=a.id JOIN catalog_core.product p ON p.id=m.product_id AND p.seller_id=a.seller_id WHERE p.id=$1 AND a.id=$2', [id, asset])).rows[0];
+            const row = (await db.query(thumbnail ? 'SELECT t.path FROM catalog_core.media_thumbnail t JOIN catalog_core.product_media m ON m.asset_id=t.asset_id WHERE m.product_id=$1 AND t.asset_id=$2' : 'SELECT a.path FROM catalog_core.asset a JOIN catalog_core.product_media m ON m.asset_id=a.id JOIN catalog_core.product p ON p.id=m.product_id AND p.seller_id=a.seller_id WHERE p.id=$1 AND a.id=$2', [id, asset])).rows[0];
             if (!row)
                 throw new NotFoundException();
             return await previewImage(row.path);
@@ -261,6 +293,15 @@ class AdminCatalogService implements OnModuleDestroy {
         catch (e) {
             this.safe(e);
         }
+    }
+    async video(request: AdminRequest, idValue: string, poster: boolean) {
+        try {
+            const id = parseEntityId(idValue), db = this.database();
+            await this.actor(db, request);
+            const row = (await db.query('SELECT v.path,v.poster_path FROM catalog_core.video_asset v JOIN catalog_core.product_video p ON p.video_id=v.id AND p.seller_id=v.seller_id WHERE p.product_id=$1', [id])).rows[0];
+            if (!row) throw new NotFoundException();
+            return poster ? await previewImage(row.poster_path) : await previewVideo(row.path);
+        } catch(e) { this.safe(e); }
     }
     private safe(error: unknown): never {
         if (error instanceof BadRequestException || error instanceof ForbiddenException || error instanceof ConflictException || error instanceof NotFoundException || error instanceof ServiceUnavailableException)
@@ -311,6 +352,12 @@ class AdminCatalogController {
     request: AdminRequest, 
     @Body()
     body: unknown) { return this.catalog.command(request, body); }
+    @Get('catalog/products/:id/thumbnails/:asset')
+    thumbnail(@Req() request: AdminRequest, @Param('id') id: string, @Param('asset') asset: string) { return this.catalog.image(request,id,asset,true); }
+    @Get('catalog/products/:id/video')
+    video(@Req() request: AdminRequest, @Param('id') id: string) { return this.catalog.video(request,id,false); }
+    @Get('catalog/products/:id/video/poster')
+    poster(@Req() request: AdminRequest, @Param('id') id: string) { return this.catalog.video(request,id,true); }
 }
 @Module({ controllers: [AdminCatalogController], providers: [AdminCatalogService, AdminIdentityGuard] })
 export class AdminCatalogModule {

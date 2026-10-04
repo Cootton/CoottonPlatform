@@ -31,3 +31,9 @@ Owner requests initial100 units per color-size SKU:16 SKU,total1600,shared B2B/B
 
 Owner confirms the supplied full black-shirt photograph is the Cootton product image and authorizes GitHub documentation synchronization. Supersedes reference-only status in section138. Original media not uploaded to GitHub; media rights declaration follows application intake. No database write, product publication or deployment in this documentation update.
 
+
+## 140. Media implementation prepared — 2026-10-04
+
+Owner requests completion:9 gallery images plus1 video; color-shared SKU thumbnails. Source implements media contracts, additive004, bounded optimized MP4 intake, thumbnail association and private previews. Owner chooses first30s from original82.32s454MB clip; local preparedMP4 is720x406/30fps/30s,1873705bytes. Original preserved. Initial v1 accepts preparedMP4<=8MiB rather than background250MiB MOV upload; approved public delivery/CDN remains separate publication scope. SQL cap/cross-product FK/one-video and grant introspection checks passed with allDDL/data rolled back. Compile passed; image checks2passed; real normalization on localWindows blocked by subprocessEPERM, Linux container execution pending. Reviewed activation scope:MEDIA_ACTIVATION.md. Source readiness does not imply deployed004.
+
+Current real Boxy DRAFTv9 has16SKU,5private unapprovedimages,12garmentmeasurements and owner-initialized100/SKU at Kho Cootton — TP.HCM01(total1600). Body fit recommendations in description, not kg values in cm schema. Technical sample DRAFTv5 retained. No offers/publication/payment activation.

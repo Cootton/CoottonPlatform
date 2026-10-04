@@ -23,7 +23,9 @@ export async function intakeDetail(db: DB, id: string) {
     }
     const location = (await db.query('SELECT l.label FROM catalog_core.inventory_location l JOIN catalog_core.product p ON p.seller_id=l.seller_id WHERE p.id=$1', [id])).rows[0]?.label ?? null;
     const media = (await db.query('SELECT a.id,a.width,a.height,a.approved,m.position,m.alt FROM catalog_core.product_media m JOIN catalog_core.asset a ON a.id=m.asset_id WHERE m.product_id=$1 ORDER BY m.position LIMIT 20', [id])).rows;
-    return { fabric: fabric[0] ?? null, chart, variants, location, media };
+    const colorImages = (await db.query('SELECT c.color_id,c.asset_id,t.width,t.height FROM catalog_core.product_color_image c JOIN catalog_core.media_thumbnail t ON t.asset_id=c.asset_id WHERE c.product_id=$1 ORDER BY c.color_id', [id])).rows;
+    const video = (await db.query('SELECT v.id,v.alt,v.width,v.height,v.duration_ms,v.byte_length,v.approved FROM catalog_core.product_video p JOIN catalog_core.video_asset v ON v.id=p.video_id WHERE p.product_id=$1', [id])).rows[0] ?? null;
+    return { fabric: fabric[0] ?? null, chart, variants, location, media, colorImages, video };
 }
 export async function saveIntake(db: PoolClient, product: Record<string, unknown>, payload: unknown, actor: string) {
     const p = intakeFields(payload);

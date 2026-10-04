@@ -1,0 +1,10 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs/promises');const {normalizeVideo,validateVideoProbe}=require('../dist/catalog-media.js');const {videoFields,imageColorFields}=require('@cootton/contracts');
+const source=process.env.COOTTON_VIDEO_FIXTURE;
+test('video rejects invalid metadata, unsupported streams and invalid input',async()=>{
+const valid={streams:[{codec_type:'video',codec_name:'h264',pix_fmt:'yuv420p',width:720,height:406,avg_frame_rate:'30/1'}],format:{duration:'30'}};assert.equal(validateVideoProbe(valid).durationMs,30000);
+for(const v of [{...valid,format:{duration:'61'}},{...valid,streams:[...valid.streams,{codec_type:'audio'}]},{...valid,streams:[{...valid.streams[0],width:1920}]},{...valid,streams:[{...valid.streams[0],avg_frame_rate:'60/1'}]}])assert.throws(()=>validateVideoProbe(v));
+assert.throws(()=>videoFields({base64:'!',alt:'clip',rights:'owner'}));assert.throws(()=>imageColorFields({assetId:'invalid',colorId:'invalid',declaration:'owner'}));await assert.rejects(()=>normalizeVideo(Buffer.from('not MP4')));
+});
+test('real optimized clip normalizes to bounded faststart MP4 and WebP poster',{skip:!source},async()=>{
+const result=await normalizeVideo(await fs.readFile(source));assert.equal(result.width,720);assert.equal(result.height,406);assert.ok(result.durationMs<=60000);assert.ok(result.output.length<=8388608);const atoms=[];for(let i=0;i+8<=result.output.length;){const n=result.output.readUInt32BE(i);if(n<8)break;atoms.push(result.output.toString('ascii',i+4,i+8));i+=n;}assert.ok(atoms.indexOf('moov')>=0&&atoms.indexOf('moov')<atoms.indexOf('mdat'));assert.ok(result.poster.length<=262144);const sharp=require('sharp');const meta=await sharp(result.poster).metadata();assert.equal(meta.format,'webp');assert.ok(meta.width<=480&&meta.height<=480);assert.equal(meta.exif,undefined);if(process.env.COOTTON_VIDEO_OUTPUT){await fs.writeFile(process.env.COOTTON_VIDEO_OUTPUT,result.output);await fs.writeFile(process.env.COOTTON_VIDEO_POSTER,result.poster);}
+});

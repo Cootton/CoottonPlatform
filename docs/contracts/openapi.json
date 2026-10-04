@@ -536,6 +536,150 @@
           }
         }
       }
+    },
+    "/v1/admin/catalog/products/{id}/thumbnails/{asset}": {
+      "get": {
+        "operationId": "getAdminThumbnail",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated color thumbnail preview"
+      }
+    },
+    "/v1/admin/catalog/products/{id}/video": {
+      "get": {
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated video preview; fetched only on play",
+        "operationId": "getAdminVideo"
+      }
+    },
+    "/v1/admin/catalog/products/{id}/video/poster": {
+      "get": {
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated WebP poster preview",
+        "operationId": "getAdminVideoPoster"
+      }
     }
   },
   "components": {
@@ -1277,8 +1421,120 @@
                 "properties": {}
               }
             }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "setImageColor"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/ImageColorPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "uploadVideo"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/VideoPayload"
+              }
+            }
           }
         ]
+      },
+      "ImageColorPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assetId",
+          "colorId",
+          "declaration"
+        ],
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "colorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "declaration": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        }
+      },
+      "VideoPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "base64",
+          "alt",
+          "rights"
+        ],
+        "properties": {
+          "base64": {
+            "type": "string",
+            "maxLength": 11184812,
+            "description": "Optimized MP4 H.264 yuv420p, one video stream, no audio, <=720px/30fps/60s/8MiB. Backend validates and normalizes."
+          },
+          "alt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "rights": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        }
       }
     },
     "securitySchemes": {

@@ -29,7 +29,7 @@ async function bootstrap(): Promise<void> {
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('INVALID_PORT');
   const app = await NestFactory.create<NestExpressApplication>(AppModule,{bodyParser:false});
   app.setGlobalPrefix('v1');
-  app.useBodyParser('json',{limit:'5mb'});
+  app.useBodyParser('json',{limit:'12mb'});
   app.useGlobalFilters(new SafeErrors());
   app.use((_request:unknown,response:{setHeader:(key:string,value:string)=>void},next:()=>void)=>{
     response.setHeader('Cache-Control','no-store'); response.setHeader('X-Content-Type-Options','nosniff'); next();
