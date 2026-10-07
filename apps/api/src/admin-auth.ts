@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
-import { applicationDefault, getApps, initializeApp } from 'firebase-admin/app';
+import { firebaseApp } from './firebase-app';
 import { getAuth } from 'firebase-admin/auth';
 
 export interface AdminIdentity { project: string; subject: string; authTime: number }
@@ -23,7 +23,7 @@ export class AdminIdentityGuard implements CanActivate {
       throw new UnauthorizedException('AUTHENTICATION_REQUIRED');
     }
     try {
-      const app = getApps().find(a => a.name === 'cootton-admin') ?? initializeApp({projectId:project, credential:applicationDefault()}, 'cootton-admin');
+      const app = firebaseApp();
       const token = await getAuth(app).verifyIdToken(authorization.slice(7), true);
       const now = Math.floor(Date.now()/1000);
       if (token.aud !== project || token.iss !== `https://securetoken.google.com/${project}` ||

@@ -42,7 +42,7 @@ export async function publicationFacts(db: DB, product: Record<string, any>): Pr
     LEFT JOIN LATERAL(SELECT id,source_id FROM catalog_core.pricing_price_version WHERE offering_id=o.id ORDER BY sequence DESC LIMIT 1) pv ON true
     LEFT JOIN catalog_core.pricing_tier t ON t.price_version_id=pv.id AND t.min_quantity=1
     WHERE s.product_id=$1 AND s.active ORDER BY s.id LIMIT 101`,[id])).rows;
-  const chart=(await db.query('SELECT c.size_id,c.value_cm::text,c.source_id,d.code,d.label,d.active FROM catalog_core.size_chart c JOIN catalog_core.dictionary d ON d.id=c.measurement_id WHERE c.product_id=$1 ORDER BY c.size_id,d.code LIMIT 201',[id])).rows;
+  const chart=(await db.query('SELECT c.size_id,c.measurement_id,c.value_cm::text,c.source_id,d.code,d.label,d.active FROM catalog_core.size_chart c JOIN catalog_core.dictionary d ON d.id=c.measurement_id WHERE c.product_id=$1 ORDER BY c.size_id,d.code LIMIT 201',[id])).rows;
   const images=(await db.query('SELECT a.id,a.path,a.width,a.height,a.rights_evidence_id,a.seller_id,m.alt,m.position FROM catalog_core.product_media m JOIN catalog_core.asset a ON a.id=m.asset_id WHERE m.product_id=$1 ORDER BY m.position LIMIT 10',[id])).rows;
   const colors=(await db.query('SELECT color_id,asset_id,source_id FROM catalog_core.product_color_image WHERE product_id=$1',[id])).rows;
   const video=(await db.query('SELECT v.id,v.rights_evidence_id,v.seller_id FROM catalog_core.product_video p JOIN catalog_core.video_asset v ON v.id=p.video_id WHERE p.product_id=$1',[id])).rows[0]??null;
@@ -54,7 +54,7 @@ export function publicSnapshot(f: PublicationFacts, version: string) {
   const label=(id:unknown)=>f.dictionary.find(d=>d.id===id)?.label;
   const p=f.product;
   const product=publicProduct({id:p.id,version,category:f.dictionary.find(d=>d.id===p.category_id)?.code,title:p.title,brand:label(p.brand_id),description:p.description,form:label(p.form_id),material:f.fabric[0]?.description,origin:label(p.country_id),care:p.care,images:f.images.map(i=>({path:i.path,alt:i.alt,width:i.width,height:i.height}))});
-  return {product,skus:f.skus.map(s=>({id:s.id,code:s.code,color:s.color,size:s.size,price:s.price})),chart:f.chart.map(c=>({size:label(c.size_id),measurement:c.label,cm:c.value_cm})),dictionaryIds:[p.category_id,p.brand_id,p.form_id,p.country_id,...f.skus.flatMap(s=>[s.color_id,s.size_id])],sourceRefs:[p.origin_evidence_id,p.care_evidence_id,...f.fabric.map(v=>v.source_id),...f.skus.map(v=>v.price_source),...f.chart.map(v=>v.source_id),...f.images.map(v=>v.rights_evidence_id),...f.colors.map(v=>v.source_id),f.video?.rights_evidence_id??null]};
+  return {product,skus:f.skus.map(s=>({id:s.id,code:s.code,color:s.color,size:s.size,price:s.price})),chart:f.chart.map(c=>({size:label(c.size_id),measurement:c.label,cm:c.value_cm})),dictionaryIds:[...new Set([p.category_id,p.brand_id,p.form_id,p.country_id,...f.skus.flatMap(s=>[s.color_id,s.size_id]),...f.chart.flatMap(c=>[c.size_id,c.measurement_id])])],sourceRefs:[p.origin_evidence_id,p.care_evidence_id,...f.fabric.map(v=>v.source_id),...f.skus.map(v=>v.price_source),...f.chart.map(v=>v.source_id),...f.images.map(v=>v.rights_evidence_id),...f.colors.map(v=>v.source_id),f.video?.rights_evidence_id??null]};
 }
 const actions=['submit','approve','publish','returnDraft','unpublish'];
 export function isPublicationAction(action:string) { return actions.includes(action); }

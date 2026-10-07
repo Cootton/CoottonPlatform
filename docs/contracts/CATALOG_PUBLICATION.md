@@ -2,6 +2,10 @@
 
 Status: implementation prepared; production activation not yet executed.
 
+Historical status above describes the PR16 source snapshot before reported04/10 activation. The07/10 review fix source is prepared; migration006 is NOT applied by this change. Read ADR0006 and CATALOG_MEASUREMENT_ACTIVATION.md for the additive rollout boundary.
+
+New snapshots retain chart measurement/size dictionary IDs privately. Migration006 checks canonical chart references too, so older visible snapshots missing those IDs fail closed after measurement/size deactivation without rewriting immutable reviews. An unpublished old approval must be reviewed again before publish because the snapshot shape has changed. Public chart fields stay labels/values only; public media uses the shared backend identity initializer independently of Admin requests.
+
 ## One authoritative flow
 
 `DRAFT → submit → IN_REVIEW → approve → APPROVED → publish → visible catalog`

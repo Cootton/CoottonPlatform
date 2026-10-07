@@ -1,3 +1,5 @@
+> **Current source checkpoint07/10 — PR16-FIX-001:** owner assigned two review fixes and API CI checks. Shared Firebase initialization fixes cold public media; new snapshot references and additive006 fix measurement withdrawal. Applied001–005 are preserved.006/runtime deployment not executed by this task. Read ADR0006/PR16_REVIEW_FIXES.md. Historical source headers below are not a fresh runtime observation.
+
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
 ```yaml
@@ -4771,3 +4773,8 @@ Keyless Admin sign-in and private image/video previews were verified. API shared
 Owner requests Cootton-authored conservative care advice and confirms commercial permission for the full black shirt photo. No new third-party image substitution. Care advice is a Cootton recommendation with label priority, not a manufacturer/testing certificate; see docs/planning/COOTTON_BOXY_CARE.md.
 
 Review/publication source and OpenAPI prepared under ADR0005 and docs/contracts/CATALOG_PUBLICATION.md. Catalog-only reference prices can be shown after review; effective purchase offerings and seller transaction flags remain inactive. The exact005 migration/grants/flag/deployment/product activation scope is CATALOG_PUBLICATION_ACTIVATION.md. Compile checks and13 focused publication/cache/Admin/intake scenarios pass locally. Migration005, public-image route, care save, actual review and publication have NOT executed yet. Public video remains deferred/private; noindex, payments, CP/VC/VCS and orders remain inactive. Source completion must not be reported as live acceptance.
+
+
+## Appendix PR16-FIX-001 — Review remediation2026-10-07
+
+Owner assigned fixes PR16-F001/F002 and API CI checks. Read docs/adr/0006-catalog-review-fixes.md and CATALOG_MEASUREMENT_ACTIVATION.md. No new grant; snapshots retain measurement references privately, additive006 guards legacy snapshots via canonical chart activity. Immutable reviews/applied001–005 unchanged. Focused API tests plus disposable PostgreSQL16 view/cache regression in CI. Production006/deploy/product republish and commerce/release remain separate tasks. PR17 pinned18768a1 docs need reconcile before merge; no V002.

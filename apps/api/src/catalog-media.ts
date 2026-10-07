@@ -1,7 +1,7 @@
 import { BadRequestException, ServiceUnavailableException } from '@nestjs/common';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
-import { getApps } from 'firebase-admin/app';
+import { firebaseApp } from './firebase-app';
 import { getStorage } from 'firebase-admin/storage';
 import { inputObject, inputText } from '@cootton/contracts';
 import { PRODUCT_MEDIA_LIMITS, videoFields } from '@cootton/contracts';
@@ -18,10 +18,7 @@ const bucket = () => {
     const name = process.env.COOTTON_MEDIA_BUCKET;
     if (!name || !/^[a-z0-9][a-z0-9._-]{2,220}[a-z0-9]$/.test(name))
         throw new ServiceUnavailableException('MEDIA_NOT_CONFIGURED');
-    const app = getApps().find(a => a.name === 'cootton-admin');
-    if (!app)
-        throw new ServiceUnavailableException('MEDIA_NOT_CONFIGURED');
-    return getStorage(app).bucket(name);
+    return getStorage(firebaseApp()).bucket(name);
 };
 export async function normalizeImage(bytes: Buffer) {
     if (!bytes.length || bytes.length > 3145728)

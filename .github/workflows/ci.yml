@@ -8,6 +8,20 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cootton_test
+          POSTGRES_PASSWORD: local-ci-only
+          POSTGRES_DB: cootton_api_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cootton_test -d cootton_api_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,3 +32,7 @@ jobs:
       - run: pnpm build
       - run: pnpm check
       - run: pnpm verify:contracts
+      - run: pnpm verify:api
+      - run: pnpm verify:api:db
+        env:
+          COOTTON_TEST_DATABASE_URL: postgres://cootton_test:local-ci-only@127.0.0.1:5432/cootton_api_test
