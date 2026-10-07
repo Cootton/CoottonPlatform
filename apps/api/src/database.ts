@@ -1,9 +1,9 @@
 import { Pool } from 'pg';
 
 /** Backend-only connection. Never log the URL or pass it to a browser client. */
-export function createDatabasePool(): Pool {
+export function createDatabasePool(connectionString: string | undefined = process.env.DATABASE_URL): Pool {
   let url: URL;
-  try { url = new URL(process.env.DATABASE_URL ?? ''); }
+  try { url = new URL(connectionString ?? ''); }
   catch { throw new Error('DATABASE_CONFIG_INVALID'); }
   if (!['postgres:', 'postgresql:'].includes(url.protocol)
     || !url.hostname.endsWith('.neon.tech') || !url.hostname.includes('-pooler.')

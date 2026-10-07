@@ -4,8 +4,8 @@ Trạng thái: nền móng kỹ thuật đã triển khai; không phải schema 
 
 - Canonical entity ID: UUID v4 opaque, normalize lowercase. Firebase subject là external identity riêng; không ép Firebase UID thành entity ID. SKU/slug là mã tham chiếu, không khóa định danh. ID không là quyền truy cập hoặc mã hóa; private URL vẫn cần backend authorization. UUID không chứa PII.
 - VND: JSON `{currency: "VND", amount: "1000"}`; decimal integer string không âm. Không floating-point tài chính. Ledger debit/credit direction và point precision chưa khóa; không dùng kiểu này để giả lập ledger.
-- API: `/v1`; hiện chỉ `GET /v1/health/live`. Liveness chỉ chứng minh process phản hồi, không chứng minh DB/payment/commerce readiness. Không endpoint readiness giả.
-- Error envelope tương lai `{code, message, requestId}`: message an toàn, không stack trace/PII. Chưa có business endpoint áp dụng; status/code mapping khóa khi triển khai handler chung.
+- API: `/v1`; public runtime có `GET /v1/health/live`, `GET /v1/catalog/products` và `GET /v1/catalog/products/:id` theo mục Catalog implementation bên dưới. Liveness chỉ chứng minh process phản hồi, không chứng minh DB/payment/commerce readiness. Không endpoint readiness giả.
+- Runtime error envelope `{code, message, requestId}`: public catalog áp dụng controlled400/404/503; message an toàn, không stack trace/PII. Private Admin source đang được triển khai riêng, chưa có runtime quyền đã kích hoạt.
 - Collections tương lai cursor pagination, bounded page size; limit, cursor encoding/index theo query workload cụ thể. Không load toàn bộ bảng hoặc giả cursor.
 - Roles/surfaces không cấp quyền. Backend verify Firebase identity, explicit permissions, seller ownership và resource scope trước khi có business route. AI_SUB_ADMIN chỉ theo grant ADMIN, không tự nâng quyền.
 - Business mutations bắt buộc idempotency theo principal + operation + key, persisted request fingerprint/result; khác payload cùng key phải conflict. Atomic business + ledger + outbox transaction, concurrent replay handling/retention phải khóa trước endpoint. Không tuyên bố đã triển khai các mechanisms này.
@@ -64,3 +64,8 @@ See [D01.catalog.v1](D01_PRODUCT_CATALOG_SKU.md) for seller-owned products, unif
 ## Catalog read implementation — 2026-10-02
 
 Owner assigned empty catalog website with database. GET /v1/catalog/products and /v1/catalog/products/:id now read restricted public PostgreSQL views; keyset20/max50, safe DTOs, controlled400/404/503, no mutations. See ADR0003/CATALOG_SETUP and V001 section123. Migration001 is a derived D09 projection, not canonical D01/D02 business schema; no products/prices/stock seeded or publisher installed. Current Web noindex and payment/private/production release gates persist.
+
+
+## Admin catalog task 2026-10-03 — unfinished
+
+Owner assigned minimal human Admin and canonical draft/review/publication. Local source checkpoint ADMIN_CATALOG_SETUP.md records verified compilation, unconfigured access denied, proposed migration002 unexecuted and remaining identity/media/offering/publication work. Do not claim current GitHub main has deployed Admin or working publication. V001 section124 is authoritative current task.

@@ -1,0 +1,29 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /workspace
+RUN npm install --global pnpm@10.34.6
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
+COPY packages/contracts packages/contracts
+COPY apps/api apps/api
+COPY apps/web/package.json apps/web/package.json
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter @cootton/contracts build && pnpm --filter @cootton/api build
+
+FROM node:24-bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
+WORKDIR /workspace
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=8080
+COPY --from=build --chown=node:node /workspace/node_modules ./node_modules
+COPY --from=build --chown=node:node /workspace/packages/contracts/package.json ./packages/contracts/package.json
+COPY --from=build --chown=node:node /workspace/packages/contracts/dist ./packages/contracts/dist
+COPY --from=build --chown=node:node /workspace/apps/api/node_modules ./apps/api/node_modules
+COPY --from=build --chown=node:node /workspace/apps/api/dist ./apps/api/dist
+COPY apps/api/verification/media.cjs apps/api/verification/video.cjs apps/api/verification/cache.cjs apps/api/verification/publication.cjs ./apps/api/verification/
+RUN ffmpeg -nostdin -v error -f lavfi -i color=c=black:s=720x406:r=30:d=0.5 -an -c:v libx264 -threads 1 -pix_fmt yuv420p -movflags +faststart /tmp/media-check.mp4 \
+    && node apps/api/verification/cache.cjs \
+    && node apps/api/verification/publication.cjs \
+    && node apps/api/verification/media.cjs \
+    && COOTTON_VIDEO_FIXTURE=/tmp/media-check.mp4 node apps/api/verification/video.cjs \
+    && rm /tmp/media-check.mp4
+USER node
+EXPOSE 8080
+CMD ["node", "apps/api/dist/main.js"]

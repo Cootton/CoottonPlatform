@@ -7,6 +7,8 @@
     "build": "pnpm --filter @cootton/contracts build && pnpm --filter @cootton/api build && pnpm --filter @cootton/web build",
     "check": "pnpm --filter @cootton/contracts check && pnpm --filter @cootton/api check && pnpm --filter @cootton/web check",
     "verify:contracts": "pnpm --filter @cootton/contracts verify",
+    "verify:api": "pnpm --filter @cootton/api verify",
+    "verify:api:db": "pnpm --filter @cootton/api verify:db",
     "dev:api": "pnpm --filter @cootton/api dev",
     "dev:web": "pnpm --filter @cootton/web dev"
   },

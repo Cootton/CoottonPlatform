@@ -9,8 +9,8 @@ export interface CatalogProduct {
   readonly form: string | null; readonly material: string; readonly origin: string;
   readonly care: string; readonly images: readonly CatalogImage[];
 }
-export interface CatalogSku { readonly id: string; readonly code: string; readonly color: string; readonly size: string }
-export interface CatalogDetail { readonly product: CatalogProduct; readonly skus: CursorPage<CatalogSku>; readonly commerceEnabled: false }
+export interface CatalogSku { readonly id: string; readonly code: string; readonly color: string; readonly size: string; readonly price?: string }
+export interface CatalogDetail { readonly product: CatalogProduct; readonly skus: CursorPage<CatalogSku>; readonly commerceEnabled: false; readonly chart?: readonly {size:string;measurement:string;cm:string}[] }
 export interface CatalogPage extends CursorPage<CatalogProduct> { readonly mode: SalesMode; readonly commerceEnabled: false }
 export function category(value: unknown): CategoryCode | null {
   if (value === undefined || value === null || value === '') return null;

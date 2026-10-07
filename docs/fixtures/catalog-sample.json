@@ -1,0 +1,23 @@
+{
+  "purpose": "ONE_SYNTHETIC_DRAFT_FOR_ADMIN_VERIFICATION",
+  "isRealProduct": false,
+  "publishAllowed": false,
+  "createPayload": { "title": "[MẪU KIỂM TRA] Áo thun cổ tròn Cootton" },
+  "draftPayload": {
+    "title": "[MẪU KIỂM TRA] Áo thun cổ tròn Cootton",
+    "description": "Dữ liệu tổng hợp được chủ dự án cho phép để kiểm tra nhập và lưu bản nháp Admin. Không phải sản phẩm đang bán.",
+    "care": "",
+    "categoryId": null,
+    "brandId": null,
+    "formId": null,
+    "countryId": null,
+    "originEvidenceId": null,
+    "careEvidenceId": null
+  },
+  "expected": {
+    "lifecycle": "DRAFT",
+    "publiclyVisible": false,
+    "commerceEnabled": false,
+    "missingPublicationPrerequisites": ["source evidence", "SKU", "size chart", "processed licensed image", "offering"]
+  }
+}

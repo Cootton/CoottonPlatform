@@ -1,5 +1,1724 @@
 {
   "openapi": "3.1.0",
-  "info": { "title": "Cootton Foundation API", "version": "0.1.0", "description": "Liveness only; no business or database readiness claim." },
-  "paths": { "/v1/health/live": { "get": { "operationId": "getLiveness", "responses": { "200": { "description": "API process responds", "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["status", "contractVersion"], "properties": { "status": { "const": "alive" }, "contractVersion": { "const": "0.1.0" } } } } } } } } } }
+  "info": {
+    "title": "Cootton Foundation API",
+    "version": "0.1.0",
+    "description": "Canonical catalog reads and authenticated human Admin intake/review/publication. Publication requires explicit runtime activation; commerce and payments remain inactive."
+  },
+  "paths": {
+    "/v1/health/live": {
+      "get": {
+        "operationId": "getLiveness",
+        "responses": {
+          "200": {
+            "description": "API process responds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "status",
+                    "contractVersion"
+                  ],
+                  "properties": {
+                    "status": {
+                      "const": "alive"
+                    },
+                    "contractVersion": {
+                      "const": "0.1.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalog/products": {
+      "get": {
+        "operationId": "listCatalogProducts",
+        "parameters": [
+          {
+            "name": "mode",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "B2C",
+                "B2B"
+              ],
+              "default": "B2C"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "CREWNECK_TSHIRT",
+                "HOODIE",
+                "SWEATER",
+                "SHORTS",
+                "TROUSERS"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safe public catalog response. No price, inventory or purchase authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "items",
+                    "nextCursor",
+                    "mode",
+                    "commerceEnabled"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "$ref": "#/components/schemas/PublicProduct"
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "mode": {
+                      "enum": [
+                        "B2C",
+                        "B2B"
+                      ]
+                    },
+                    "commerceEnabled": {
+                      "const": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalog/products/{id}": {
+      "get": {
+        "operationId": "getCatalogProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "skuAfter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allowlisted catalog facts, approved reference retail prices and garment measurements; no inventory or purchase authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "product",
+                    "skus",
+                    "commerceEnabled"
+                  ],
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/PublicProduct"
+                    },
+                    "commerceEnabled": {
+                      "const": false
+                    },
+                    "skus": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "items",
+                        "nextCursor"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "id",
+                              "code",
+                              "color",
+                              "size"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "code": {
+                                "type": "string",
+                                "maxLength": 64
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "string",
+                                "pattern": "^[1-9][0-9]{0,29}$",
+                                "description": "Reviewed reference VND price; not an effective purchase offer."
+                              }
+                            }
+                          }
+                        },
+                        "nextCursor": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uuid"
+                        }
+                      }
+                    },
+                    "chart": {
+                      "type": "array",
+                      "maxItems": 201,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "size",
+                          "measurement",
+                          "cm"
+                        ],
+                        "properties": {
+                          "size": {
+                            "type": "string"
+                          },
+                          "measurement": {
+                            "type": "string"
+                          },
+                          "cm": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Controlled input/not-found/unavailable response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/session": {
+      "get": {
+        "operationId": "getAdminSession",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/dictionaries": {
+      "get": {
+        "operationId": "getAdminDictionaries",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products": {
+      "get": {
+        "operationId": "getAdminProducts",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products/{id}": {
+      "get": {
+        "operationId": "getAdminProduct",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products/{id}/images/{asset}": {
+      "get": {
+        "operationId": "getAdminImage",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/commands": {
+      "post": {
+        "operationId": "executeAdminCatalogCommand",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "description": "Atomic expected-version/idempotency/audit/outbox. Catalog-only submit/approve/publish/returnDraft/unpublish gated by configured publication capability. No commerce activation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/admin/catalog/products/{id}/thumbnails/{asset}": {
+      "get": {
+        "operationId": "getAdminThumbnail",
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated color thumbnail preview"
+      }
+    },
+    "/v1/admin/catalog/products/{id}/video": {
+      "get": {
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated video preview; fetched only on play",
+        "operationId": "getAdminVideo"
+      }
+    },
+    "/v1/admin/catalog/products/{id}/video/poster": {
+      "get": {
+        "security": [
+          {
+            "AdminBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validated private result; no-store"
+          },
+          "400": {
+            "description": "Invalid bounded input"
+          },
+          "401": {
+            "description": "Authentication and fresh session required"
+          },
+          "403": {
+            "description": "Canonical Admin grant required"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Version, idempotency or readiness conflict"
+          },
+          "503": {
+            "description": "Configuration or dependency unavailable"
+          }
+        },
+        "summary": "Authenticated WebP poster preview",
+        "operationId": "getAdminVideoPoster"
+      }
+    },
+    "/v1/catalog/media/{seller}/{file}": {
+      "get": {
+        "operationId": "getPublishedCatalogImage",
+        "description": "Only WebP linked to currently visible publication; private bucket remains private, no signed URLs.",
+        "parameters": [
+          {
+            "name": "seller",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}\\.webp$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published WebP",
+            "content": {
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not published"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SafeError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "requestId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PublicProduct": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "version",
+          "slug",
+          "category",
+          "title",
+          "brand",
+          "description",
+          "material",
+          "origin",
+          "care",
+          "images"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "category": {
+            "enum": [
+              "CREWNECK_TSHIRT",
+              "HOODIE",
+              "SWEATER",
+              "SHORTS",
+              "TROUSERS"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "form": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160
+          },
+          "material": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "origin": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "care": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "images": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "alt",
+                "width",
+                "height"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^/media/"
+                },
+                "alt": {
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8192
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8192
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminIntakePayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "declaration",
+          "fabric",
+          "gsmKind",
+          "gsmMin",
+          "gsmMax",
+          "location",
+          "variants",
+          "chart"
+        ],
+        "properties": {
+          "declaration": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          },
+          "fabric": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "gsmKind": {
+            "enum": [
+              "UNKNOWN",
+              "EXACT",
+              "RANGE"
+            ]
+          },
+          "gsmMin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "gsmMax": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "variants": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "colorId",
+                "sizeId",
+                "price",
+                "stock",
+                "tiers"
+              ],
+              "properties": {
+                "colorId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "sizeId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "price": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]{0,29}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "stock": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tiers": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "quantity",
+                      "price"
+                    ],
+                    "properties": {
+                      "quantity": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "price": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]{0,29}$"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "chart": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sizeId",
+                "measurementId",
+                "cm"
+              ],
+              "properties": {
+                "sizeId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "measurementId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "cm": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminImagePayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "base64",
+          "alt",
+          "rights"
+        ],
+        "properties": {
+          "base64": {
+            "type": "string",
+            "contentEncoding": "base64",
+            "maxLength": 4194304
+          },
+          "alt": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "rights": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          }
+        }
+      },
+      "AdminDictionaryPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "code",
+          "token",
+          "label",
+          "source"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "COLOR",
+              "SIZE",
+              "COUNTRY",
+              "MEASUREMENT"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]{1,32}$"
+          },
+          "token": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]{1,16}$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          }
+        }
+      },
+      "AdminCommand": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "createDraft"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "saveDraft"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title",
+                  "description",
+                  "care",
+                  "categoryId",
+                  "brandId",
+                  "formId",
+                  "countryId",
+                  "originEvidenceId",
+                  "careEvidenceId"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 10000
+                  },
+                  "care": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "categoryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "brandId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "formId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "countryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "originEvidenceId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "careEvidenceId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "careDeclaration": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000,
+                    "description": "Required when replacing nonempty care content; Cootton advisory source permitted when truthfully identified."
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "saveIntake"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminIntakePayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "uploadImage"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminImagePayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "addDictionary"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/AdminDictionaryPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "archive"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "submit"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "approve"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "declaration",
+                  "confirmed"
+                ],
+                "properties": {
+                  "declaration": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000
+                  },
+                  "confirmed": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "publish"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "setImageColor"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/ImageColorPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "uploadVideo"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/VideoPayload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "returnDraft"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "action",
+              "id",
+              "expectedVersion",
+              "payload"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "action": {
+                "const": "unpublish"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ImageColorPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assetId",
+          "colorId",
+          "declaration"
+        ],
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "colorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "declaration": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        }
+      },
+      "VideoPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "base64",
+          "alt",
+          "rights"
+        ],
+        "properties": {
+          "base64": {
+            "type": "string",
+            "maxLength": 11184812,
+            "description": "Optimized MP4 H.264 yuv420p, one video stream, no audio, <=720px/30fps/60s/8MiB. Backend validates and normalizes."
+          },
+          "alt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "rights": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "AdminBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Firebase ID token"
+      }
+    }
+  }
 }
