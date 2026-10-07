@@ -4,7 +4,7 @@
 
 `MP-INDEX-001` · V001 cập nhật tại chỗ · 2026-10-07 · Asia/Saigon
 
-Đây là cửa vào bộ tài liệu GitHub-ready. [V001](COOTTON_WORKING_V001.md) giữ toàn bộ lịch sử quyết định; các module dưới đây bổ sung kiến thức và cách áp dụng, không thay contracts D01–D10 bằng ví dụ học tập. Scope lần này: tài liệu; không cấp quyền coding, migration, payment hoặc deploy. Không tuyên bố đã publish lên GitHub.
+Đây là cửa vào bộ tài liệu GitHub-ready. [V001](COOTTON_WORKING_V001.md) giữ toàn bộ lịch sử quyết định; các module dưới đây bổ sung kiến thức và cách áp dụng, không thay contracts D01–D10 bằng ví dụ học tập. Scope lần này: tài liệu; không cấp quyền coding, migration, payment hoặc deploy. Đã gửi GitHub review tại [PR #17](https://github.com/Cootton/CoottonPlatform/pull/17); chưa merge hoặc deploy. [PUB-DOCS-001](docs/governance/GITHUB_REVIEW_SCOPE.md) ghi phạm vi publication.
 
 ## Thứ tự đọc bắt buộc cho Work
 
