@@ -102,3 +102,6 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Add [API04 contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md), ADR0009, source evidence and explicit OPEN durable-intent/orphan-cleanup/retention gates. No runtime/grant/schema/delete/commerce change; ACCEPTED domain decisions retained.
 
 - EVD-API04-001 · verified2026-10-08: source7a3aa187 Foundation37687748134 and Container37687748147 SUCCESS. Contracts12PASS,API21PASS/1SKIP,PostgreSQL2PASS; Date/JSON fixture comparison failure retained in history. PR23 prepared for review;100 relative links valid, V001/001–006 unchanged; no production gate closure.
+
+
+- PR23-F001 · 2026-10-08: deny unsupported recovery encoding, replace buffered range download with locally bounded generation-pinned stream verification. Add gzip/range-ignored/truncated-stream regression checks; source CI pending, previous runtime/gates unchanged.

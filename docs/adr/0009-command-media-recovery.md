@@ -17,3 +17,8 @@ Use one create-only immutable persistence helper for image, thumbnail and video/
 ## Trade-offs / deferred work
 
 Retry repeats normalization; changed encoders can produce different private hashes and orphans. Current MEDIA_BUSY is per process. Durable pre-upload intent/reconciliation and retention/bounded orphan-cost evidence remain API04-RECOVERY-002 OPEN, subject to reviewed schema/policy and separate production activation. New delegated writers require ID/path compatibility review. Never assert exactly-once network delivery; the proven unit is one persisted business effect for successful receipt replay.
+
+
+## PR23-F001 follow-up · 2026-10-08
+
+Range is an optimization, not the memory bound. Existing objects must use absent/identity encoding; deny compressed/unknown encodings before read, disable SDK decompression and verify content in a generation-pinned stream with local byte enforcement and immediate destruction on failure. This refines API04-I06 without changing object paths, SQL schema, rights or cleanup policy.

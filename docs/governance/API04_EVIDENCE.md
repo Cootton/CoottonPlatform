@@ -37,3 +37,10 @@ The fixture now compares the JSON transport representation, retaining exact resu
 Exact tested source: `7a3aa18739e18a1e931efd348982695bcd79abb2`. [Foundation37687748134](https://github.com/Cootton/CoottonPlatform/actions/runs/37687748134) SUCCESS: build/check, contracts12PASS, API21PASS/1SKIP, PostgreSQL2PASS/0SKIP. [Container37687748147](https://github.com/Cootton/CoottonPlatform/actions/runs/37687748147) SUCCESS for API and Web. PostgreSQL count is two suites, with API04-T01–T04 assertions within the owner/transaction suite; do not label it as only two individual scenarios.
 
 The optional real-video encoder fixture is the one SKIP; partial video persistence/retry uses bounded normalized fixture bytes with a Storage transport stub. CI is not actual Firebase/GCS IAM, DB failover or production media cleanup evidence. Current PR23 includes a documentation-only evidence follow-up; the tested source remains this SHA. Review/merge and scoped deployment/runtime proof are pending. Full gates and API04-RECOVERY-002 remain OPEN.
+
+
+## PR23-F001 · 2026-10-08 · prepared fix
+
+Review identified that byte-range alone does not ensure bounded memory for existing encoded objects. Source now denies gzip/unsupported encoding before opening storage stream, disables SDK decompression and incrementally compares bytes with an exact local length limit. Overflow/mismatch/error/EOF release the stream; no whole-object recovery Buffer is allocated.
+
+Regression tests: gzip/br/deflate/unknown/empty encoding deny without any stream; absent/identity remains supported; transport ignoring range is destroyed without consuming a1MiB tail; truncated stream fails. Existing pinned generation/integrity/partial-video checks retained. Node syntax passed; CI for this fix pending. Earlier PASS evidence applies to the earlier source and does not certify this new patch. No production operation or gate promotion.

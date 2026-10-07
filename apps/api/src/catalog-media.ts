@@ -71,9 +71,19 @@ export async function storeImmutable(path: string, output: Buffer, contentType: 
         // the generation so replacement between metadata and download cannot pass.
         try {
             const [meta] = await file.getMetadata();
-            if (!meta.generation || Number(meta.size) !== output.length || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store') throw new Error();
-            const [existing] = await storage.file(name, { generation: meta.generation }).download({ start: 0, end: output.length });
-            if (!existing.equals(output)) throw new Error();
+            if (!meta.generation || Number(meta.size) !== output.length || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity')) throw new Error();
+            // Range is only a transport optimization. Enforce the limit locally
+            // even if storage ignores it; never accumulate a download Buffer.
+            const stream = storage.file(name, { generation: meta.generation }).createReadStream({ start: 0, end: output.length, decompress: false });
+            let offset = 0;
+            try {
+                for await (const value of stream) {
+                    const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value);
+                    if (chunk.length > output.length - offset || !chunk.equals(output.subarray(offset, offset + chunk.length))) throw new Error();
+                    offset += chunk.length;
+                }
+                if (offset !== output.length) throw new Error();
+            } finally { stream.destroy(); }
         } catch { throw new ServiceUnavailableException('MEDIA_RECOVERY_CONFLICT'); }
     }
 }
