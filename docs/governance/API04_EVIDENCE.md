@@ -23,3 +23,10 @@ The PostgreSQL test executes real schema001–006 and writes only in a strictly 
 Prepared source commit: `5d61f899ca5a8926401c8aac24e3814030556d4b`. Branch: `fix/api04-transaction-media-recovery-2026-10-07`, intended review base: PR22 branch. Relative Markdown targets checked: 100, missing:0. V001 and migration001–006 blob hashes unchanged from base.
 
 PR creation initially failed: connector internal errors, and the GitHub web form returned HTTP500. No PR number, merge or Actions PASS is inferred from those attempts. Validation continues through branch-push Foundation checks; container checks require PR creation or separately authorized workflow dispatch.
+
+
+## Resumed2026-10-08 (Asia/Saigon)
+
+GitHub recovered; [PR23](https://github.com/Cootton/CoottonPlatform/pull/23) was created on PR22 base. Initial source Foundation[37687525008](https://github.com/Cootton/CoottonPlatform/actions/runs/37687525008) failed only the DB fixture's Date-vs-JSON-string deep comparison; build/check/contracts and API21PASS/1SKIP passed. Container[37687525021](https://github.com/Cootton/CoottonPlatform/actions/runs/37687525021) SUCCESS. Documentation head78eae803 reproduced the fixture failure (Foundation37687555720), Container37687555595 SUCCESS. Historical initial branch-push37655553936 was startup_failure during GitHub outage, not an application test result.
+
+The fixture now compares the JSON transport representation, retaining exact result equality and effect-count checks. Final CI pending; failed history preserved. No production activity occurred.

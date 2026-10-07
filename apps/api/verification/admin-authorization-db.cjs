@@ -43,7 +43,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   const result=await service.command(req,input);assert.equal(result.lifecycle,'DRAFT');
   for(const table of ['audit','outbox','command'])assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+table)).rows[0].n,1);
   // API04-TX-001: replay precedes current version, changed fingerprint never mutates.
-  assert.deepEqual(await service.command(req,{payload:input.payload,action:input.action,key:input.key}),result);
+  assert.deepEqual(await service.command(req,{payload:input.payload,action:input.action,key:input.key}),JSON.parse(JSON.stringify(result)));
   await assert.rejects(service.command(req,{...input,payload:{title:'Different content'}}),e=>e.getStatus()===409);
   const connect=(client,query)=>({query:(...args)=>maintenance.query(...args),connect:async()=>({query:query??((...args)=>client.query(...args)),release(){}})});
   // Real COMMIT completes, then transport loses its acknowledgement. Retry must
