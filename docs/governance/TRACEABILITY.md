@@ -86,3 +86,14 @@ Owner ACCEPTED:
 > Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
 
 [Required endpoint fields and review record](../engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
+
+## API-01 — Source inventory evidence
+
+| Requirement / evidence | Source and coverage | Gate scope / remaining work |
+|---|---|---|
+| REQ-API01-INVENTORY-001 / EVD-API01-SOURCE-001 | [HTTP inventory](../engineering/API01_HTTP_INVENTORY.md); main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`; 16 source files verified against Git blob hashes; 13 backend method/path pairs match OpenAPI; 10 logical Web proxies mapped | Inventory checks PASS only; GATE-CONTRACT-001 and SEC/DATA/RELEASE not closed. API01-F001…006 require contract/status/auth/edge-case follow-up |
+
+RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Cootton/CoottonPlatform/pull/19) is a separate unmerged review dependency. No existing ADR or ACCEPTED decision changed. ACT006 runtime evidence remains bounded to its original scenarios.
+

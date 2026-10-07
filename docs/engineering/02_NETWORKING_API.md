@@ -65,3 +65,9 @@ Owner ACCEPTED:
 > Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
 
 [Required endpoint fields and review record](ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
+## API-01 — Actual HTTP surface
+
+Use [the pinned source inventory](API01_HTTP_INVENTORY.md) for current routes, methods, expected statuses, headers, data guards and Web proxy behavior. Generic method/status teaching above does not override these source-derived facts. API01-F001…006 are inputs to API-02/API-03/API-04; inventory verification does not close Production Gates.
+

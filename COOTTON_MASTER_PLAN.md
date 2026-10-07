@@ -70,3 +70,9 @@ Owner ACCEPTED:
 > Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
 
 [Required endpoint fields and review record](docs/engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
+## API-01 — Endpoint inventory · 2026-10-07
+
+[HTTP inventory](docs/engineering/API01_HTTP_INVENTORY.md) pins main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`: 13 backend operations and 10 logical Web proxy operations. Work reads this after the API/networking module and before API-02 contract work. API-01 is VERIFIED for source inventory only; six findings remain follow-ups. The owner endpoint rule is documented in separate, unmerged [PR #19](https://github.com/Cootton/CoottonPlatform/pull/19); do not assume it is already on main. Existing ACCEPTED decisions and runtime checkpoint retain their authority.
+
