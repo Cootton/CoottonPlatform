@@ -93,3 +93,10 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Preserve applied001–006, V001, accepted D08/domain contracts and ACT006 runtime. Cooperating advisory protocol is not privileged-maintenance bypass proof; media preparation remains API-04. Full production gates remain OPEN.
 
 - EVD-API03-001: exactsource742bdee2 Foundation37654596533/Container37654596511 SUCCESS; contracts12PASS,API19PASS/1SKIP,PostgreSQL2PASS. Fixed first-run fixture42P08; history retained.83 relative links/syntax checks pass; no full Production Gate PASS.
+
+
+## 2026-10-07 — API04-TX-001 (prepared source, not deployed)
+
+- Preserve SQL business/audit/outbox/receipt atomicity, UUID identities and applied migrations001–006. Add real disposable DB proof for replay, fingerprint denial, lost COMMIT acknowledgement, rollback, version races and media attachment retry.
+- Verify existing immutable Storage bytes/size/MIME/private metadata at a pinned generation before412 reuse. Resume partial video/poster safely; invalidate cache on successful replay and discard connection when rollback fails.
+- Add [API04 contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md), ADR0009, source evidence and explicit OPEN durable-intent/orphan-cleanup/retention gates. No runtime/grant/schema/delete/commerce change; ACCEPTED domain decisions retained.

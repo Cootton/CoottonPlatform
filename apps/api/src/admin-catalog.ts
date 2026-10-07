@@ -124,6 +124,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         }
         const fingerprint = createHash('sha256').update(canonical(input)).digest('hex');
         let client: PoolClient | undefined;
+        let discardClient = false;
         let image: Awaited<ReturnType<typeof prepareImage>> | undefined;
         let thumbnail: Awaited<ReturnType<typeof prepareThumbnail>> | undefined;
         let video: Awaited<ReturnType<typeof prepareVideo>> | undefined;
@@ -134,7 +135,8 @@ export class AdminCatalogService implements OnModuleDestroy {
                 const replay = (await db.query('SELECT fingerprint,result FROM catalog_core.command WHERE actor_id=$1 AND operation=$2 AND key=$3', [actor, action, key])).rows[0];
                 if (replay) {
                     if (replay.fingerprint !== fingerprint)
-                        throw new ConflictException();
+                        throw new ConflictException('IDEMPOTENCY_CONFLICT');
+                    this.cache.invalidate();
                     return replay.result;
                 }
                 const target = (await db.query('SELECT lifecycle,version FROM catalog_core.product WHERE id=$1', [id])).rows[0];
@@ -164,6 +166,7 @@ export class AdminCatalogService implements OnModuleDestroy {
                 if (prior.fingerprint !== fingerprint)
                     throw new ConflictException('IDEMPOTENCY_CONFLICT');
                 await client.query('COMMIT');
+                this.cache.invalidate();
                 return prior.result;
             }
             let product: Record<string, unknown> | undefined;
@@ -276,11 +279,11 @@ export class AdminCatalogService implements OnModuleDestroy {
                 try {
                     await client.query('ROLLBACK');
                 }
-                catch { }
+                catch { discardClient = true; }
             this.safe(e);
         }
         finally {
-            client?.release();
+            client?.release(discardClient);
         }
     }
     async image(request: AdminRequest, idValue: string, assetValue: string, thumbnail = false) {

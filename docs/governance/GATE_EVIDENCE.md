@@ -40,3 +40,7 @@ Executable paths ở bảng thuộc full PR repository, không phải files tron
 **Không gate tổng nào được promote PASS từ docs sync.** Selected scenario thành công được lưu đúng mức evidence, không phủ nhận deployment đã xảy ra và không coi deployment là full readiness.
 
 Recheck triggers: code/schema/auth/media/cache/permission changes; redeploy hoặc traffic revision change; republish/product version change; review source expiry hoặc quyền media thay đổi; release scope mở commerce/indexing/AI. Current v23 evidence không đảm bảo publication tương lai. Owner/domain/operations reviewer và execution scope phải được ghi khi đóng gate; không invent reviewer approval hay thời hạn expiry.
+
+## API04 scoped overlay · 2026-10-07
+
+[API04 evidence](API04_EVIDENCE.md) records source CI proof separately from production. Real disposable DB and Storage transport fixtures exercise API04-I01–I07; no production crash/failover, real Storage retry, orphan cleanup or restore is claimed. API04-RECOVERY-002 remains OPEN. Full gates and ACT006 runtime checkpoint are unchanged.

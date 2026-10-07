@@ -52,3 +52,6 @@
 
 
 - API03-AUTHZ-001: owner assigned endpoint/action authorization verification. Read API_AUTHORIZATION_MATRIX.md, ADR0008 and API03_EVIDENCE.md. Current source scope is a separately bootstrapped singleton human owner; never provision staff/AI grants from session labels. Exact allowed operations/action/readiness and canonical reauthorization apply before replay. Tests/PR only; applied migrations/V001/runtime unchanged. Subject-guard revocation proof assumes cooperating maintenance; custom-token human admission intentionally denied; media external recovery remains API-04.
+
+
+- API04-TX-001: owner assigned transaction/idempotency/version/media-recovery verification. Read API_TRANSACTION_MEDIA_RECOVERY.md, ADR0009 and API04_EVIDENCE.md. Source/tests/PR scope only. Preserve exact-request retry with durable receipt and reauthorization;412 requires pinned-generation integrity checks. Never delete media on SQL catch/uncertain COMMIT. API04-RECOVERY-002 retention, durable intents and orphan cleanup remain OPEN; do not invent policy, execute migrations, grants or production deletes. Applied001–006/V001/runtime remain unchanged.
