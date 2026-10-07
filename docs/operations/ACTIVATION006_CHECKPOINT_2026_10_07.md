@@ -14,7 +14,7 @@ Before applying: captured existing visible_product definition and fingerprints o
 - API digest: `sha256:75065b4658ce021d8a7777f9261a9837759982954ff49b1b64b021538ee42d54` in existing cootton-containers repository.
 - New ready revision: `cootton-api-act006-3c768d6`,100% traffic after no-traffic revision HTTP acceptance. Previous `cootton-api-00005-ff6` retained.
 - Existing attached cootton-auth-verifier identity, environment/pinned secret refs, private bucket,1CPU/512Mi, max1, concurrency10 and timeout60s unchanged. Web artifact unchanged.
-- Temporary verification tag removed and one-off read-only verification job deleted after successful execution. Cloud logs retain scoped results. Local copied CLI authentication state removed after task; original credentials remain unchanged.
+- Temporary verification tag removed and one-off read-only verification job deleted after successful execution. Cloud logs retain scoped results. Local copied CLI authentication state is isolated in ignored work/.private-gcloud; cleanup was blocked by sandbox policy even after a scoped permission grant. Original credentials remain unchanged. Owner cleanup is required; no authentication material uploaded.
 
 ## Verification and traceability
 
