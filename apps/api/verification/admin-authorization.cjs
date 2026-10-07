@@ -15,6 +15,19 @@ function fixtureGuard(verify){
  mod._compile(fs.readFileSync(filename,'utf8'),filename);return mod.exports.AdminIdentityGuard;
 }
 function context(headers={authorization:'Bearer fixture'}){return {switchToHttp:()=>({getRequest:()=>({headers,method:'GET'})})};}
+test('all actual Admin controller methods are guarded and match policy/OpenAPI operation registries',()=>{
+ const {AdminCatalogModule}=require('../dist/admin-catalog');
+ const {GUARDS_METADATA,PATH_METADATA,METHOD_METADATA}=require('@nestjs/common/constants');
+ const {RequestMethod}=require('@nestjs/common');
+ const spec=require('../../../docs/contracts/openapi.json');
+ const [controller]=Reflect.getMetadata('controllers',AdminCatalogModule);
+ assert.ok(Reflect.getMetadata(GUARDS_METADATA,controller).includes(AdminIdentityGuard));
+ const methods=Object.getOwnPropertyNames(controller.prototype).filter(name=>name!=='constructor');
+ assert.deepEqual(methods.filter(name=>name!=='command').sort(),[...CATALOG_READ_OPERATIONS].sort());
+ assert.equal(methods.length,9);
+ for(const name of methods){const handler=controller.prototype[name],method=Reflect.getMetadata(METHOD_METADATA,handler),relative=Reflect.getMetadata(PATH_METADATA,handler).replace(/:([a-zA-Z]+)/g,'{$1}');assert.equal(method,name==='command'?RequestMethod.POST:RequestMethod.GET);assert.ok(spec.paths['/v1/admin/'+relative][name==='command'?'post':'get']);}
+ assert.deepEqual(actions.sort(),spec.components.schemas.AdminCommand.oneOf.map(s=>s.properties.action.const).sort());
+});
 test('identity admission: real guard checks token/project/subject/provider/freshness; SDK failure never grants',async()=>{
  process.env.FIREBASE_PROJECT_ID='cootton-firebase';delete process.env.FIREBASE_AUTH_EMULATOR_HOST;
  let supplied=token(),failure=null,calls=0;
