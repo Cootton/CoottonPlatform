@@ -54,3 +54,10 @@
 ## SYNC-PR16-006 · 2026-10-07
 
 Sync stacked PR17 with PR16 56f80580e50b43c94df65d3ae79ef025ea957123 using a merge commit preserving both histories. Keep migration001–005 unchanged and006 prepared, all source/CI fixes and ADR0006. Append explicit evidence/traceability overlay and preserve V001/ACCEPTED decisions. No production migration, deployment, republish or merge performed.
+
+
+## MERGE-PR16-001 · 2026-10-07
+
+> **MERGE-PR16-001 · 2026-10-07:** PR #16 đã merge vào `main` tại `6205aa2ff1eee6c750fa277bb1faf5ae397c6ff6`; source fixes56f8058 được giữ nguyên. PR #17 đã chuyển base sang `main` và đang kiểm tra trước merge. Các ghi chú PR16 open/unmerged/stacked bên dưới là lịch sử. Migration006 vẫn chưa áp dụng production; merge không chứng minh runtime/deployment hoặc đóng Production Gates.
+
+Review repeated at pinned56f8058; no new blocking finding; Foundation/Container/security checks success. PR17 source equivalence and documentation diff rechecked after retarget. No production migration or deployment from merging source.

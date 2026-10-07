@@ -1,5 +1,8 @@
 # Migration006 / source synchronization
 
+> **MERGE-PR16-001 · 2026-10-07:** PR #16 đã merge vào `main` tại `6205aa2ff1eee6c750fa277bb1faf5ae397c6ff6`; source fixes56f8058 được giữ nguyên. PR #17 đã chuyển base sang `main` và đang kiểm tra trước merge. Các ghi chú PR16 open/unmerged/stacked bên dưới là lịch sử. Migration006 vẫn chưa áp dụng production; merge không chứng minh runtime/deployment hoặc đóng Production Gates.
+
+
 `SYNC-PR16-006` · 2026-10-07 · source `56f80580e50b43c94df65d3ae79ef025ea957123` · stacked documentation PR #17.
 
 ## Authority and preserved history
