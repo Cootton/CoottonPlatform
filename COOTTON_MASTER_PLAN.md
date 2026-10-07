@@ -1,5 +1,7 @@
 # COOTTON MASTER PLAN — Index cho Work và engineering
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](docs/governance/MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
 > Hiện hành: đọc [FLOW-CATALOG-001](docs/governance/CATALOG_FLOW_EVIDENCE.md). Luồng Boxy đã có checkpoint intake/review/publish 04/10; buyer read và withdraw trực tiếp 07/10, cuối DRAFT v23. V001 bundle đã sync PR16 source18768a1 tới141; main503ae0 là baseline lịch sử, PR16 chưa merged. Nội dung 'không runtime verification' bên dưới thuộc review trước kiểm chứng này.
 
 `MP-INDEX-001` · V001 cập nhật tại chỗ · 2026-10-07 · Asia/Saigon

@@ -1,5 +1,8 @@
 # Tích hợp vào GitHub và handoff cho Work
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
+
 `GOV-INTEGRATE-001` · Gói này là documentation subset đã sync pinned PR16 source18768a1 và checkpoint04/10; runtime overlay07/10, không thay repository source.
 
 ## Integration sequence

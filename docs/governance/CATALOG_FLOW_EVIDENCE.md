@@ -1,5 +1,8 @@
 # Luồng catalog thật — evidence và trạng thái hiện hành
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
+
 `FLOW-CATALOG-001` · 2026-10-07 · Scoped catalog acceptance, không phải chứng nhận toàn bộ production gates.
 
 ## Nguồn và precedence

@@ -1,5 +1,8 @@
 # Requirement → decision → contract → gate → evidence
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
+
 `GOV-TRACE-001` · 2026-10-07. ID của kiến thức không approval. Một row “covered” chỉ nói có tài liệu, không PASS runtime.
 
 Effective applicability: [CURRENT_STATE](CURRENT_STATE.md). Review resolutions tại [RVW-ENG-001](REVIEW.md) và [ADR-KNOWLEDGE-002](../adr/knowledge-002-review-reconciliation.md); CONFLICT-001…010 đã closed về interpretation, OPEN-001…007 là registry gồm completed documentation reconcile và remaining evidence/adoption triggers.
@@ -63,3 +66,11 @@ Module→contract links point to preserved files; future implementation rows ph�
 ## Flow-level traceability and gate roll-up
 
 [FLOW-REQ-001…005 → authority/source → evidence → gate](GATE_EVIDENCE.md) hoàn thiện traceability cho catalog journey. EVD-DEPLOY-20261004 là reported checkpoint; EVD-BROWSER-20261007 là observed scenarios; không nhập hai mức evidence thành toàn bộ gate PASS. [Screenshot buyer404](../evidence/COOTTON_WITHDRAW_BUYER_2026_10_07.png) được đóng gói cùng tài liệu để link không phụ thuộc workspace cũ.
+
+## SYNC-PR16-006 — current source regression evidence
+
+| Stable ID | Decision → implementation → evidence | State |
+|---|---|---|
+| SRC-PR16-56F8058 | PR16 head56f80580e50b43c94df65d3ae79ef025ea957123 → ADR0006 → migration006/shared Firebase initializer | Current prepared source; supersedes18768a1 implementation |
+| EVD-CI-PR16-56F8058 | PR16-F001/F002 → API and disposable PostgreSQL tests → Foundation37605401243 / Container37605401224 | PASS for bounded source/CI scope; not production |
+| CHG-SYNC-006 | [Source/migration reconciliation](MIGRATION006_SOURCE_SYNC.md) → source/CI/activation mapping and release recheck triggers |006 not production-applied; full gates retain open status |

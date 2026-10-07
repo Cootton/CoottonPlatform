@@ -50,3 +50,7 @@
 - Financial resolutions theo D02/D04–D06; owner128 conditional deployment authorization giữ; reported bearer approach và cookie alternative distinguished.
 - Clarified scoped authorized AI tool actions,401/conditional-read/cache semantics, applicable PASS vs reviewed N/A gates.
 - Main/local/auth/production evidence gaps giữ trong OPEN ledger; no fabricated proof, runtime changes or GitHub publication.
+
+## SYNC-PR16-006 · 2026-10-07
+
+Sync stacked PR17 with PR16 56f80580e50b43c94df65d3ae79ef025ea957123 using a merge commit preserving both histories. Keep migration001–005 unchanged and006 prepared, all source/CI fixes and ADR0006. Append explicit evidence/traceability overlay and preserve V001/ACCEPTED decisions. No production migration, deployment, republish or merge performed.

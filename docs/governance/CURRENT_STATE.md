@@ -1,5 +1,8 @@
 # Trạng thái và quyết định hiện hành — cửa vào bắt buộc
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
+
 > Evidence update 07/10/2026 — FLOW-CATALOG-001: PR16/migration005 và browser live mới hơn baseline review. Product Boxy đã được thu hồi APPROVED v22 → DRAFT v23; buyer detail 404, catalog rỗng. Đọc [evidence hiện hành](CATALOG_FLOW_EVIDENCE.md) trước áp dụng các nhận định baseline bên dưới. Receipt≤60s không còn là blocker của publication source mới. Các gate khác chưa tự động PASS.
 
 `GOV-STATE-001` · V001 revision `engineering_review_2026_10_07` · Asia/Saigon.
@@ -43,7 +46,7 @@ CORE và paragraphs lịch sử “precision/tender/MOQ/return rules pending” 
 | Layer | Nguồn hiện hành | Evidence / giới hạn |
 |---|---|---|
 | Main | PR16 base503ae0 | Baseline lịch sử; không dùng để mô tả publication runtime |
-| Source PR16 | head18768a1ded3be76d4df9a0960369170b50c72850, open/unmerged ngày07/10 | V001 tới141, ADR0004/0005 và publication contract; source snapshot vẫn ghi pending activation |
+| Source PR16 | head56f80580e50b43c94df65d3ae79ef025ea957123, open/unmerged ngày07/10 | ADR0006, migration006 prepared, both review fixes and API/PostgreSQL CI passed; source readiness differs from deployed runtime |
 | Deployment checkpoint | [04/10](../operations/CATALOG_PUBLICATION_CHECKPOINT_2026_10_04.md) | Owner activation, migration005, build/revisions, publishv22 được checkpoint báo; chưa query lại hạ tầng ở task sync |
 | Browser runtime | [FLOW-CATALOG-001](CATALOG_FLOW_EVIDENCE.md),07/10 | Buyer đọc Boxy; owner Admin withdraw APPROVEDv22→DRAFTv23; detail404/catalog absent; một URL ảnh cũ bị từ chối |
 | Final product state | Boxy DRAFTv23, sample DRAFTv5 | Không public product; không commerce/payment/points/B2B/indexing/public video |

@@ -1,5 +1,4 @@
-<!-- SYNC-PR16-001: pinned PR16 source18768a1, synced 2026-10-07. -->
-> **Trạng thái hiện hành:** [CURRENT_STATE](docs/governance/CURRENT_STATE.md) và [FLOW-CATALOG-001](docs/governance/CATALOG_FLOW_EVIDENCE.md) có precedence về evidence. Header DRAFTv14/pending activation dưới đây là snapshot source 04/10 trước activation; checkpoint sau đó ghi publish v22, browser 07/10 xác minh withdraw → DRAFTv23. Không dùng header lịch sử làm trạng thái runtime hiện tại.
+> **Current source checkpoint07/10 — PR16-FIX-001:** owner assigned two review fixes and API CI checks. Shared Firebase initialization fixes cold public media; new snapshot references and additive006 fix measurement withdrawal. Applied001–005 are preserved.006/runtime deployment not executed by this task. Read ADR0006/PR16_REVIEW_FIXES.md. Historical source headers below are not a fresh runtime observation.
 
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
@@ -4776,6 +4775,10 @@ Owner requests Cootton-authored conservative care advice and confirms commercial
 Review/publication source and OpenAPI prepared under ADR0005 and docs/contracts/CATALOG_PUBLICATION.md. Catalog-only reference prices can be shown after review; effective purchase offerings and seller transaction flags remain inactive. The exact005 migration/grants/flag/deployment/product activation scope is CATALOG_PUBLICATION_ACTIVATION.md. Compile checks and13 focused publication/cache/Admin/intake scenarios pass locally. Migration005, public-image route, care save, actual review and publication have NOT executed yet. Public video remains deferred/private; noindex, payments, CP/VC/VCS and orders remain inactive. Source completion must not be reported as live acceptance.
 
 
+## Appendix PR16-FIX-001 — Review remediation2026-10-07
+
+Owner assigned fixes PR16-F001/F002 and API CI checks. Read docs/adr/0006-catalog-review-fixes.md and CATALOG_MEASUREMENT_ACTIVATION.md. No new grant; snapshots retain measurement references privately, additive006 guards legacy snapshots via canonical chart activity. Immutable reviews/applied001–005 unchanged. Focused API tests plus disposable PostgreSQL16 view/cache regression in CI. Production006/deploy/product republish and commerce/release remain separate tasks. PR17 pinned18768a1 docs need reconcile before merge; no V002.
+
 ## Appendix MP-ENG-001. Engineering knowledge consolidation — 2026-10-07
 
 Stable ID `MP-ENG-001`, documentation scope assigned by owner. Start at [COOTTON_MASTER_PLAN.md](COOTTON_MASTER_PLAN.md) for reading order, modular engineering knowledge, stable IDs, decision/source/conflict registry, ADR/changelog, traceability and Production Gates. V001 remains the same working version; historical text and contracts are retained. This section adds documentation, not execution rights or runtime readiness.
@@ -4800,3 +4803,8 @@ Normative conflicts resolved bằng source precedence. Không đổi accepted bu
 ## SYNC-PR16-001 — explicit historical-status correction
 
 Nhận định main503ae0/no-live-evidence/missing ADR0004/renewal60s ở review hoặc appendices trước đó là historical baseline findings. ADR0004/0005 và V001 PR16 tới141 đã sync; checkpoint04/10 ghi activation, browser07/10 xác nhận withdraw DRAFTv23. FLOW-CATALOG-001/CURRENT_STATE là evidence hiện hành. RISK-001 receipt liveness được source migration005 giải quyết; full production gates và commerce vẫn chưa PASS.
+
+
+## SYNC-PR16-006 — source and migration reconciliation
+
+PR16 source `56f80580e50b43c94df65d3ae79ef025ea957123` supersedes18768a1 for implementation. ADR0006, cold-media initialization and measurement withdrawal fixes, migration006 and API/PostgreSQL CI are preserved. Applied001–005 remain immutable. See [sync evidence](docs/governance/MIGRATION006_SOURCE_SYNC.md). Migration006/deployment are not executed by this sync; previous runtime evidence remains attributed to its original source/revision. ACCEPTED decisions and knowledge appendices remain intact.

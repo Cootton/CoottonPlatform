@@ -1,5 +1,8 @@
 # Gate evidence sau synchronization
 
+> **SYNC-PR16-006 · 2026-10-07:** Source hiện hành là PR #16 `56f80580e50b43c94df65d3ae79ef025ea957123`; [bản đồng bộ migration006](MIGRATION006_SOURCE_SYNC.md) phân biệt source/CI đã kiểm chứng với deployment checkpoint lịch sử. Migration006 đã chuẩn bị, **chưa áp dụng production**. Các source18768a1/pending notices dưới đây là lịch sử; không chứng minh runtime đang chạy bản sửa.
+
+
 `GOV-GATE-EVD-001` · 2026-10-07 · Review tài liệu bởi Codex; không thay approval của owner/domain/security/operations reviewers.
 
 Nguồn: [pinned PR16](https://github.com/Cootton/CoottonPlatform/pull/16) head `18768a1ded3be76d4df9a0960369170b50c72850`; [checkpoint 04/10](../operations/CATALOG_PUBLICATION_CHECKPOINT_2026_10_04.md); [browser 07/10](CATALOG_FLOW_EVIDENCE.md). Checkpoint là reported evidence; browser là observed evidence cho scenario ghi rõ. Runtime revision/digest được checkpoint báo, chưa introspect lại. Product cuối DRAFTv23; không public commerce.

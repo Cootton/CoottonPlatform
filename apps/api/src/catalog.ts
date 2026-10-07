@@ -28,7 +28,7 @@ function parameters(query: Record<string, unknown>): { mode: SalesMode; cat: Cat
 }
 
 @Injectable()
-class CatalogRepository implements OnModuleDestroy {
+export class CatalogRepository implements OnModuleDestroy {
   constructor(private readonly cache: MemoryCache) {}
   private pool: Pool | undefined;
   private database(): Pool {
@@ -105,4 +105,3 @@ class PublicMediaController {
 }
 @Module({controllers:[CatalogController,PublicMediaController],providers:[CatalogRepository]})
 export class CatalogModule {}
-
