@@ -14,7 +14,7 @@ Before applying: captured existing visible_product definition and fingerprints o
 - API digest: `sha256:75065b4658ce021d8a7777f9261a9837759982954ff49b1b64b021538ee42d54` in existing cootton-containers repository.
 - New ready revision: `cootton-api-act006-3c768d6`,100% traffic after no-traffic revision HTTP acceptance. Previous `cootton-api-00005-ff6` retained.
 - Existing attached cootton-auth-verifier identity, environment/pinned secret refs, private bucket,1CPU/512Mi, max1, concurrency10 and timeout60s unchanged. Web artifact unchanged.
-- Temporary verification tag removed and one-off read-only verification job deleted after successful execution. Cloud logs retain scoped results. Local copied CLI authentication state is isolated in ignored work/.private-gcloud; cleanup was blocked by sandbox policy even after a scoped permission grant. Original credentials remain unchanged. Owner cleanup is required; no authentication material uploaded.
+- Temporary verification tag removed and one-off read-only verification job deleted after successful execution. Cloud logs retain scoped results. Local copied CLI authentication state was removed by the owner on2026-10-07 after sandbox blocked automated cleanup. Follow-up filesystem check confirmed work/.private-gcloud no longer exists. Cleanup is complete; original credentials remain unchanged and no authentication material was uploaded.
 
 ## Verification and traceability
 
@@ -35,3 +35,8 @@ ADR0006 → migration006/shared initializer → source CI → actual DB/storage/
 No real product republish, durable product mutation, new identity/grant, commerce/order/payment/points/indexing or public video activation. Existing older unpublished approvals still require return-to-draft/fresh review before publish. An approved future positive public-image buyer journey can provide additional HTTP200 evidence without being inferred from this task.
 
 Rollback boundary: API rollback retains006 measurement guard but can reintroduce cold-media failure; rolling view back to005 alone reintroduces measurement revocation. Prefer contained mode/compatible roll-forward; do not edit005, delete review history or republish as recovery side effect. Full recovery/readiness remains governed by D10.
+
+
+## ACT006-CLEANUP-001 — 2026-10-07
+
+Owner reported deletion of the temporary CLI configuration directory. Independent local Test-Path returned false for the exact task work/.private-gcloud directory. This supersedes the earlier cleanup-blocked checkpoint without changing runtime verification or Production Gate scope.
