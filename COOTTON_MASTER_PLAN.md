@@ -63,9 +63,19 @@ Repository checkout baseline: `Cootton/CoottonPlatform`, SHA `503ae0be7f2956af2b
 
 Đã tổng hợp tài liệu ≠ đã triển khai ≠ đã pass Production Gates. Các evidence runtime lịch sử giữ nguyên nguồn/thời điểm, không dùng docs check thay security/load/restore/payment acceptance. Bước tiếp theo của Work: xác minh HEAD và các checkpoint chưa merge, chọn task nhỏ được owner giao, khóa dependencies và chỉ thực thi trong scope đó.
 
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](docs/engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
 ## API-01 — Endpoint inventory · 2026-10-07
 
 [HTTP inventory](docs/engineering/API01_HTTP_INVENTORY.md) pins main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`: 13 backend operations and 10 logical Web proxy operations. Work reads this after the API/networking module and before API-02 contract work. API-01 is VERIFIED for source inventory only; six findings remain follow-ups. The owner endpoint rule is documented in separate, unmerged [PR #19](https://github.com/Cootton/CoottonPlatform/pull/19); do not assume it is already on main. Existing ACCEPTED decisions and runtime checkpoint retain their authority.
+
 
 
 ## API-02 — Contract records and reconciliation
@@ -73,11 +83,14 @@ Repository checkout baseline: `Cootton/CoottonPlatform`, SHA `503ae0be7f2956af2b
 Read [endpoint/action contracts](docs/contracts/API_ENDPOINT_CONTRACTS.md) → [OpenAPI](docs/contracts/openapi.json) → [ADR0007](docs/adr/0007-http-contract-reconciliation.md) → [API-02 evidence](docs/governance/API02_EVIDENCE.md). Prepared source changes make command201 explicit and reconcile parser/proxy errors. API-01 remains a historical pinned inventory; ACT006 is still runtime authority. API-03 authorization, API-04 transactions and API-05 complete flow evidence remain open; no full gate PASS.
 
 
+
 ## API-03 — Current owner authorization scope
 
 Read [endpoint/action authorization matrix](docs/contracts/API_AUTHORIZATION_MATRIX.md) → [ADR0008](docs/adr/0008-owner-catalog-authorization.md) → [API-03 evidence](docs/governance/API03_EVIDENCE.md). Prepared source/tests explicitly authorize the singleton human-owner catalog slice; buyer/unbound staff/AI subjects and custom-token admission are denied. Full D08 delegated grants/MFA/recovery and API-04 external media recovery remain open. API-02 statements that API-03 is pending describe its prior checkpoint; this bounded owner-scope verification does not close full security gates or change ACT006 runtime.
 
 
+
 ## API-04 — Transaction / idempotency / version / media recovery
 
 API04-TX-001: owner assigned source verification. Read [transaction and recovery contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md) → [ADR0009](docs/adr/0009-command-media-recovery.md) → [API-04 evidence](docs/governance/API04_EVIDENCE.md), after API-03. Prepared patch verifies immutable object reuse and recovery after partial media/uncertain commit; retains existing SQL atomicity and expectedVersion rules. Historical API-04 pending notices describe prior checkpoints. API04-RECOVERY-002 durable intentions, retention and safe orphan cleanup remain PROPOSED/OPEN. ACT006 remains runtime authority; V001/accepted decisions and applied001–006 are preserved.
+
