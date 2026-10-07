@@ -36,3 +36,10 @@
 
 
 - Owner assignment2026-10-07: fix PR16-F001 cold public media and PR16-F002 measurement withdrawal; run related API checks in CI. Read ADR0006/PR16_REVIEW_FIXES.md. Preserve applied001–005; new006 requires explicit maintenance/release execution. No product/stock reset, republish, new grants, commerce or indexing from source/CI fixes. Runtime evidence is separate from this prepared patch.
+
+- Master Plan reading order: COOTTON_MASTER_PLAN.md → docs/governance/CURRENT_STATE.md → DECISIONS.md → TRACEABILITY.md → GATE_EVIDENCE.md → scoped contracts/ADR and V001. Preserve ACCEPTED decisions and appendices MP-ENG-001/MP-REVIEW-001; newer owner decisions and scoped evidence supersede historical planning/pending notices explicitly.
+- Source/evidence overlay SYNC-PR16-001: source18768a1 through V001141; checkpoint2026-10-04 reports activation/publicationv22; browser2026-10-07 observed withdrawal to DRAFTv23 and public detail/catalog removal. Do not infer payment/AI/indexing/release approval from this journey. Record exact source SHA, reported vs observed evidence, reviewer signoff and recheck triggers before closing gates.
+
+- SYNC-PR16-006: implementation authority is PR16 56f80580e50b43c94df65d3ae79ef025ea957123; read docs/governance/MIGRATION006_SOURCE_SYNC.md before migration/release work.006 is prepared, not production-applied;001–005 immutable. CI does not certify deployment. Earlier source18768a1 overlay is historical.
+
+- **MERGE-PR16-001 · 2026-10-07:** PR #16 đã merge vào `main` tại `6205aa2ff1eee6c750fa277bb1faf5ae397c6ff6`; source fixes56f8058 được giữ nguyên. PR #17 đã chuyển base sang `main` và đang kiểm tra trước merge. Các ghi chú PR16 open/unmerged/stacked bên dưới là lịch sử. Migration006 vẫn chưa áp dụng production; merge không chứng minh runtime/deployment hoặc đóng Production Gates.

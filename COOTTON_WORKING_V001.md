@@ -4778,3 +4778,33 @@ Review/publication source and OpenAPI prepared under ADR0005 and docs/contracts/
 ## Appendix PR16-FIX-001 — Review remediation2026-10-07
 
 Owner assigned fixes PR16-F001/F002 and API CI checks. Read docs/adr/0006-catalog-review-fixes.md and CATALOG_MEASUREMENT_ACTIVATION.md. No new grant; snapshots retain measurement references privately, additive006 guards legacy snapshots via canonical chart activity. Immutable reviews/applied001–005 unchanged. Focused API tests plus disposable PostgreSQL16 view/cache regression in CI. Production006/deploy/product republish and commerce/release remain separate tasks. PR17 pinned18768a1 docs need reconcile before merge; no V002.
+
+## Appendix MP-ENG-001. Engineering knowledge consolidation — 2026-10-07
+
+Stable ID `MP-ENG-001`, documentation scope assigned by owner. Start at [COOTTON_MASTER_PLAN.md](COOTTON_MASTER_PLAN.md) for reading order, modular engineering knowledge, stable IDs, decision/source/conflict registry, ADR/changelog, traceability and Production Gates. V001 remains the same working version; historical text and contracts are retained. This section adds documentation, not execution rights or runtime readiness.
+
+Keep current owner decisions: NestJS/TypeScript modular monolith with shared Next.js, PostgreSQL canonical on current Neon deployment, one Cootton seller and website before payment, CP top-up paused and launch points inactive, AI optional with per-model isolation/no unapproved egress, targeted verification under section106, selective infrastructure reuse under section127. Cloud SQL remains historical target/future migration subject to review. Spring Boot/EC2 are learning references; Redis/Kafka/CQRS/sharding/microservices/gossip are not automatic V1 dependencies.
+
+Historical assistant snippets LLD-OOP-001, LLD-ALG-SEARCH-001, LLD-DS-LINKEDLIST-001 and ARCH-CACHE-002 retain their claimed ACCEPTED labels with provenance in GOV-DEC-001. Owner ratification is not evidenced by those assistant labels. In particular Redis-primary wording does not override sections49/107; applicability/conflict is explicit, no silent decision replacement.
+
+Local checkpoints129–131 (2026-10-03) are reported in an older task output but absent from main at source SHA503ae0be7f2956af2b9c006c364e758e7ee58b03. They report sample/owner bootstrap+restricted catalog roles, keyless Firebase verifier creation, scoped version-pinned Secret Manager preparation; they explicitly do not claim successful deployed Admin login/draft write, image deployment/domain cutover/payment activation. Preserve as SRC-LOCAL-131 pending reconciliation with actual source/runtime; this section neither executes nor certifies those actions. The missing Admin ADR0004 reference must be reconciled separately; ADR-KNOWLEDGE-001 is a distinct decision.
+
+Production gates require scoped contracts, actual security/data/async/performance/payment/AI/operations evidence as applicable and explicit release assignment. Documents/mocks/CI static checks do not prove financial truth, permission correctness or restore readiness. Current task ends with local GitHub-ready docs, no application/runtime changes or GitHub publication.
+
+
+## Appendix MP-REVIEW-001. Reviewed effective state and conflict resolutions — 2026-10-07
+
+Stable ID `MP-REVIEW-001`; owner requests review/synchronization/removal of conflicts. [GOV-STATE-001](docs/governance/CURRENT_STATE.md) centralizes applicability, evidence và authorization. [ADR-KNOWLEDGE-002](docs/adr/knowledge-002-review-reconciliation.md) ghi reconciliation; [RVW-ENG-001](docs/governance/REVIEW.md) ghi findings.
+
+Generic planning-only/no-deploy headers là historical; owner128 conditional website assignment giữ nguyên. CORE pending precision/tender/MOQ/return baseline được scoped D02/D04/D05/D06 giải quyết, actual provider/config/funding/ops facts thiếu vẫn pending. Cookie D10 là alternative design; Admin124/local129 bearer BFF là reported approach, không proof live auth hoặc mandate dual-mode. Main/local divergence là evidence gap, không competing business truth.
+
+Normative conflicts resolved bằng source precedence. Không đổi accepted business/stack choice, không promote assistant labels thành vendor approval, không fabricate missing evidence. Modules đọc CURRENT_STATE trước. Applicable gates cần PASS; excluded disabled features cần reviewed NOT_APPLICABLE rationale. Không code/schema/OpenAPI/grant/runtime changes từ review này.
+
+## SYNC-PR16-001 — explicit historical-status correction
+
+Nhận định main503ae0/no-live-evidence/missing ADR0004/renewal60s ở review hoặc appendices trước đó là historical baseline findings. ADR0004/0005 và V001 PR16 tới141 đã sync; checkpoint04/10 ghi activation, browser07/10 xác nhận withdraw DRAFTv23. FLOW-CATALOG-001/CURRENT_STATE là evidence hiện hành. RISK-001 receipt liveness được source migration005 giải quyết; full production gates và commerce vẫn chưa PASS.
+
+
+## SYNC-PR16-006 — source and migration reconciliation
+
+PR16 source `56f80580e50b43c94df65d3ae79ef025ea957123` supersedes18768a1 for implementation. ADR0006, cold-media initialization and measurement withdrawal fixes, migration006 and API/PostgreSQL CI are preserved. Applied001–005 remain immutable. See [sync evidence](docs/governance/MIGRATION006_SOURCE_SYNC.md). Migration006/deployment are not executed by this sync; previous runtime evidence remains attributed to its original source/revision. ACCEPTED decisions and knowledge appendices remain intact.
