@@ -62,3 +62,7 @@ Repository checkout baseline: `Cootton/CoottonPlatform`, SHA `503ae0be7f2956af2b
 [Phản biện hệ thống và hướng xử lý](docs/governance/ADVERSARIAL_REVIEW.md) ghi11 risks, priorities, proposed remedies và evidence cần đạt. Đây là PROPOSED remediation; không thay accepted decisions hoặc runtime.
 
 Đã tổng hợp tài liệu ≠ đã triển khai ≠ đã pass Production Gates. Các evidence runtime lịch sử giữ nguyên nguồn/thời điểm, không dùng docs check thay security/load/restore/payment acceptance. Bước tiếp theo của Work: xác minh HEAD và các checkpoint chưa merge, chọn task nhỏ được owner giao, khóa dependencies và chỉ thực thi trong scope đó.
+
+## API-01 — Endpoint inventory · 2026-10-07
+
+[HTTP inventory](docs/engineering/API01_HTTP_INVENTORY.md) pins main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`: 13 backend operations and 10 logical Web proxy operations. Work reads this after the API/networking module and before API-02 contract work. API-01 is VERIFIED for source inventory only; six findings remain follow-ups. The owner endpoint rule is documented in separate, unmerged [PR #19](https://github.com/Cootton/CoottonPlatform/pull/19); do not assume it is already on main. Existing ACCEPTED decisions and runtime checkpoint retain their authority.

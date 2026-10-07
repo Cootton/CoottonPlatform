@@ -77,3 +77,12 @@ Module→contract links point to preserved files; future implementation rows ph�
 | SRC-PR16-56F8058 | PR16 head56f80580e50b43c94df65d3ae79ef025ea957123 → ADR0006 → migration006/shared Firebase initializer | Current prepared source; supersedes18768a1 implementation |
 | EVD-CI-PR16-56F8058 | PR16-F001/F002 → API and disposable PostgreSQL tests → Foundation37605401243 / Container37605401224 | PASS for bounded source/CI scope; not production |
 | CHG-SYNC-006 | [Source/migration reconciliation](MIGRATION006_SOURCE_SYNC.md) → source/CI/activation mapping and release recheck triggers |006 not production-applied; full gates retain open status |
+
+
+## API-01 — Source inventory evidence
+
+| Requirement / evidence | Source and coverage | Gate scope / remaining work |
+|---|---|---|
+| REQ-API01-INVENTORY-001 / EVD-API01-SOURCE-001 | [HTTP inventory](../engineering/API01_HTTP_INVENTORY.md); main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`; 16 source files verified against Git blob hashes; 13 backend method/path pairs match OpenAPI; 10 logical Web proxies mapped | Inventory checks PASS only; GATE-CONTRACT-001 and SEC/DATA/RELEASE not closed. API01-F001…006 require contract/status/auth/edge-case follow-up |
+
+RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Cootton/CoottonPlatform/pull/19) is a separate unmerged review dependency. No existing ADR or ACCEPTED decision changed. ACT006 runtime evidence remains bounded to its original scenarios.

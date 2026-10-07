@@ -66,3 +66,10 @@ Review repeated at pinned56f8058; no new blocking finding; Foundation/Container/
 ## ACT006-RUNTIME-001 — 2026-10-07
 
 Migration006 applied and verified idempotent; exact fixed API artifact deployed100%. Actual storage fresh-process probe, production rollback measurement/cache checks and HTTP hidden-path acceptance passed within documented scope. [Checkpoint](docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md) supersedes historical006 pending/source-only notices explicitly. ACCEPTED decisions and original data remain unchanged; full Production Gates remain open.
+
+
+## 2026-10-07 — CHG-API01-001
+
+- Added API-01 HTTP inventory pinned to main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`: 13 backend operations, 10 logical Web proxy operations, request/response/access/status/header/data semantics and 13 command payload variants.
+- Verified 16 source-file Git blob hashes and 13 source/OpenAPI method/path pairs. Recorded API01-F001…006, including command POST source-default201 vs OpenAPI200, as follow-up gaps; no source/spec behavior silently changed.
+- Linked reading order, networking and traceability. PR19 endpoint-rule documentation remains separate and unmerged. No runtime mutation, deployment or full Production Gate PASS.
