@@ -91,3 +91,5 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Reject custom/anonymous/missing Firebase provider and uid/sub mismatch; recheck canonical identity age. Publication readiness is checked before receipt replay (disabled409 rather than prior success), documented as intentional tightening.
 - Added actual guard/service HTTP denials, per-operation/action owner/foreign/inactive/outage checks and disposable PostgreSQL resource/revoke ordering/privilege evidence under existing CI.
 - Preserve applied001–006, V001, accepted D08/domain contracts and ACT006 runtime. Cooperating advisory protocol is not privileged-maintenance bypass proof; media preparation remains API-04. Full production gates remain OPEN.
+
+- EVD-API03-001: exactsource742bdee2 Foundation37654596533/Container37654596511 SUCCESS; contracts12PASS,API19PASS/1SKIP,PostgreSQL2PASS. Fixed first-run fixture42P08; history retained.83 relative links/syntax checks pass; no full Production Gate PASS.
