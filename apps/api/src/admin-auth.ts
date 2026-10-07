@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, ServiceUnavailableException,
 import { firebaseApp } from './firebase-app';
 import { getAuth } from 'firebase-admin/auth';
 
-export interface AdminIdentity { project: string; subject: string; authTime: number }
+export interface AdminIdentity { project: string; subject: string; authTime: number; signInProvider: string }
 export interface AdminRequest {
   headers: Record<string,string|string[]|undefined>;
   method: string;
@@ -27,11 +27,12 @@ export class AdminIdentityGuard implements CanActivate {
       const token = await getAuth(app).verifyIdToken(authorization.slice(7), true);
       const now = Math.floor(Date.now()/1000);
       if (token.aud !== project || token.iss !== `https://securetoken.google.com/${project}` ||
-          !token.uid || token.firebase.sign_in_provider === 'anonymous' ||
+          typeof token.uid!=='string' || !token.uid || token.uid.length>128 || token.sub!==token.uid ||
+          typeof token.firebase?.sign_in_provider!=='string' || !token.firebase.sign_in_provider || ['anonymous','custom'].includes(token.firebase.sign_in_provider) ||
           !Number.isInteger(token.auth_time) || token.auth_time > now || now - token.auth_time > 3600) {
         throw new Error('INVALID_IDENTITY');
       }
-      request.adminIdentity = {project,subject:token.uid,authTime:token.auth_time};
+      request.adminIdentity = {project,subject:token.uid,authTime:token.auth_time,signInProvider:token.firebase.sign_in_provider};
       return true;
     } catch (error) {
       // An unavailable verifier never becomes a local email/token bypass.

@@ -8,6 +8,7 @@ import { isPublicationAction, publicationCommand, publicationFacts, publicationI
 import { addDictionary, intakeDetail, saveIntake } from './product-intake';
 import { prepareImage, previewImage, prepareThumbnail, prepareVideo, previewVideo } from './catalog-media';
 import { AdminIdentityGuard, type AdminRequest } from './admin-auth';
+import { authorizeOwnerCatalog, ownerCatalogCapabilities } from './catalog-authorization';
 const productFields = 'id,title,lifecycle,version::text,updated_at';
 function canonical(value: unknown): string {
     if (Array.isArray(value))
@@ -32,18 +33,12 @@ export class AdminCatalogService implements OnModuleDestroy {
         return this.pool ??= createDatabasePool(url);
     }
     async onModuleDestroy(): Promise<void> { await this.pool?.end(); }
-    private async actor(db: Pool | PoolClient, request: AdminRequest): Promise<string> {
-        const identity = request.adminIdentity;
-        if (!identity)
-            throw new ForbiddenException();
-        const result = await db.query('SELECT id FROM catalog_core.principal WHERE project=$1 AND subject=$2 AND active', [identity.project, identity.subject]);
-        if (!result.rows[0])
-            throw new ForbiddenException('NO_ADMIN_GRANT');
-        return result.rows[0].id as string;
+    private async actor(db: Pool | PoolClient, request: AdminRequest, operation:string): Promise<string> {
+        return authorizeOwnerCatalog(db,request,operation);
     }
     async session(request: AdminRequest) {
         try {
-            return { principalId: await this.actor(this.database(), request), capabilities: ['catalog.read', 'catalog.draft', ...(process.env.COOTTON_PUBLICATION_ENABLED==='true'?['catalog.review','catalog.publish']:[])], commerceEnabled: false };
+            return { principalId: await this.actor(this.database(), request, 'session'), capabilities: ownerCatalogCapabilities(), commerceEnabled: false };
         }
         catch (e) {
             this.safe(e);
@@ -61,7 +56,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         }
         try {
             const db = this.database();
-            await this.actor(db, request);
+            await this.actor(db, request, 'list');
             const rows = (await db.query(`SELECT ${productFields} FROM catalog_core.product WHERE ($1::uuid IS NULL OR id>$1) ORDER BY id LIMIT 21`, [after])).rows;
             return { items: rows.slice(0, 20), nextCursor: rows.length > 20 ? rows[19].id : null };
         }
@@ -72,7 +67,7 @@ export class AdminCatalogService implements OnModuleDestroy {
     async dictionaries(request: AdminRequest) {
         try {
             const db = this.database();
-            await this.actor(db, request);
+            await this.actor(db, request, 'dictionaries');
             return { items: (await db.query('SELECT id,kind,code,label FROM catalog_core.dictionary WHERE active ORDER BY kind,code LIMIT 501')).rows, applicability: (await db.query('SELECT form_id,category_id FROM catalog_core.form_category')).rows, configured: true };
         }
         catch (e) {
@@ -91,7 +86,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         try {
             db = await this.database().connect();
             await db.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');
-            await this.actor(db, request);
+            await this.actor(db, request, 'detail');
             const row = (await db.query(`SELECT ${productFields},description,care,category_id,brand_id,form_id,country_id,origin_evidence_id,care_evidence_id FROM catalog_core.product WHERE id=$1`, [id])).rows[0];
             if (!row)
                 throw new NotFoundException();
@@ -135,7 +130,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         try {
             if (['uploadImage', 'setImageColor', 'uploadVideo'].includes(action)) {
                 const db = this.database();
-                const actor = await this.actor(db, request);
+                const actor = await this.actor(db, request, 'command:'+action);
                 const replay = (await db.query('SELECT fingerprint,result FROM catalog_core.command WHERE actor_id=$1 AND operation=$2 AND key=$3', [actor, action, key])).rows[0];
                 if (replay) {
                     if (replay.fingerprint !== fingerprint)
@@ -163,7 +158,7 @@ export class AdminCatalogService implements OnModuleDestroy {
             const identity = request.adminIdentity!;
             // Bootstrap/revoke maintenance must acquire this same subject guard.
             await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))', [identity.project + ':' + identity.subject]);
-            const actor = await this.actor(client, request);
+            const actor = await this.actor(client, request, 'command:'+action);
             const prior = (await client.query('SELECT fingerprint,result FROM catalog_core.command WHERE actor_id=$1 AND operation=$2 AND key=$3', [actor, action, key])).rows[0];
             if (prior) {
                 if (prior.fingerprint !== fingerprint)
@@ -299,7 +294,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         }
         try {
             const db = this.database();
-            await this.actor(db, request);
+            await this.actor(db, request, thumbnail?'thumbnail':'image');
             const row = (await db.query(thumbnail ? 'SELECT t.path FROM catalog_core.media_thumbnail t JOIN catalog_core.product_media m ON m.asset_id=t.asset_id WHERE m.product_id=$1 AND t.asset_id=$2' : 'SELECT a.path FROM catalog_core.asset a JOIN catalog_core.product_media m ON m.asset_id=a.id JOIN catalog_core.product p ON p.id=m.product_id AND p.seller_id=a.seller_id WHERE p.id=$1 AND a.id=$2', [id, asset])).rows[0];
             if (!row)
                 throw new NotFoundException();
@@ -312,7 +307,7 @@ export class AdminCatalogService implements OnModuleDestroy {
     async video(request: AdminRequest, idValue: string, poster: boolean) {
         try {
             const id = parseEntityId(idValue), db = this.database();
-            await this.actor(db, request);
+            await this.actor(db, request, poster?'poster':'video');
             const row = (await db.query('SELECT v.path,v.poster_path FROM catalog_core.video_asset v JOIN catalog_core.product_video p ON p.video_id=v.id AND p.seller_id=v.seller_id WHERE p.product_id=$1', [id])).rows[0];
             if (!row) throw new NotFoundException();
             return poster ? await previewImage(row.poster_path) : await previewVideo(row.path);

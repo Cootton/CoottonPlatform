@@ -49,3 +49,6 @@
 
 
 - API02-CONTRACT-001: owner assigned endpoint contract completion and confirmed HTTP source/spec reconciliation. Read docs/contracts/API_ENDPOINT_CONTRACTS.md, ADR0007 and API02_EVIDENCE.md. Source/tests/PR scope only: no runtime migration/deploy/grant/data action. Command201/replay preserved, explicit parser/proxy errors prepared; API-03 authorization and API-04 transaction proof remain open. ACT006 remains runtime authority until scoped deployment.
+
+
+- API03-AUTHZ-001: owner assigned endpoint/action authorization verification. Read API_AUTHORIZATION_MATRIX.md, ADR0008 and API03_EVIDENCE.md. Current source scope is a separately bootstrapped singleton human owner; never provision staff/AI grants from session labels. Exact allowed operations/action/readiness and canonical reauthorization apply before replay. Tests/PR only; applied migrations/V001/runtime unchanged. Subject-guard revocation proof assumes cooperating maintenance; custom-token human admission intentionally denied; media external recovery remains API-04.
