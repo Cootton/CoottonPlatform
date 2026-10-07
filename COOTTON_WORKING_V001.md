@@ -4808,3 +4808,8 @@ Nhận định main503ae0/no-live-evidence/missing ADR0004/renewal60s ở review
 ## SYNC-PR16-006 — source and migration reconciliation
 
 PR16 source `56f80580e50b43c94df65d3ae79ef025ea957123` supersedes18768a1 for implementation. ADR0006, cold-media initialization and measurement withdrawal fixes, migration006 and API/PostgreSQL CI are preserved. Applied001–005 remain immutable. See [sync evidence](docs/governance/MIGRATION006_SOURCE_SYNC.md). Migration006/deployment are not executed by this sync; previous runtime evidence remains attributed to its original source/revision. ACCEPTED decisions and knowledge appendices remain intact.
+
+
+## ACT006-RUNTIME-001 — 2026-10-07
+
+Migration006 applied and verified idempotent; exact fixed API artifact deployed100%. Actual storage fresh-process probe, production rollback measurement/cache checks and HTTP hidden-path acceptance passed within documented scope. [Checkpoint](docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md) supersedes historical006 pending/source-only notices explicitly. ACCEPTED decisions and original data remain unchanged; full Production Gates remain open.

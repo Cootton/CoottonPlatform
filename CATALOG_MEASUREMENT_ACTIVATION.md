@@ -1,5 +1,8 @@
 # Measurement visibility fix — prepared activation scope
 
+> **ACT006-RUNTIME-001 · 2026-10-07:** Migration006 đã áp dụng/idempotent và API `cootton-api-act006-3c768d6` đã nhận100% traffic. Đọc [runtime checkpoint](docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md) để phân biệt DB rollback/storage helper/HTTP evidence. Boxy vẫn DRAFTv23; các ghi chú006 chưa áp dụng dưới đây là lịch sử. Full Production Gates chưa PASS.
+
+
 2026-10-07 · Source/CI fix assigned; production migration/deploy not executed.
 
 1. Verify fixed-source CI, hashes001–005, additive006 view/grants and current backup/recovery evidence.
