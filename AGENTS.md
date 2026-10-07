@@ -1,5 +1,7 @@
 # Instructions for AI contributors
 
+> **MERGE-API04-001 · 2026-10-08:** PR19–23 đã merge theo dependency; source baseline `d2b34490385c20de773a81fdc1e6f58ca8d4ef08`. Đọc [merge checkpoint và kế hoạch triển khai riêng](docs/operations/API04_MERGE_CHECKPOINT_2026_10_08.md). Các ghi chú open/stacked/source proposal trước đây là lịch sử. ACT006 vẫn là runtime checkpoint đã kiểm chứng gần nhất; task này chưa triển khai hay kiểm chứng retry/media recovery trên production. API04-RECOVERY-002 và full Production Gates vẫn OPEN.
+
 - Latest owner assignment 2026-10-03 supersedes historical design-only scope for this task: synchronize V001/OpenAPI and implement minimal human Admin plus canonical catalog draft/review/publication workflow. Owner has no actual product data yet; do not seed fictional products or publish invented facts. Bootstrap requires verified Firebase subject/project, never email authority. Existing D01/D08/D10 boundaries and inactive commerce remain. Read ADR0004 before implementation; no unrestricted runtime SQL/owner role or public deployment from this assignment.
 
 - Start with COOTTON_WORKING_V001.md, docs/contracts/CORE.md and docs/adr/0001-foundation.md. The owner authorized repository foundation and core transport contracts on 2026-10-01. Owner additionally authorized secure Neon connectivity, read-only SELECT 1 and GitHub publication on 2026-10-01. This scope does not authorize schema/migrations, production commerce, runtime owner-role use or deployment.
