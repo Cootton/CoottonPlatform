@@ -44,3 +44,10 @@ The optional real-video encoder fixture is the one SKIP; partial video persisten
 Review identified that byte-range alone does not ensure bounded memory for existing encoded objects. Source now denies gzip/unsupported encoding before opening storage stream, disables SDK decompression and incrementally compares bytes with an exact local length limit. Overflow/mismatch/error/EOF release the stream; no whole-object recovery Buffer is allocated.
 
 Regression tests: gzip/br/deflate/unknown/empty encoding deny without any stream; absent/identity remains supported; transport ignoring range is destroyed without consuming a1MiB tail; truncated stream fails. Existing pinned generation/integrity/partial-video checks retained. Node syntax passed; CI for this fix pending. Earlier PASS evidence applies to the earlier source and does not certify this new patch. No production operation or gate promotion.
+
+
+### EVD-PR23-F001 · PASS2026-10-08 (Asia/Saigon)
+
+Exact source: `e75e757f9c36be665b24c8b3a57e3166d7e7ccae`. [Foundation37688677208](https://github.com/Cootton/CoottonPlatform/actions/runs/37688677208) SUCCESS: build/check, contracts12PASS, API24PASS/1SKIP, PostgreSQL2PASS. [Container37688677294](https://github.com/Cootton/CoottonPlatform/actions/runs/37688677294) SUCCESS for API/Web. The three new encoding/ignored-range/truncated-stream tests all passed; unsupported encoding opened no stream, and ignored-range overflow destroyed the stream without consuming the1MiB tail.
+
+PR23-F001 is RESOLVED for source/fixture verification. The earlier prepared/CI-pending paragraph records the pre-CI checkpoint, superseded by this result. Storage transport remains a fixture; no actual cloud fault injection, deployment or production gate closure. Optional actual video encoder test remains SKIP. Follow-up commit updates evidence only.

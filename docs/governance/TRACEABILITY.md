@@ -109,3 +109,6 @@ REQ-API-AUTHZ-003 → D08/ADR0004 + singleton principal/seller migration002 + ow
 No full Production Gate is promoted. This source checkpoint supersedes API-04 pending notices only within the prepared source/tests scope; ACT006 stays runtime authority.
 
 EVD-API04-001 pins source7a3aa187 to Foundation37687748134/Container37687748147 SUCCESS (2026-10-08 Asia/Saigon); see API04_EVIDENCE.md for counts, failure history and scope limits. PR23 is the review artifact; no runtime/deployment evidence inferred.
+
+
+PR23-F001 → API04-I06 / ADR0009 follow-up → catalog-media generation-pinned stream with encoding admission/local byte bound → media-recovery encoding/ignored-range/truncated tests → EVD-PR23-F001 (sourcee75e757f,Foundation37688677208/Container37688677294 SUCCESS). Finding RESOLVED for source/CI; actual Storage/runtime and full Production Gates OPEN.

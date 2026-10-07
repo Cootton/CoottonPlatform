@@ -105,3 +105,5 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 
 
 - PR23-F001 · 2026-10-08: deny unsupported recovery encoding, replace buffered range download with locally bounded generation-pinned stream verification. Add gzip/range-ignored/truncated-stream regression checks; source CI pending, previous runtime/gates unchanged.
+
+- EVD-PR23-F001: sourcee75e757f Foundation37688677208/Container37688677294 SUCCESS; contracts12PASS,API24PASS/1SKIP,PostgreSQL2PASS. Review finding resolved for source; production/cleanup gates remain OPEN.
