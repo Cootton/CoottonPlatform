@@ -79,6 +79,16 @@ Module→contract links point to preserved files; future implementation rows ph�
 | CHG-SYNC-006 | [Source/migration reconciliation](MIGRATION006_SOURCE_SYNC.md) → source/CI/activation mapping and release recheck triggers |006 not production-applied; full gates retain open status |
 
 
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](../engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
+
 ## API-01 — Source inventory evidence
 
 | Requirement / evidence | Source and coverage | Gate scope / remaining work |
@@ -88,6 +98,8 @@ Module→contract links point to preserved files; future implementation rows ph�
 RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Cootton/CoottonPlatform/pull/19) is a separate unmerged review dependency. No existing ADR or ACCEPTED decision changed. ACT006 runtime evidence remains bounded to its original scenarios.
 
 
+
 ## API-02 — Contract reconciliation
 
 REQ-API-CONTRACT-002 → owner RULE-API-001 / CORE / ADR0004–0007 → [endpoint/action contracts](../contracts/API_ENDPOINT_CONTRACTS.md), OpenAPI and scoped API/Web transport changes → http-contract.cjs + web-http.cjs under existing verify:api CI → [EVD-API02-001](API02_EVIDENCE.md). API01-F001/F002/F003 corrected in prepared source/spec; F005 compatibility/query/type behavior explicit; F004/API-03 and deeper F006/API-04 remain open. No production gate-wide PASS or runtime deployment claimed.
+
