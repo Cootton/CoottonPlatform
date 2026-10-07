@@ -81,3 +81,5 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Preserve original command201/replay behavior via explicit HttpCode; correct spec200→201. Add safe parser/type400/413/415 with headers before parser, BFF413/415 propagation and controlled body read failure, no-store/nosniff on public proxy errors.
 - Add meaningful Nest HTTP and actual Web-handler verification to existing API CI; record mock/DB/runtime evidence boundaries in EVD-API02-001 and ADR0007.
 - Existing ACCEPTED decisions, applied migrations, grants and runtime checkpoint retained. API-03/04/05 and full gates remain open; no deployment.
+
+- EVD-API02-001: sourcefe4fdd0 independently passed Foundation37651726765 (contracts12PASS,API14PASS/1SKIP,PostgreSQL1PASS) and Container37651726789;87 relative links resolve. Local Windows setup blocked; no local test PASS claimed. V001 untouched; additive index/module records only.
