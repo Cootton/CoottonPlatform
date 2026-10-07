@@ -58,9 +58,20 @@ Nguồn semantics: [HTTP Working Group RFC9110](https://httpwg.org/specs/rfc9110
 
 401 có WWW-Authenticate challenge theo applicable scheme/RFC, không expose token. Private conditional304 vẫn authorize current resource trước; cache validator không bypass permissions. Private/error/rate-limit responses không shared-cache; Retry-After không permission tự resubmit financial command. Public404/negative caching tuân D09 freshness/withdrawal; không suy ra cache safety từ status alone.
 
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
 ## API-01 — Actual HTTP surface
 
 Use [the pinned source inventory](API01_HTTP_INVENTORY.md) for current routes, methods, expected statuses, headers, data guards and Web proxy behavior. Generic method/status teaching above does not override these source-derived facts. API01-F001…006 are inputs to API-02/API-03/API-04; inventory verification does not close Production Gates.
 
 
+
 API-02 adds [current endpoint/action records](../contracts/API_ENDPOINT_CONTRACTS.md) and [evidence](../governance/API02_EVIDENCE.md), with explicit prepared-versus-runtime status. Preserve API-01 source facts as historical inventory rather than rewriting them to the new proposal.
+
