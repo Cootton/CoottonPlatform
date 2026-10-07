@@ -21,3 +21,8 @@ Không commit secrets, dữ liệu khách hàng hay thông tin ngân hàng. Ch�
 ## Catalog website
 
 Read-only buyer catalog now connects to Neon PostgreSQL through a restricted API role. Home/category/B2B/help/product pages implemented; actual catalog starts empty. See [setup and evidence](CATALOG_SETUP.md). No purchase/payment activation or public production deployment claimed. Runtime private .env.catalog is ignored; original owner read-check .env is not the API runtime identity.
+
+
+## Master Plan and evidence
+
+Start with [COOTTON_MASTER_PLAN](COOTTON_MASTER_PLAN.md), then [CURRENT_STATE](docs/governance/CURRENT_STATE.md), [traceability](docs/governance/TRACEABILITY.md) and [gate evidence](docs/governance/GATE_EVIDENCE.md). These documents distinguish pinned PR16 source, the reported 2026-10-04 deployment checkpoint and observed 2026-10-07 withdrawal to DRAFTv23. Read the current evidence overlay before historical pending-status headers. Catalog acceptance does not certify commerce or general production readiness.

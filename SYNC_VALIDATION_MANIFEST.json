@@ -1,0 +1,14 @@
+{
+  "id": "EVD-DOC-SYNC-001",
+  "date": "2026-10-07",
+  "pr": 16,
+  "head": "18768a1ded3be76d4df9a0960369170b50c72850",
+  "prStatus": "open_unmerged",
+  "relativeLinksChecked": 94,
+  "brokenLinks": [],
+  "baselineFilesChecked": 14,
+  "baselineHashMismatches": [],
+  "prV001SourcePreserved": true,
+  "runtimeFinalState": "DRAFT_v23",
+  "scope": "documentation_only"
+}

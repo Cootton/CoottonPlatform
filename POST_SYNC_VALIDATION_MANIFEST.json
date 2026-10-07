@@ -1,0 +1,18 @@
+{
+  "id": "EVD-DOC-VERIFY-001",
+  "date": "2026-10-07",
+  "source": "18768a1ded3be76d4df9a0960369170b50c72850",
+  "relativeLinksChecked": 102,
+  "brokenFileLinks": 0,
+  "fragmentLinksPresent": 0,
+  "baselineFilesChecked": 14,
+  "hashMismatches": [],
+  "prV001SourcePreserved": true,
+  "flowRequirements": 5,
+  "gateRecords": 10,
+  "missingGates": [],
+  "gateWidePass": 0,
+  "evidenceImageSHA256": "252D3F2EA3CA7B58EB15274C78BB46C8BC0028579C62136028CE86AEA898434D",
+  "reviewer": "Codex documentation review only; no owner/domain/operations release signoff",
+  "scope": "No runtime changes or GitHub publication"
+}

@@ -1,3 +1,6 @@
+<!-- SYNC-PR16-001: pinned PR16 source18768a1, synced 2026-10-07. -->
+> **Trạng thái hiện hành:** [CURRENT_STATE](docs/governance/CURRENT_STATE.md) và [FLOW-CATALOG-001](docs/governance/CATALOG_FLOW_EVIDENCE.md) có precedence về evidence. Header DRAFTv14/pending activation dưới đây là snapshot source 04/10 trước activation; checkpoint sau đó ghi publish v22, browser 07/10 xác minh withdraw → DRAFTv23. Không dùng header lịch sử làm trạng thái runtime hiện tại.
+
 # COOTTON — BẢN LÀM VIỆC ĐỘC LẬP
 
 ```yaml
@@ -4771,3 +4774,29 @@ Keyless Admin sign-in and private image/video previews were verified. API shared
 Owner requests Cootton-authored conservative care advice and confirms commercial permission for the full black shirt photo. No new third-party image substitution. Care advice is a Cootton recommendation with label priority, not a manufacturer/testing certificate; see docs/planning/COOTTON_BOXY_CARE.md.
 
 Review/publication source and OpenAPI prepared under ADR0005 and docs/contracts/CATALOG_PUBLICATION.md. Catalog-only reference prices can be shown after review; effective purchase offerings and seller transaction flags remain inactive. The exact005 migration/grants/flag/deployment/product activation scope is CATALOG_PUBLICATION_ACTIVATION.md. Compile checks and13 focused publication/cache/Admin/intake scenarios pass locally. Migration005, public-image route, care save, actual review and publication have NOT executed yet. Public video remains deferred/private; noindex, payments, CP/VC/VCS and orders remain inactive. Source completion must not be reported as live acceptance.
+
+
+## Appendix MP-ENG-001. Engineering knowledge consolidation — 2026-10-07
+
+Stable ID `MP-ENG-001`, documentation scope assigned by owner. Start at [COOTTON_MASTER_PLAN.md](COOTTON_MASTER_PLAN.md) for reading order, modular engineering knowledge, stable IDs, decision/source/conflict registry, ADR/changelog, traceability and Production Gates. V001 remains the same working version; historical text and contracts are retained. This section adds documentation, not execution rights or runtime readiness.
+
+Keep current owner decisions: NestJS/TypeScript modular monolith with shared Next.js, PostgreSQL canonical on current Neon deployment, one Cootton seller and website before payment, CP top-up paused and launch points inactive, AI optional with per-model isolation/no unapproved egress, targeted verification under section106, selective infrastructure reuse under section127. Cloud SQL remains historical target/future migration subject to review. Spring Boot/EC2 are learning references; Redis/Kafka/CQRS/sharding/microservices/gossip are not automatic V1 dependencies.
+
+Historical assistant snippets LLD-OOP-001, LLD-ALG-SEARCH-001, LLD-DS-LINKEDLIST-001 and ARCH-CACHE-002 retain their claimed ACCEPTED labels with provenance in GOV-DEC-001. Owner ratification is not evidenced by those assistant labels. In particular Redis-primary wording does not override sections49/107; applicability/conflict is explicit, no silent decision replacement.
+
+Local checkpoints129–131 (2026-10-03) are reported in an older task output but absent from main at source SHA503ae0be7f2956af2b9c006c364e758e7ee58b03. They report sample/owner bootstrap+restricted catalog roles, keyless Firebase verifier creation, scoped version-pinned Secret Manager preparation; they explicitly do not claim successful deployed Admin login/draft write, image deployment/domain cutover/payment activation. Preserve as SRC-LOCAL-131 pending reconciliation with actual source/runtime; this section neither executes nor certifies those actions. The missing Admin ADR0004 reference must be reconciled separately; ADR-KNOWLEDGE-001 is a distinct decision.
+
+Production gates require scoped contracts, actual security/data/async/performance/payment/AI/operations evidence as applicable and explicit release assignment. Documents/mocks/CI static checks do not prove financial truth, permission correctness or restore readiness. Current task ends with local GitHub-ready docs, no application/runtime changes or GitHub publication.
+
+
+## Appendix MP-REVIEW-001. Reviewed effective state and conflict resolutions — 2026-10-07
+
+Stable ID `MP-REVIEW-001`; owner requests review/synchronization/removal of conflicts. [GOV-STATE-001](docs/governance/CURRENT_STATE.md) centralizes applicability, evidence và authorization. [ADR-KNOWLEDGE-002](docs/adr/knowledge-002-review-reconciliation.md) ghi reconciliation; [RVW-ENG-001](docs/governance/REVIEW.md) ghi findings.
+
+Generic planning-only/no-deploy headers là historical; owner128 conditional website assignment giữ nguyên. CORE pending precision/tender/MOQ/return baseline được scoped D02/D04/D05/D06 giải quyết, actual provider/config/funding/ops facts thiếu vẫn pending. Cookie D10 là alternative design; Admin124/local129 bearer BFF là reported approach, không proof live auth hoặc mandate dual-mode. Main/local divergence là evidence gap, không competing business truth.
+
+Normative conflicts resolved bằng source precedence. Không đổi accepted business/stack choice, không promote assistant labels thành vendor approval, không fabricate missing evidence. Modules đọc CURRENT_STATE trước. Applicable gates cần PASS; excluded disabled features cần reviewed NOT_APPLICABLE rationale. Không code/schema/OpenAPI/grant/runtime changes từ review này.
+
+## SYNC-PR16-001 — explicit historical-status correction
+
+Nhận định main503ae0/no-live-evidence/missing ADR0004/renewal60s ở review hoặc appendices trước đó là historical baseline findings. ADR0004/0005 và V001 PR16 tới141 đã sync; checkpoint04/10 ghi activation, browser07/10 xác nhận withdraw DRAFTv23. FLOW-CATALOG-001/CURRENT_STATE là evidence hiện hành. RISK-001 receipt liveness được source migration005 giải quyết; full production gates và commerce vẫn chưa PASS.
