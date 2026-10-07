@@ -25,19 +25,35 @@ class SafeErrors implements ExceptionFilter {
 @Module({ controllers: [HealthController], imports:[MemoryCacheModule,CatalogModule,AdminCatalogModule] })
 class AppModule {}
 
-async function bootstrap(): Promise<void> {
-  const port = Number(process.env.PORT ?? '3001');
-  if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('INVALID_PORT');
+export async function createApp(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule,{bodyParser:false});
   app.setGlobalPrefix('v1');
-  app.useBodyParser('json',{limit:'12mb'});
   app.useGlobalFilters(new SafeErrors());
   app.use((_request:unknown,response:{setHeader:(key:string,value:string)=>void},next:()=>void)=>{
     response.setHeader('Cache-Control','no-store'); response.setHeader('X-Content-Type-Options','nosniff'); next();
   });
+  app.use((request:{method:string;path:string;headers:Record<string,string|undefined>},response:any,next:()=>void)=>{
+    if(request.method==='POST' && request.path.toLowerCase().replace(/\/+$/,'')==='/v1/admin/catalog/commands' && request.headers['content-type']?.split(';')[0]?.trim().toLowerCase()!=='application/json') {
+      response.status(415).json({code:'UNSUPPORTED_MEDIA_TYPE',message:'UNSUPPORTED_MEDIA_TYPE',requestId:randomUUID()}); return;
+    }
+    next();
+  });
+  app.useBodyParser('json',{limit:'12mb'});
+  // Handle only known parser failures; never expose parser messages or supplied bodies.
+  app.use((error:any,_request:unknown,response:any,next:(error:unknown)=>void)=>{
+    const status=error?.type==='entity.too.large'?413:['entity.parse.failed','request.aborted','request.size.invalid'].includes(error?.type)?400:['encoding.unsupported','charset.unsupported'].includes(error?.type)?415:null;
+    if(status===null){next(error);return;}
+    const code=status===413?'PAYLOAD_TOO_LARGE':status===415?'UNSUPPORTED_MEDIA_TYPE':'INVALID_INPUT';
+    response.status(status).json({code,message:code,requestId:randomUUID()});
+  });
   app.enableShutdownHooks();
-  // Read-only public catalog; no authenticated mutations or payment adapter.
+  return app;
+}
+async function bootstrap(): Promise<void> {
+  const port = Number(process.env.PORT ?? '3001');
+  if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('INVALID_PORT');
+  const app=await createApp();
+  // Catalog reads and restricted human Admin commands; commerce remains disabled.
   await app.listen(port, process.env.HOST ?? '127.0.0.1');
 }
-bootstrap().catch(() => { console.error('API_START_FAILED'); process.exitCode = 1; });
-
+if(require.main===module) bootstrap().catch(() => { console.error('API_START_FAILED'); process.exitCode = 1; });

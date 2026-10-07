@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, ForbiddenException, Get, Injectable, Module, NotFoundException, Param, Post, Query, Req, ServiceUnavailableException, UseGuards, type OnModuleDestroy } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, ForbiddenException, Get, HttpCode, Injectable, Module, NotFoundException, Param, Post, Query, Req, ServiceUnavailableException, UseGuards, type OnModuleDestroy } from '@nestjs/common';
 import { createHash, randomUUID } from 'node:crypto';
 import type { Pool, PoolClient } from 'pg';
 import { parseEntityId, inputObject, inputText, inputVersion, draftFields, imageColorFields, PRODUCT_MEDIA_LIMITS } from '@cootton/contracts';
@@ -17,7 +17,7 @@ function canonical(value: unknown): string {
     return JSON.stringify(value);
 }
 @Injectable()
-class AdminCatalogService implements OnModuleDestroy {
+export class AdminCatalogService implements OnModuleDestroy {
     constructor(private readonly cache: MemoryCache) {}
     private pool: Pool | undefined;
     private database(): Pool {
@@ -362,6 +362,7 @@ class AdminCatalogController {
     @Param('asset')
     asset: string) { return this.catalog.image(request, id, asset); }
     @Post('catalog/commands')
+    @HttpCode(201)
     command(
     @Req()
     request: AdminRequest, 

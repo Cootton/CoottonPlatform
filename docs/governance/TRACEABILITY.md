@@ -86,3 +86,8 @@ Module→contract links point to preserved files; future implementation rows ph�
 | REQ-API01-INVENTORY-001 / EVD-API01-SOURCE-001 | [HTTP inventory](../engineering/API01_HTTP_INVENTORY.md); main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`; 16 source files verified against Git blob hashes; 13 backend method/path pairs match OpenAPI; 10 logical Web proxies mapped | Inventory checks PASS only; GATE-CONTRACT-001 and SEC/DATA/RELEASE not closed. API01-F001…006 require contract/status/auth/edge-case follow-up |
 
 RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Cootton/CoottonPlatform/pull/19) is a separate unmerged review dependency. No existing ADR or ACCEPTED decision changed. ACT006 runtime evidence remains bounded to its original scenarios.
+
+
+## API-02 — Contract reconciliation
+
+REQ-API-CONTRACT-002 → owner RULE-API-001 / CORE / ADR0004–0007 → [endpoint/action contracts](../contracts/API_ENDPOINT_CONTRACTS.md), OpenAPI and scoped API/Web transport changes → http-contract.cjs + web-http.cjs under existing verify:api CI → [EVD-API02-001](API02_EVIDENCE.md). API01-F001/F002/F003 corrected in prepared source/spec; F005 compatibility/query/type behavior explicit; F004/API-03 and deeper F006/API-04 remain open. No production gate-wide PASS or runtime deployment claimed.
