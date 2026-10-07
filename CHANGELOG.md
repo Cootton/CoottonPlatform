@@ -84,3 +84,14 @@ Owner ACCEPTED:
 - Verified 16 source-file Git blob hashes and 13 source/OpenAPI method/path pairs. Recorded API01-F001…006, including command POST source-default201 vs OpenAPI200, as follow-up gaps; no source/spec behavior silently changed.
 - Linked reading order, networking and traceability. PR19 endpoint-rule documentation remains separate and unmerged. No runtime mutation, deployment or full Production Gate PASS.
 
+
+
+## 2026-10-07 — CHG-API02-001
+
+- Completed13 endpoint records and13 command-action records under RULE-API-001; added private response schemas and narrowed status sets in OpenAPI.
+- Preserve original command201/replay behavior via explicit HttpCode; correct spec200→201. Add safe parser/type400/413/415 with headers before parser, BFF413/415 propagation and controlled body read failure, no-store/nosniff on public proxy errors.
+- Add meaningful Nest HTTP and actual Web-handler verification to existing API CI; record mock/DB/runtime evidence boundaries in EVD-API02-001 and ADR0007.
+- Existing ACCEPTED decisions, applied migrations, grants and runtime checkpoint retained. API-03/04/05 and full gates remain open; no deployment.
+
+- EVD-API02-001: sourcefe4fdd0 independently passed Foundation37651726765 (contracts12PASS,API14PASS/1SKIP,PostgreSQL1PASS) and Container37651726789;87 relative links resolve. Local Windows setup blocked; no local test PASS claimed. V001 untouched; additive index/module records only.
+

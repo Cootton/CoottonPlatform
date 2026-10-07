@@ -1,3 +1,5 @@
+> **API02-CONTRACT-001 · 2026-10-07:** Historical private Admin unimplemented/unprovisioned notices below are bounded by [CURRENT_STATE](../governance/CURRENT_STATE.md) and ACT006 evidence. [Endpoint records](API_ENDPOINT_CONTRACTS.md) and [ADR0007](../adr/0007-http-contract-reconciliation.md) describe the prepared HTTP reconciliation, not a new deployment. No accepted domain contract is replaced.
+
 # Core contracts 0.1.0
 
 Trạng thái: nền móng kỹ thuật đã triển khai; không phải schema database hay commerce production.

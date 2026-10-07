@@ -31,9 +31,46 @@
                   }
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md"
       }
     },
     "/v1/catalog/products": {
@@ -123,39 +160,92 @@
                   }
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           },
           "400": {
-            "description": "Controlled input/not-found/unavailable response",
+            "description": "Invalid input or malformed JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SafeError"
                 }
               }
-            }
-          },
-          "404": {
-            "description": "Controlled input/not-found/unavailable response",
-            "content": {
-              "application/json": {
+            },
+            "headers": {
+              "Cache-Control": {
                 "schema": {
-                  "$ref": "#/components/schemas/SafeError"
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
                 }
               }
             }
           },
           "503": {
-            "description": "Controlled input/not-found/unavailable response",
+            "description": "Unconfigured or dependency unavailable",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SafeError"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md"
       }
     },
     "/v1/catalog/products/{id}": {
@@ -168,7 +258,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           },
           {
@@ -176,7 +267,8 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
@@ -279,39 +371,115 @@
                   }
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           },
           "400": {
-            "description": "Controlled input/not-found/unavailable response",
+            "description": "Invalid input or malformed JSON",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
                 }
               }
             }
           },
           "404": {
-            "description": "Controlled input/not-found/unavailable response",
+            "description": "Absent or not currently visible/associated",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
                 }
               }
             }
           },
           "503": {
-            "description": "Controlled input/not-found/unavailable response",
+            "description": "Unconfigured or dependency unavailable",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SafeError"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md"
       }
     },
     "/v1/admin/session": {
@@ -325,27 +493,124 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
-          },
-          "400": {
-            "description": "Invalid bounded input"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSession"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/dictionaries": {
@@ -359,27 +624,124 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
-          },
-          "400": {
-            "description": "Invalid bounded input"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDictionaries"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/products": {
@@ -396,33 +758,153 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminProductPage"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants."
       }
     },
     "/v1/admin/catalog/products/{id}": {
@@ -440,33 +922,177 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminProductDetail"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/products/{id}/images/{asset}": {
@@ -484,7 +1110,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           },
           {
@@ -493,33 +1120,177 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivatePreview"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/commands": {
@@ -530,7 +1301,7 @@
             "AdminBearer": []
           }
         ],
-        "description": "Atomic expected-version/idempotency/audit/outbox. Catalog-only submit/approve/publish/returnDraft/unpublish gated by configured publication capability. No commerce activation.",
+        "description": "Returns201 for first completion and identical receipt replay, preserving existing source behavior. Atomic canonical mutation/version/audit/outbox/receipt; media storage preparation precedes database transaction. Key in JSON body, scoped by actor+action. Generic409 does not expose conflict reason. See action contract records.",
         "requestBody": {
           "required": true,
           "content": {
@@ -542,28 +1313,239 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Validated private result; no-store"
+          "201": {
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCommandResult"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Version, replay fingerprint, lifecycle, constraint or readiness conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "JSON body exceeds 12MiB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported request media type, charset or encoding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants."
       }
     },
     "/v1/admin/catalog/products/{id}/thumbnails/{asset}": {
@@ -581,7 +1563,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           },
           {
@@ -590,34 +1573,178 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivatePreview"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
         },
-        "summary": "Authenticated color thumbnail preview"
+        "summary": "Authenticated color thumbnail preview",
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/products/{id}/video": {
@@ -634,35 +1761,179 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivatePreview"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
         },
         "summary": "Authenticated video preview; fetched only on play",
-        "operationId": "getAdminVideo"
+        "operationId": "getAdminVideo",
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/admin/catalog/products/{id}/video/poster": {
@@ -679,35 +1950,179 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Validated private result; no-store"
+            "description": "Validated private result; no-store",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivatePreview"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid bounded input"
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Authentication and fresh session required"
+            "description": "Fresh verified Firebase identity required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Canonical Admin grant required"
+            "description": "Active canonical Admin principal required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Version, idempotency or readiness conflict"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Configuration or dependency unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
         },
         "summary": "Authenticated WebP poster preview",
-        "operationId": "getAdminVideoPoster"
+        "operationId": "getAdminVideoPoster",
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
       }
     },
     "/v1/catalog/media/{seller}/{file}": {
@@ -721,8 +2136,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid"
-            }
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+            },
+            "description": "Legacy path label; current value is asset UUID, not seller authority."
           },
           {
             "name": "file",
@@ -744,15 +2161,116 @@
                   "format": "binary"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
             }
           },
           "404": {
-            "description": "Not published"
+            "description": "Absent or not currently visible/associated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           },
           "503": {
-            "description": "Unavailable"
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "x-query-policy": "Ignored"
       }
     }
   },
@@ -768,7 +2286,18 @@
         ],
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "INVALID_INPUT",
+              "AUTHENTICATION_REQUIRED",
+              "FORBIDDEN",
+              "NOT_FOUND",
+              "CONFLICT",
+              "PAYLOAD_TOO_LARGE",
+              "UNSUPPORTED_MEDIA_TYPE",
+              "UNAVAILABLE",
+              "INTERNAL_ERROR"
+            ]
           },
           "message": {
             "type": "string"
@@ -965,11 +2494,13 @@
               "properties": {
                 "colorId": {
                   "type": "string",
-                  "format": "uuid"
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                 },
                 "sizeId": {
                   "type": "string",
-                  "format": "uuid"
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                 },
                 "price": {
                   "anyOf": [
@@ -1032,11 +2563,13 @@
               "properties": {
                 "sizeId": {
                   "type": "string",
-                  "format": "uuid"
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                 },
                 "measurementId": {
                   "type": "string",
-                  "format": "uuid"
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                 },
                 "cm": {
                   "type": "string",
@@ -1125,7 +2658,8 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "createDraft"
@@ -1159,18 +2693,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "saveDraft"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1203,7 +2740,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1214,7 +2752,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1225,7 +2764,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1236,7 +2776,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1247,7 +2788,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1258,7 +2800,8 @@
                     "anyOf": [
                       {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                       },
                       {
                         "type": "null"
@@ -1288,18 +2831,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "saveIntake"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "$ref": "#/components/schemas/AdminIntakePayload"
@@ -1319,18 +2865,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "uploadImage"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "$ref": "#/components/schemas/AdminImagePayload"
@@ -1348,7 +2897,8 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "addDictionary"
@@ -1371,18 +2921,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "archive"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1413,18 +2966,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "submit"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1447,18 +3003,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "approve"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1493,18 +3052,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "publish"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1527,18 +3089,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "setImageColor"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "$ref": "#/components/schemas/ImageColorPayload"
@@ -1558,18 +3123,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "uploadVideo"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "$ref": "#/components/schemas/VideoPayload"
@@ -1589,18 +3157,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "returnDraft"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1631,18 +3202,21 @@
             "properties": {
               "key": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "action": {
                 "const": "unpublish"
               },
               "id": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               },
               "expectedVersion": {
                 "type": "string",
-                "pattern": "^[1-9][0-9]{0,18}$"
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "description": "Positive decimal string <=9223372036854775806; canonical concurrency token."
               },
               "payload": {
                 "type": "object",
@@ -1673,11 +3247,13 @@
         "properties": {
           "assetId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
           },
           "colorId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
           },
           "declaration": {
             "type": "string",
@@ -1711,6 +3287,642 @@
             "maxLength": 10000
           }
         }
+      },
+      "AdminProductSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "lifecycle",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lifecycle": {
+            "enum": [
+              "DRAFT",
+              "IN_REVIEW",
+              "APPROVED",
+              "ARCHIVED"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,18}$"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AdminSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "principalId",
+          "capabilities",
+          "commerceEnabled"
+        ],
+        "properties": {
+          "principalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commerceEnabled": {
+            "const": false
+          }
+        }
+      },
+      "AdminProductPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AdminProductSummary"
+            }
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "DictionaryItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "code",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminDictionaries": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "applicability",
+          "configured"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 501,
+            "items": {
+              "$ref": "#/components/schemas/DictionaryItem"
+            }
+          },
+          "applicability": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "form_id",
+                "category_id"
+              ],
+              "properties": {
+                "form_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "category_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                }
+              }
+            }
+          },
+          "configured": {
+            "const": true
+          }
+        }
+      },
+      "PrivatePreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mime",
+          "base64"
+        ],
+        "properties": {
+          "mime": {
+            "enum": [
+              "image/webp",
+              "video/mp4"
+            ]
+          },
+          "base64": {
+            "type": "string",
+            "contentEncoding": "base64",
+            "maxLength": 11184812
+          }
+        }
+      },
+      "AdminIntake": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fabric",
+          "chart",
+          "variants",
+          "location",
+          "media",
+          "colorImages",
+          "video"
+        ],
+        "properties": {
+          "fabric": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "description",
+                  "gsm_kind",
+                  "gsm_min",
+                  "gsm_max"
+                ],
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "gsm_kind": {
+                    "enum": [
+                      "UNKNOWN",
+                      "EXACT",
+                      "RANGE"
+                    ]
+                  },
+                  "gsm_min": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "gsm_max": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "chart": {
+            "type": "array",
+            "maxItems": 201,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "size_id",
+                "measurement_id",
+                "value_cm"
+              ],
+              "properties": {
+                "size_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "measurement_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "value_cm": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "variants": {
+            "type": "array",
+            "maxItems": 101,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "code",
+                "color_id",
+                "size_id",
+                "stock",
+                "reserved",
+                "price",
+                "tiers"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "color_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "size_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "stock": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reserved": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "price": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "tiers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "quantity",
+                      "price"
+                    ],
+                    "properties": {
+                      "quantity": {
+                        "type": "string"
+                      },
+                      "price": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "media": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "width",
+                "height",
+                "approved",
+                "position",
+                "alt"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "approved": {
+                  "type": "boolean"
+                },
+                "position": {
+                  "type": "integer"
+                },
+                "alt": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "colorImages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "color_id",
+                "asset_id",
+                "width",
+                "height"
+              ],
+              "properties": {
+                "color_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "asset_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "video": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "alt",
+                  "width",
+                  "height",
+                  "duration_ms",
+                  "byte_length",
+                  "approved"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                  },
+                  "alt": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "integer"
+                  },
+                  "height": {
+                    "type": "integer"
+                  },
+                  "duration_ms": {
+                    "type": "integer"
+                  },
+                  "byte_length": {
+                    "type": "integer"
+                  },
+                  "approved": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "AdminProductDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "lifecycle",
+          "version",
+          "updated_at",
+          "description",
+          "care",
+          "category_id",
+          "brand_id",
+          "form_id",
+          "country_id",
+          "origin_evidence_id",
+          "care_evidence_id",
+          "intake",
+          "publication"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lifecycle": {
+            "enum": [
+              "DRAFT",
+              "IN_REVIEW",
+              "APPROVED",
+              "ARCHIVED"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,18}$"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "care": {
+            "type": "string"
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "brand_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "form_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "country_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "origin_evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "care_evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "intake": {
+            "$ref": "#/components/schemas/AdminIntake"
+          },
+          "publication": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "enabled",
+              "published",
+              "issues"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "published": {
+                "type": "boolean"
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminCommandResult": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/AdminProductSummary"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "version"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+              },
+              "version": {
+                "const": "1"
+              }
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {

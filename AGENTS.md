@@ -46,3 +46,6 @@
 
 
 - ACT006-RUNTIME-001: owner assigned activation006 and explicitly authorized maintenance credential use/rollback-only production verification.006 applied/idempotent; API cootton-api-act006-3c768d6 receives100% traffic. Read docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md. Boxy remains DRAFTv23; evidence closes only assigned patch scope, no full gates/commerce/republish.
+
+
+- API02-CONTRACT-001: owner assigned endpoint contract completion and confirmed HTTP source/spec reconciliation. Read docs/contracts/API_ENDPOINT_CONTRACTS.md, ADR0007 and API02_EVIDENCE.md. Source/tests/PR scope only: no runtime migration/deploy/grant/data action. Command201/replay preserved, explicit parser/proxy errors prepared; API-03 authorization and API-04 transaction proof remain open. ACT006 remains runtime authority until scoped deployment.

@@ -18,7 +18,7 @@ export function vnd(value: unknown): Vnd {
 export type SalesMode = 'B2C' | 'B2B';
 export type PointKind = 'CP' | 'VC' | 'VCS';
 export type Surface = 'buyer' | 'seller' | 'admin';
-export type ErrorCode = 'INVALID_INPUT' | 'UNAUTHENTICATED' | 'FORBIDDEN' | 'NOT_FOUND' | 'CONFLICT' | 'RATE_LIMITED' | 'UNAVAILABLE' | 'INTERNAL_ERROR';
+export type ErrorCode = 'INVALID_INPUT' | 'UNAUTHENTICATED' | 'AUTHENTICATION_REQUIRED' | 'PAYLOAD_TOO_LARGE' | 'UNSUPPORTED_MEDIA_TYPE' | 'FORBIDDEN' | 'NOT_FOUND' | 'CONFLICT' | 'RATE_LIMITED' | 'UNAVAILABLE' | 'INTERNAL_ERROR';
 export interface ApiError { readonly code: ErrorCode; readonly message: string; readonly requestId: string }
 export interface CursorPage<T> { readonly items: readonly T[]; readonly nextCursor: string | null }
 export interface Liveness { readonly status: 'alive'; readonly contractVersion: typeof CONTRACT_VERSION }

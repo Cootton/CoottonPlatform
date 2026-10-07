@@ -76,3 +76,9 @@ Owner ACCEPTED:
 
 [HTTP inventory](docs/engineering/API01_HTTP_INVENTORY.md) pins main `a2d893e3b9828cc42691ac1d9a4e299a7c41dec1`: 13 backend operations and 10 logical Web proxy operations. Work reads this after the API/networking module and before API-02 contract work. API-01 is VERIFIED for source inventory only; six findings remain follow-ups. The owner endpoint rule is documented in separate, unmerged [PR #19](https://github.com/Cootton/CoottonPlatform/pull/19); do not assume it is already on main. Existing ACCEPTED decisions and runtime checkpoint retain their authority.
 
+
+
+## API-02 — Contract records and reconciliation
+
+Read [endpoint/action contracts](docs/contracts/API_ENDPOINT_CONTRACTS.md) → [OpenAPI](docs/contracts/openapi.json) → [ADR0007](docs/adr/0007-http-contract-reconciliation.md) → [API-02 evidence](docs/governance/API02_EVIDENCE.md). Prepared source changes make command201 explicit and reconcile parser/proxy errors. API-01 remains a historical pinned inventory; ACT006 is still runtime authority. API-03 authorization, API-04 transactions and API-05 complete flow evidence remain open; no full gate PASS.
+

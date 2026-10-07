@@ -71,3 +71,7 @@ Owner ACCEPTED:
 
 Use [the pinned source inventory](API01_HTTP_INVENTORY.md) for current routes, methods, expected statuses, headers, data guards and Web proxy behavior. Generic method/status teaching above does not override these source-derived facts. API01-F001…006 are inputs to API-02/API-03/API-04; inventory verification does not close Production Gates.
 
+
+
+API-02 adds [current endpoint/action records](../contracts/API_ENDPOINT_CONTRACTS.md) and [evidence](../governance/API02_EVIDENCE.md), with explicit prepared-versus-runtime status. Preserve API-01 source facts as historical inventory rather than rewriting them to the new proposal.
+

@@ -97,3 +97,9 @@ Owner ACCEPTED:
 
 RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Cootton/CoottonPlatform/pull/19) is a separate unmerged review dependency. No existing ADR or ACCEPTED decision changed. ACT006 runtime evidence remains bounded to its original scenarios.
 
+
+
+## API-02 — Contract reconciliation
+
+REQ-API-CONTRACT-002 → owner RULE-API-001 / CORE / ADR0004–0007 → [endpoint/action contracts](../contracts/API_ENDPOINT_CONTRACTS.md), OpenAPI and scoped API/Web transport changes → http-contract.cjs + web-http.cjs under existing verify:api CI → [EVD-API02-001](API02_EVIDENCE.md). API01-F001/F002/F003 corrected in prepared source/spec; F005 compatibility/query/type behavior explicit; F004/API-03 and deeper F006/API-04 remain open. No production gate-wide PASS or runtime deployment claimed.
+

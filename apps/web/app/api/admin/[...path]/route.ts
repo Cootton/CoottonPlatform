@@ -14,9 +14,12 @@ async function forward(request:NextRequest,context:{params:Promise<{path:string[
   if(request.method==='GET'&&relative==='catalog/commands')return safe('NOT_FOUND',404);
   let body:string|undefined;
   if(request.method==='POST'){
-    const length=Number(request.headers.get('content-length')??'0');if(length>12582912)return safe('INVALID_INPUT',413);
-    const reader=request.body?.getReader();let total=0;const chunks:Uint8Array[]=[];
-    if(reader){while(true){const {done,value}=await reader.read();if(done)break;total+=value.length;if(total>12582912){await reader.cancel();return safe('INVALID_INPUT',413);}chunks.push(value);}}
+    const length=Number(request.headers.get('content-length')??'0');if(length>12582912)return safe('PAYLOAD_TOO_LARGE',413);
+    let total=0;const chunks:Uint8Array[]=[];
+    try {
+      const reader=request.body?.getReader();
+      if(reader){while(true){const {done,value}=await reader.read();if(done)break;total+=value.length;if(total>12582912){await reader.cancel().catch(()=>{});return safe('PAYLOAD_TOO_LARGE',413);}chunks.push(value);}}
+    }catch{return safe('INVALID_INPUT',400);}
     body=Buffer.concat(chunks).toString('utf8');
   }
   try {
@@ -24,7 +27,7 @@ async function forward(request:NextRequest,context:{params:Promise<{path:string[
     if(!['http:','https:'].includes(url.protocol)||url.username||url.password||url.search||url.hash)throw new Error();
     const target=new URL('/v1/admin/'+relative,url);target.search=request.nextUrl.search;
     const response=await fetch(target,{method:request.method,headers:{Authorization:authorization,'Content-Type':'application/json'},...(body!==undefined?{body}:{}),cache:'no-store',signal:AbortSignal.timeout(120000),redirect:'error'});
-    if(![200,201,400,401,403,404,409,503].includes(response.status))return safe('UNAVAILABLE',503);
+    if(![200,201,400,401,403,404,409,413,415,503].includes(response.status))return safe('UNAVAILABLE',503);
     return new NextResponse(await response.text(),{status:response.status,headers:{'Content-Type':'application/json','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
   }catch{return safe('UNAVAILABLE',503);}
 }
