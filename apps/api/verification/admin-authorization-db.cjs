@@ -18,7 +18,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   const owner=randomUUID(),seller=randomUUID(),a=randomUUID(),b=randomUUID(),asset=randomUUID(),evidence=randomUUID(),video=randomUUID();
   await maintenance.query("INSERT INTO catalog_core.principal(id,project,subject,active) VALUES($1,'cootton-firebase','api03-owner-fixture',true)",[owner]);
   await maintenance.query("INSERT INTO catalog_core.seller(id,name,source,active) VALUES($1,'Synthetic API03 seller','Disposable CI fixture only',true)",[seller]);
-  for(const [id,name]of [[a,'A'],[b,'B']])await maintenance.query('INSERT INTO catalog_core.product(id,seller_id,model_token,title) VALUES($1,$2,$3,$3)',[id,seller,name]);
+  for(const [id,name]of [[a,'A'],[b,'B']])await maintenance.query('INSERT INTO catalog_core.product(id,seller_id,model_token,title) VALUES($1,$2,$3,$4)',[id,seller,name,name]);
   await maintenance.query("INSERT INTO catalog_core.evidence(id,seller_id,declaration,actor_id) VALUES($1,$2,'Synthetic CI media rights fixture',$3)",[evidence,seller,owner]);
   await maintenance.query('INSERT INTO catalog_core.asset(id,seller_id,path,sha256,width,height,rights_evidence_id) VALUES($1,$2,$3,$4,100,100,$5)',[asset,seller,'/media/'+asset+'/'+'a'.repeat(64)+'.webp','a'.repeat(64),evidence]);
   await maintenance.query("INSERT INTO catalog_core.product_media(product_id,asset_id,position,alt) VALUES($1,$2,1,'Synthetic asset B')",[b,asset]);
