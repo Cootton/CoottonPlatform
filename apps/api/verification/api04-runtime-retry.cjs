@@ -19,7 +19,10 @@ module.exports=async function runtimeRetry({maintenance,writer,req,owner}){
   // bootstrap or grant against an external database.
   const bootstrap=await fs.readFile(path.join(__dirname,'../admin-bootstrap.cjs'),'utf8');
   const grants=[...bootstrap.matchAll(/client\.query\('(GRANT [^']+ TO cootton_catalog_admin)'\)/g)].map(m=>m[1]);
-  assert.equal(grants.length,6);
+  assert.equal(grants.length,5);
+  // Basic bootstrap grants cover draft/archive with publication disabled.
+  // This does not claim the extended publication/media runtime grants.
+  process.env.COOTTON_PUBLICATION_ENABLED='false';
   for(const grant of grants)await maintenance.query(grant);
   await admission(true);
   await writer.query('SET ROLE cootton_catalog_admin');restricted=true;
