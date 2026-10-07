@@ -62,3 +62,11 @@ Repository checkout baseline: `Cootton/CoottonPlatform`, SHA `503ae0be7f2956af2b
 [Phản biện hệ thống và hướng xử lý](docs/governance/ADVERSARIAL_REVIEW.md) ghi11 risks, priorities, proposed remedies và evidence cần đạt. Đây là PROPOSED remediation; không thay accepted decisions hoặc runtime.
 
 Đã tổng hợp tài liệu ≠ đã triển khai ≠ đã pass Production Gates. Các evidence runtime lịch sử giữ nguyên nguồn/thời điểm, không dùng docs check thay security/load/restore/payment acceptance. Bước tiếp theo của Work: xác minh HEAD và các checkpoint chưa merge, chọn task nhỏ được owner giao, khóa dependencies và chỉ thực thi trong scope đó.
+
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](docs/engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.

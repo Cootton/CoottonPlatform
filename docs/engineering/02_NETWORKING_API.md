@@ -57,3 +57,11 @@ Nguồn semantics: [HTTP Working Group RFC9110](https://httpwg.org/specs/rfc9110
 ## Review clarification — HTTP/auth/cache
 
 401 có WWW-Authenticate challenge theo applicable scheme/RFC, không expose token. Private conditional304 vẫn authorize current resource trước; cache validator không bypass permissions. Private/error/rate-limit responses không shared-cache; Retry-After không permission tự resubmit financial command. Public404/negative caching tuân D09 freshness/withdrawal; không suy ra cache safety từ status alone.
+
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.

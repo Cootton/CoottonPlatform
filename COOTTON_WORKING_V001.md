@@ -4813,3 +4813,12 @@ PR16 source `56f80580e50b43c94df65d3ae79ef025ea957123` supersedes18768a1 for imp
 ## ACT006-RUNTIME-001 — 2026-10-07
 
 Migration006 applied and verified idempotent; exact fixed API artifact deployed100%. Actual storage fresh-process probe, production rollback measurement/cache checks and HTTP hidden-path acceptance passed within documented scope. [Checkpoint](docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md) supersedes historical006 pending/source-only notices explicitly. ACCEPTED decisions and original data remain unchanged; full Production Gates remain open.
+
+
+## RULE-API-001 — Endpoint contract and data control · 2026-10-07
+
+Owner ACCEPTED:
+
+> Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
+
+[Required endpoint fields and review record](docs/engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
