@@ -609,8 +609,9 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/dictionaries": {
@@ -740,8 +741,9 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products": {
@@ -904,7 +906,8 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products/{id}": {
@@ -1091,8 +1094,9 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products/{id}/images/{asset}": {
@@ -1289,8 +1293,9 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/commands": {
@@ -1301,7 +1306,7 @@
             "AdminBearer": []
           }
         ],
-        "description": "Returns201 for first completion and identical receipt replay, preserving existing source behavior. Atomic canonical mutation/version/audit/outbox/receipt; media storage preparation precedes database transaction. Key in JSON body, scoped by actor+action. Generic409 does not expose conflict reason. See action contract records.",
+        "description": "Returns201 for first completion and identical receipt replay, preserving existing source behavior. Atomic canonical mutation/version/audit/outbox/receipt; media storage preparation precedes database transaction. Key in JSON body, scoped by actor+action. Generic409 does not expose conflict reason. See action contract records. Admission/readiness is rechecked before receipt replay. Publication-disabled commands return409 even when a prior receipt exists.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1545,7 +1550,8 @@
           }
         },
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products/{id}/thumbnails/{asset}": {
@@ -1743,8 +1749,9 @@
         },
         "summary": "Authenticated color thumbnail preview",
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products/{id}/video": {
@@ -1932,8 +1939,9 @@
         "summary": "Authenticated video preview; fetched only on play",
         "operationId": "getAdminVideo",
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/admin/catalog/products/{id}/video/poster": {
@@ -2121,8 +2129,9 @@
         "summary": "Authenticated WebP poster preview",
         "operationId": "getAdminVideoPoster",
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
-        "x-authorization-limit": "Verified Firebase identity + active canonical principal. Session capability labels are not per-operation enforcement. API-03 remains open; no new grants.",
-        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access."
+        "x-authorization-limit": "Human-owner catalog slice: verified Firebase identity (matching uid/sub, nonanonymous/noncustom provider, fresh auth_time) + active singleton canonical principal + fixed operation/action allowlist. Session labels do not create grants. No staff/AI delegation or full D08 scoped-grant engine.",
+        "x-query-policy": "Ignored by current handler; never authorizes or filters resource access.",
+        "x-authorization-evidence": "docs/governance/API03_EVIDENCE.md"
       }
     },
     "/v1/catalog/media/{seller}/{file}": {
@@ -3929,7 +3938,7 @@
       "AdminBearer": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "Firebase ID token"
+        "bearerFormat": "Fresh human Firebase ID token; nonanonymous/noncustom provider"
       }
     }
   }

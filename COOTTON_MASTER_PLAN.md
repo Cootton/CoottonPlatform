@@ -71,3 +71,8 @@ Repository checkout baseline: `Cootton/CoottonPlatform`, SHA `503ae0be7f2956af2b
 ## API-02 — Contract records and reconciliation
 
 Read [endpoint/action contracts](docs/contracts/API_ENDPOINT_CONTRACTS.md) → [OpenAPI](docs/contracts/openapi.json) → [ADR0007](docs/adr/0007-http-contract-reconciliation.md) → [API-02 evidence](docs/governance/API02_EVIDENCE.md). Prepared source changes make command201 explicit and reconcile parser/proxy errors. API-01 remains a historical pinned inventory; ACT006 is still runtime authority. API-03 authorization, API-04 transactions and API-05 complete flow evidence remain open; no full gate PASS.
+
+
+## API-03 — Current owner authorization scope
+
+Read [endpoint/action authorization matrix](docs/contracts/API_AUTHORIZATION_MATRIX.md) → [ADR0008](docs/adr/0008-owner-catalog-authorization.md) → [API-03 evidence](docs/governance/API03_EVIDENCE.md). Prepared source/tests explicitly authorize the singleton human-owner catalog slice; buyer/unbound staff/AI subjects and custom-token admission are denied. Full D08 delegated grants/MFA/recovery and API-04 external media recovery remain open. API-02 statements that API-03 is pending describe its prior checkpoint; this bounded owner-scope verification does not close full security gates or change ACT006 runtime.

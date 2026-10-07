@@ -83,3 +83,11 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Existing ACCEPTED decisions, applied migrations, grants and runtime checkpoint retained. API-03/04/05 and full gates remain open; no deployment.
 
 - EVD-API02-001: sourcefe4fdd0 independently passed Foundation37651726765 (contracts12PASS,API14PASS/1SKIP,PostgreSQL1PASS) and Container37651726789;87 relative links resolve. Local Windows setup blocked; no local test PASS claimed. V001 untouched; additive index/module records only.
+
+
+## 2026-10-07 — CHG-API03-001
+
+- Added explicit singleton human-owner policy for8 private reads/13 actions; derive labels from same policy and reject unknown internal operations. No staff/AI account/grant/schema created.
+- Reject custom/anonymous/missing Firebase provider and uid/sub mismatch; recheck canonical identity age. Publication readiness is checked before receipt replay (disabled409 rather than prior success), documented as intentional tightening.
+- Added actual guard/service HTTP denials, per-operation/action owner/foreign/inactive/outage checks and disposable PostgreSQL resource/revoke ordering/privilege evidence under existing CI.
+- Preserve applied001–006, V001, accepted D08/domain contracts and ACT006 runtime. Cooperating advisory protocol is not privileged-maintenance bypass proof; media preparation remains API-04. Full production gates remain OPEN.

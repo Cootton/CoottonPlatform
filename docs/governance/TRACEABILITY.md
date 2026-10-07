@@ -91,3 +91,8 @@ RULE-API-001 is owner-authorized; its [PR19 documentation](https://github.com/Co
 ## API-02 — Contract reconciliation
 
 REQ-API-CONTRACT-002 → owner RULE-API-001 / CORE / ADR0004–0007 → [endpoint/action contracts](../contracts/API_ENDPOINT_CONTRACTS.md), OpenAPI and scoped API/Web transport changes → http-contract.cjs + web-http.cjs under existing verify:api CI → [EVD-API02-001](API02_EVIDENCE.md). API01-F001/F002/F003 corrected in prepared source/spec; F005 compatibility/query/type behavior explicit; F004/API-03 and deeper F006/API-04 remain open. No production gate-wide PASS or runtime deployment claimed.
+
+
+## API-03 — Owner authorization evidence
+
+REQ-API-AUTHZ-003 → D08/ADR0004 + singleton principal/seller migration002 + owner API-03 assignment → [matrix](../contracts/API_AUTHORIZATION_MATRIX.md), ADR0008 and central owner policy/admin identity/service source → AUTH03-IDENTITY/POLICY/REPLAY/HTTP/DB-001 → [EVD-API03-001](API03_EVIDENCE.md) → GATE-SEC/CONTRACT/DATA/RELEASE (not full PASS). API01-F004 is resolved for current single-owner boundary only; delegated grants/expiry/scopes/MFA/recovery and external media effects remain open. Evidence separates mocked identity transport, actual PostgreSQL and unchanged production runtime.
