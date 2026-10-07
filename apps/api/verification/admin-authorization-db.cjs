@@ -8,7 +8,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
  assert.ok(['localhost','127.0.0.1','[::1]'].includes(url.hostname));assert.equal(url.pathname,'/cootton_api_test');assert.equal(decodeURIComponent(url.username),'cootton_test');
  const maintenance=new Client({connectionString:url.toString()}),writer=new Client({connectionString:url.toString()}),revoker=new Client({connectionString:url.toString()});
  await maintenance.connect();let prepared=false,clientsConnected=false,releaseWriter=()=>{};
- const originals=[media.previewImage,media.previewVideo,process.env.COOTTON_PUBLICATION_ENABLED];let storageReads=0;
+ const originals=[media.previewImage,media.previewVideo,process.env.COOTTON_PUBLICATION_ENABLED,media.prepareImage];let storageReads=0;
  try{
   assert.equal((await maintenance.query("SELECT to_regnamespace('catalog_core') IS NOT NULL AS exists")).rows[0].exists,false);
   assert.equal((await maintenance.query("SELECT count(*)::int AS n FROM pg_roles WHERE rolname IN ('cootton_catalog_admin','cootton_catalog_reader')")).rows[0].n,0);
@@ -35,13 +35,47 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   await assert.rejects(maintenance.query("INSERT INTO catalog_core.principal(id,project,subject,active) VALUES($1,'cootton-firebase','another-fixture',true)",[randomUUID()]),e=>e.code==='23505');
   await assert.rejects(maintenance.query("INSERT INTO catalog_core.seller(id,name,source) VALUES($1,'Other','Fixture')",[randomUUID()]),e=>e.code==='23505');
   media.previewImage=async()=>{storageReads++;return {mime:'image/webp',base64:'Zml4dHVyZQ=='};};media.previewVideo=async()=>{storageReads++;return {mime:'video/mp4',base64:'Zml4dHVyZQ=='};};
-  const service=new AdminCatalogService(new MemoryCache());
+  const cache=new MemoryCache(),service=new AdminCatalogService(cache);
   service.database=()=>({query:(...args)=>maintenance.query(...args),connect:async()=>({query:(...args)=>writer.query(...args),release(){}})});
   for(const thumbnail of [false,true]){await assert.rejects(service.image(req,a,asset,thumbnail),e=>e.getStatus()===404);assert.equal(storageReads,thumbnail?1:0);assert.equal((await service.image(req,b,asset,thumbnail)).mime,'image/webp');}
   for(const poster of [false,true]){const before=storageReads;await assert.rejects(service.video(req,a,poster),e=>e.getStatus()===404);assert.equal(storageReads,before);assert.ok(await service.video(req,b,poster));}
   const key=randomUUID(),input={key,action:'createDraft',payload:{title:'Synthetic API03 authorized draft'}};
   const result=await service.command(req,input);assert.equal(result.lifecycle,'DRAFT');
   for(const table of ['audit','outbox','command'])assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+table)).rows[0].n,1);
+  // API04-TX-001: replay precedes current version, changed fingerprint never mutates.
+  assert.deepEqual(await service.command(req,{payload:input.payload,action:input.action,key:input.key}),JSON.parse(JSON.stringify(result)));
+  await assert.rejects(service.command(req,{...input,payload:{title:'Different content'}}),e=>e.getStatus()===409);
+  const connect=(client,query)=>({query:(...args)=>maintenance.query(...args),connect:async()=>({query:query??((...args)=>client.query(...args)),release(){}})});
+  // Real COMMIT completes, then transport loses its acknowledgement. Retry must
+  // recover the original result with no second version/audit/outbox effect.
+  const archiveA={key:randomUUID(),action:'archive',id:a,expectedVersion:'1',payload:{reason:'Synthetic rollback/recovery evidence'}};
+  let lost=false;
+  service.database=()=>connect(writer,async(sql,...args)=>{const rows=await writer.query(sql,...args);if(sql==='COMMIT'&&!lost){lost=true;throw Error('Synthetic lost COMMIT acknowledgement');}return rows;});
+  await assert.rejects(service.command(req,archiveA),e=>e.getStatus()===503);
+  assert.equal((await maintenance.query('SELECT version::text FROM catalog_core.product WHERE id=$1',[a])).rows[0].version,'2');
+  await cache.read('stale-fixture',10000,async()=>({version:'1'}));assert.equal(cache.stats().entries,1);
+  service.database=()=>connect(writer);const recovered=await service.command(req,archiveA);assert.equal(recovered.version,'2');assert.equal(cache.stats().entries,0);
+  // Failure after business + audit, before outbox/receipt must roll everything back.
+  const archiveB={...archiveA,key:randomUUID(),id:b};
+  service.database=()=>connect(writer,async(sql,...args)=>{if(sql.startsWith('INSERT INTO catalog_core.outbox'))throw Error('Synthetic outbox failure');return writer.query(sql,...args);});
+  await assert.rejects(service.command(req,archiveB),e=>e.getStatus()===503);
+  assert.equal((await maintenance.query('SELECT lifecycle,version::text FROM catalog_core.product WHERE id=$1',[b])).rows[0].version,'1');
+  for(const table of ['audit','outbox','command'])assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+table)).rows[0].n,2);
+  // Two independent connections, distinct keys, same expectedVersion: one winner.
+  service.database=()=>connect(writer);const second=new AdminCatalogService(new MemoryCache());second.database=()=>connect(revoker);
+  const races=await Promise.allSettled([service.command(req,archiveB),second.command(req,{...archiveB,key:randomUUID()})]);
+  assert.equal(races.filter(r=>r.status==='fulfilled').length,1);assert.equal(races.find(r=>r.status==='rejected').reason.getStatus(),409);
+  assert.equal((await maintenance.query('SELECT version::text FROM catalog_core.product WHERE id=$1',[b])).rows[0].version,'2');
+  // External media exists before SQL. Failed SQL leaves no attachment/receipt;
+  // exact retry can reuse immutable bytes (storage integrity proven separately).
+  const mediaKey=randomUUID(),upload={key:mediaKey,action:'uploadImage',id:result.id,expectedVersion:'1',payload:{base64:'fixture',alt:'Synthetic recovery image',rights:'Synthetic fixture only'}};
+  let preparations=0;media.prepareImage=async()=>{preparations++;return {path:'/media/'+mediaKey+'/'+'e'.repeat(64)+'.webp',sha:'e'.repeat(64),width:10,height:10,alt:'Synthetic recovery image',rights:'Synthetic fixture only'};};
+  service.database=()=>connect(writer,async(sql,...args)=>{if(sql.startsWith('INSERT INTO catalog_core.outbox'))throw Error('Synthetic media SQL failure');return writer.query(sql,...args);});
+  await assert.rejects(service.command(req,upload),e=>e.getStatus()===503);assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.asset WHERE id=$1',[mediaKey])).rows[0].n,0);
+  service.database=()=>connect(writer);assert.equal((await service.command(req,upload)).version,'2');assert.equal(preparations,2);
+  assert.equal((await service.command(req,upload)).version,'2');assert.equal(preparations,2);
+  await assert.rejects(service.command(req,{...upload,key:randomUUID()}),e=>e.getStatus()===409);assert.equal(preparations,2);
+  for(const table of ['audit','outbox','command'])assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+table)).rows[0].n,4);
   const guard=async(client)=>client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',['cootton-firebase:api03-owner-fixture']);
   await revoker.query('BEGIN');await guard(revoker);await revoker.query('UPDATE catalog_core.principal SET active=false WHERE id=$1',[owner]);await revoker.query('COMMIT');
   const beforeReads=storageReads;
@@ -51,7 +85,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
    const command={key:randomUUID(),action,...(['createDraft','addDictionary'].includes(action)?{}:{id:a,expectedVersion:'1'}),payload:{}};
    await assert.rejects(service.command(req,command),e=>e.getStatus()===403);
   }
-  assert.equal(storageReads,beforeReads);assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,1);
+  assert.equal(storageReads,beforeReads);assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,4);
   await revoker.query('BEGIN');await guard(revoker);await revoker.query('UPDATE catalog_core.principal SET active=true WHERE id=$1',[owner]);await revoker.query('COMMIT');
   let enteredResolve;const entered=new Promise(resolve=>enteredResolve=resolve),release=new Promise(resolve=>releaseWriter=resolve);
   service.database=()=>({query:(...args)=>maintenance.query(...args),connect:async()=>({query:async(sql,...args)=>{const rows=await writer.query(sql,...args);if(sql.includes('FROM catalog_core.principal')){enteredResolve();await release;}return rows;},release(){}})});
@@ -62,11 +96,11 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   releaseWriter();assert.equal((await pending).lifecycle,'DRAFT');
   await revoker.query('BEGIN');await guard(revoker);await revoker.query('UPDATE catalog_core.principal SET active=false WHERE id=$1',[owner]);await revoker.query('COMMIT');
   await assert.rejects(authorizeOwnerCatalog(maintenance,req,'session'),e=>e.getStatus()===403);
-  assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,2);
+  assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,5);
  }finally{
   releaseWriter();if(clientsConnected){await writer.query('ROLLBACK').catch(()=>{});await revoker.query('ROLLBACK').catch(()=>{});await writer.end();await revoker.end();}
   await maintenance.query('ROLLBACK').catch(()=>{});
   if(prepared){await maintenance.query('DROP SCHEMA catalog_core CASCADE');await maintenance.query('DROP SCHEMA catalog_read CASCADE');await maintenance.query('DROP ROLE cootton_catalog_admin');await maintenance.query('DROP ROLE cootton_catalog_reader');}
-  await maintenance.end();[media.previewImage,media.previewVideo]=originals;if(originals[2]===undefined)delete process.env.COOTTON_PUBLICATION_ENABLED;else process.env.COOTTON_PUBLICATION_ENABLED=originals[2];
+  await maintenance.end();[media.previewImage,media.previewVideo]=originals;media.prepareImage=originals[3];if(originals[2]===undefined)delete process.env.COOTTON_PUBLICATION_ENABLED;else process.env.COOTTON_PUBLICATION_ENABLED=originals[2];
  }
 });

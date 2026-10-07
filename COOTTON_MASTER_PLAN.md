@@ -88,3 +88,9 @@ Read [endpoint/action contracts](docs/contracts/API_ENDPOINT_CONTRACTS.md) → [
 
 Read [endpoint/action authorization matrix](docs/contracts/API_AUTHORIZATION_MATRIX.md) → [ADR0008](docs/adr/0008-owner-catalog-authorization.md) → [API-03 evidence](docs/governance/API03_EVIDENCE.md). Prepared source/tests explicitly authorize the singleton human-owner catalog slice; buyer/unbound staff/AI subjects and custom-token admission are denied. Full D08 delegated grants/MFA/recovery and API-04 external media recovery remain open. API-02 statements that API-03 is pending describe its prior checkpoint; this bounded owner-scope verification does not close full security gates or change ACT006 runtime.
 
+
+
+## API-04 — Transaction / idempotency / version / media recovery
+
+API04-TX-001: owner assigned source verification. Read [transaction and recovery contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md) → [ADR0009](docs/adr/0009-command-media-recovery.md) → [API-04 evidence](docs/governance/API04_EVIDENCE.md), after API-03. Prepared patch verifies immutable object reuse and recovery after partial media/uncertain commit; retains existing SQL atomicity and expectedVersion rules. Historical API-04 pending notices describe prior checkpoints. API04-RECOVERY-002 durable intentions, retention and safe orphan cleanup remain PROPOSED/OPEN. ACT006 remains runtime authority; V001/accepted decisions and applied001–006 are preserved.
+

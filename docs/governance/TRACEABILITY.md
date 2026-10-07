@@ -109,3 +109,20 @@ REQ-API-CONTRACT-002 → owner RULE-API-001 / CORE / ADR0004–0007 → [endpoin
 
 REQ-API-AUTHZ-003 → D08/ADR0004 + singleton principal/seller migration002 + owner API-03 assignment → [matrix](../contracts/API_AUTHORIZATION_MATRIX.md), ADR0008 and central owner policy/admin identity/service source → AUTH03-IDENTITY/POLICY/REPLAY/HTTP/DB-001 → [EVD-API03-001](API03_EVIDENCE.md) → GATE-SEC/CONTRACT/DATA/RELEASE (not full PASS). API01-F004 is resolved for current single-owner boundary only; delegated grants/expiry/scopes/MFA/recovery and external media effects remain open. Evidence separates mocked identity transport, actual PostgreSQL and unchanged production runtime.
 
+
+
+## API04-TX-001 · Owner assignment2026-10-07
+
+| ID | Source / decision | Implementation / evidence | Remaining gate |
+|---|---|---|---|
+| API04-I01–I05 | RULE-API-001, D01/CORE atomic commands and durable principal-operation-key receipt | admin-catalog transaction; API04-T01–T04 in admin-authorization-db.cjs; [evidence](API04_EVIDENCE.md) | Production retry/concurrency/failover |
+| API04-I06–I07 | Private immutable media, source-backed attachment | catalog-media storeImmutable/storeVideoMedia; API04-T05 media-recovery.cjs; [ADR0009](../adr/0009-command-media-recovery.md) | Real Storage generation/IAM and encoder-version compatibility |
+| API04-RECOVERY-002 | [Recovery runbook](../contracts/API_TRANSACTION_MEDIA_RECOVERY.md) | PROPOSED durable intent/reconciliation/retention; no deletion implementation | Policy, reviewed migration/grants if needed, cleanup/restore proof |
+
+No full Production Gate is promoted. This source checkpoint supersedes API-04 pending notices only within the prepared source/tests scope; ACT006 stays runtime authority.
+
+EVD-API04-001 pins source7a3aa187 to Foundation37687748134/Container37687748147 SUCCESS (2026-10-08 Asia/Saigon); see API04_EVIDENCE.md for counts, failure history and scope limits. PR23 is the review artifact; no runtime/deployment evidence inferred.
+
+
+PR23-F001 → API04-I06 / ADR0009 follow-up → catalog-media generation-pinned stream with encoding admission/local byte bound → media-recovery encoding/ignored-range/truncated tests → EVD-PR23-F001 (sourcee75e757f,Foundation37688677208/Container37688677294 SUCCESS). Finding RESOLVED for source/CI; actual Storage/runtime and full Production Gates OPEN.
+

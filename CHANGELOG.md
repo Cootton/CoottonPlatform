@@ -106,3 +106,18 @@ Owner ACCEPTED:
 
 - EVD-API03-001: exactsource742bdee2 Foundation37654596533/Container37654596511 SUCCESS; contracts12PASS,API19PASS/1SKIP,PostgreSQL2PASS. Fixed first-run fixture42P08; history retained.83 relative links/syntax checks pass; no full Production Gate PASS.
 
+
+
+## 2026-10-07 — API04-TX-001 (prepared source, not deployed)
+
+- Preserve SQL business/audit/outbox/receipt atomicity, UUID identities and applied migrations001–006. Add real disposable DB proof for replay, fingerprint denial, lost COMMIT acknowledgement, rollback, version races and media attachment retry.
+- Verify existing immutable Storage bytes/size/MIME/private metadata at a pinned generation before412 reuse. Resume partial video/poster safely; invalidate cache on successful replay and discard connection when rollback fails.
+- Add [API04 contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md), ADR0009, source evidence and explicit OPEN durable-intent/orphan-cleanup/retention gates. No runtime/grant/schema/delete/commerce change; ACCEPTED domain decisions retained.
+
+- EVD-API04-001 · verified2026-10-08: source7a3aa187 Foundation37687748134 and Container37687748147 SUCCESS. Contracts12PASS,API21PASS/1SKIP,PostgreSQL2PASS; Date/JSON fixture comparison failure retained in history. PR23 prepared for review;100 relative links valid, V001/001–006 unchanged; no production gate closure.
+
+
+- PR23-F001 · 2026-10-08: deny unsupported recovery encoding, replace buffered range download with locally bounded generation-pinned stream verification. Add gzip/range-ignored/truncated-stream regression checks; source CI pending, previous runtime/gates unchanged.
+
+- EVD-PR23-F001: sourcee75e757f Foundation37688677208/Container37688677294 SUCCESS; contracts12PASS,API24PASS/1SKIP,PostgreSQL2PASS. Review finding resolved for source; production/cleanup gates remain OPEN.
+

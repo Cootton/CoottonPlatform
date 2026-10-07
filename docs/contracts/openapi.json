@@ -1306,7 +1306,7 @@
             "AdminBearer": []
           }
         ],
-        "description": "Returns201 for first completion and identical receipt replay, preserving existing source behavior. Atomic canonical mutation/version/audit/outbox/receipt; media storage preparation precedes database transaction. Key in JSON body, scoped by actor+action. Generic409 does not expose conflict reason. See action contract records. Admission/readiness is rechecked before receipt replay. Publication-disabled commands return409 even when a prior receipt exists.",
+        "description": "Returns201 for first completion and identical receipt replay, preserving existing source behavior. Atomic canonical mutation/version/audit/outbox/receipt; media storage preparation precedes database transaction. Key in JSON body, scoped by actor+action. Generic409 does not expose conflict reason. See action contract records. Admission/readiness is rechecked before receipt replay. Publication-disabled commands return409 even when a prior receipt exists. API04-TX-001: retry an uncertain outcome with the exact original request/key; reauthorization precedes durable receipt replay, which returns the original201 result before current-version validation. Changed fingerprint or a new command with stale expectedVersion returns409. Immutable media is prepared outside SQL and verified before existing-object reuse; private orphan cleanup is not activated. See API_TRANSACTION_MEDIA_RECOVERY.md.",
         "requestBody": {
           "required": true,
           "content": {

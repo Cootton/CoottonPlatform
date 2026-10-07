@@ -48,13 +48,7 @@ export async function prepareImage(payload: unknown, key: string) {
             throw new BadRequestException();
         const { output, width, height, sha } = await normalizeImage(Buffer.from(p.base64, 'base64'));
         const path = '/media/' + key + '/' + sha + '.webp';
-        try {
-            await bucket().file(path.slice(1)).save(output, { resumable: false, contentType: 'image/webp', preconditionOpts: { ifGenerationMatch: 0 }, metadata: { cacheControl: 'private, no-store' } });
-        }
-        catch (e) {
-            if (!(e && typeof e === 'object' && 'code' in e && Number(e.code) === 412))
-                throw new ServiceUnavailableException('MEDIA_UNAVAILABLE');
-        }
+        await storeImmutable(path, output, 'image/webp');
         return { path, sha, width, height, rights, alt };
     }
     finally {
@@ -68,9 +62,30 @@ export async function previewImage(path: string) {
     return { mime: 'image/webp', base64: bytes.toString('base64') };
 }
 
-async function storeImmutable(path: string, output: Buffer, contentType: string) {
-    try { await bucket().file(path.slice(1)).save(output, { resumable: false, contentType, preconditionOpts: { ifGenerationMatch: 0 }, metadata: { cacheControl: 'private, no-store' } }); }
-    catch (e) { if (!(e && typeof e === 'object' && 'code' in e && Number(e.code) === 412)) throw new ServiceUnavailableException('MEDIA_UNAVAILABLE'); }
+export async function storeImmutable(path: string, output: Buffer, contentType: string) {
+    const storage = bucket(), name = path.slice(1), file = storage.file(name);
+    try { await file.save(output, { resumable: false, contentType, preconditionOpts: { ifGenerationMatch: 0 }, metadata: { cacheControl: 'private, no-store' } }); }
+    catch (e) {
+        if (!(e && typeof e === 'object' && 'code' in e && Number(e.code) === 412)) throw new ServiceUnavailableException('MEDIA_UNAVAILABLE');
+        // A partial upload/retry may reuse only the exact immutable object. Pin
+        // the generation so replacement between metadata and download cannot pass.
+        try {
+            const [meta] = await file.getMetadata();
+            if (!meta.generation || Number(meta.size) !== output.length || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity')) throw new Error();
+            // Range is only a transport optimization. Enforce the limit locally
+            // even if storage ignores it; never accumulate a download Buffer.
+            const stream = storage.file(name, { generation: meta.generation }).createReadStream({ start: 0, end: output.length, decompress: false });
+            let offset = 0;
+            try {
+                for await (const value of stream) {
+                    const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value);
+                    if (chunk.length > output.length - offset || !chunk.equals(output.subarray(offset, offset + chunk.length))) throw new Error();
+                    offset += chunk.length;
+                }
+                if (offset !== output.length) throw new Error();
+            } finally { stream.destroy(); }
+        } catch { throw new ServiceUnavailableException('MEDIA_RECOVERY_CONFLICT'); }
+    }
 }
 export async function prepareThumbnail(imagePath: string, key: string) {
     if (processing) throw new ServiceUnavailableException('MEDIA_BUSY');
@@ -126,12 +141,17 @@ export async function prepareVideo(payload: unknown, key: string) {
     processing = true;
     try {
         const p = videoFields(payload), result = await normalizeVideo(Buffer.from(p.base64, 'base64'));
-        const sha = createHash('sha256').update(result.output).digest('hex'), posterSha = createHash('sha256').update(result.poster).digest('hex');
-        const path = '/videos/' + key + '/' + sha + '.mp4', posterPath = '/posters/' + key + '/' + posterSha + '.webp';
-        await storeImmutable(path, result.output, 'video/mp4');
-        await storeImmutable(posterPath, result.poster, 'image/webp');
+        const { path, sha, posterPath } = await storeVideoMedia(result, key);
         return { width: result.width, height: result.height, durationMs: result.durationMs, path, sha, posterPath, byteLength: result.output.length, alt: p.alt, rights: p.rights };
     } finally { processing = false; }
+}
+/** Only called with normalized, bounded output; no transport route accepts paths. */
+export async function storeVideoMedia(result: { output: Buffer; poster: Buffer }, key: string) {
+    const sha = createHash('sha256').update(result.output).digest('hex'), posterSha = createHash('sha256').update(result.poster).digest('hex');
+    const path = '/videos/' + key + '/' + sha + '.mp4', posterPath = '/posters/' + key + '/' + posterSha + '.webp';
+    await storeImmutable(path, result.output, 'video/mp4');
+    await storeImmutable(posterPath, result.poster, 'image/webp');
+    return { path, sha, posterPath };
 }
 export async function previewVideo(path: string) {
     const [bytes] = await bucket().file(path.slice(1)).download();

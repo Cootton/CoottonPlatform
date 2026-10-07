@@ -1,3 +1,5 @@
+> API04-TX-001 · prepared follow-up: [transaction/media contract](API_TRANSACTION_MEDIA_RECOVERY.md) and [evidence](../governance/API04_EVIDENCE.md) bound retry/version/recovery behavior. Earlier API-04 pending notices remain historical; production and durable orphan cleanup are OPEN.
+
 > **API03-AUTHZ-001 · 2026-10-07:** [Authorization matrix](API_AUTHORIZATION_MATRIX.md) and [ADR0008](../adr/0008-owner-catalog-authorization.md) supersede the prior API-03-pending checkpoint below for the current singleton owner slice only. Prepared policy explicitly maps read/action admission, rejects custom provider and rechecks readiness before receipt; full D08/live gates remain open. ACT006 runtime is unchanged.
 
 # API-02 — Endpoint contracts and HTTP reconciliation
