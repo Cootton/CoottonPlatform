@@ -43,3 +43,6 @@
 - SYNC-PR16-006: implementation authority is PR16 56f80580e50b43c94df65d3ae79ef025ea957123; read docs/governance/MIGRATION006_SOURCE_SYNC.md before migration/release work.006 is prepared, not production-applied;001–005 immutable. CI does not certify deployment. Earlier source18768a1 overlay is historical.
 
 - **MERGE-PR16-001 · 2026-10-07:** PR #16 đã merge vào `main` tại `6205aa2ff1eee6c750fa277bb1faf5ae397c6ff6`; source fixes56f8058 được giữ nguyên. PR #17 đã chuyển base sang `main` và đang kiểm tra trước merge. Các ghi chú PR16 open/unmerged/stacked bên dưới là lịch sử. Migration006 vẫn chưa áp dụng production; merge không chứng minh runtime/deployment hoặc đóng Production Gates.
+
+
+- ACT006-RUNTIME-001: owner assigned activation006 and explicitly authorized maintenance credential use/rollback-only production verification.006 applied/idempotent; API cootton-api-act006-3c768d6 receives100% traffic. Read docs/operations/ACTIVATION006_CHECKPOINT_2026_10_07.md. Boxy remains DRAFTv23; evidence closes only assigned patch scope, no full gates/commerce/republish.
