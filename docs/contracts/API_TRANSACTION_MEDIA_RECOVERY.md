@@ -39,8 +39,8 @@ The UUID supplied as key remains the historical asset ID/path component for uplo
 
 1. Preserve exact request/key and safe requestId; do not log base64, tokens, private rights declarations or bucket credentials. Verify actual authorized operator and current deployment/source before inspecting production.
 2. Retry transient503/uncertain response with the original command; if receipt exists, return it after authorization without reprocessing. If no receipt, repeat bounded normalization/object integrity checks and revalidate current data in SQL.
-3.409 stale version: read detail and reconcile. Reusing old expectedVersion cannot attach orphan bytes. If review/state changed, human review decides the next business command.
-4.503 MEDIA_RECOVERY_CONFLICT: quarantine logically by leaving object private/unattached; investigate generation/content/processor compatibility. Never overwrite an attached object, bypass hash checks or publish it.
+3. For409 stale version: read detail and reconcile. Reusing old expectedVersion cannot attach orphan bytes. If review/state changed, human review decides the next business command.
+4. For503 MEDIA_RECOVERY_CONFLICT: quarantine logically by leaving object private/unattached; investigate generation/content/processor compatibility. Never overwrite an attached object, bypass hash checks or publish it.
 5. Inventory/reconciliation, separately authorized, must compare storage names/generations against ALL canonical references: asset.path, media_thumbnail.path, video_asset.path/poster_path, plus historical publication/media references and in-flight requests. An unreferenced object is only a candidate, never automatically safe to delete. Repeated snapshot/quiescence, retention/backup/legal policy and reviewer approval are required before a generation-conditional deletion.
 6. No deletion on transaction catch: another attempt may already have committed the object, or COMMIT outcome may be unknown. This patch intentionally performs no storage deletes.
 

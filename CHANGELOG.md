@@ -100,3 +100,5 @@ Migration006 applied and verified idempotent; exact fixed API artifact deployed1
 - Preserve SQL business/audit/outbox/receipt atomicity, UUID identities and applied migrations001–006. Add real disposable DB proof for replay, fingerprint denial, lost COMMIT acknowledgement, rollback, version races and media attachment retry.
 - Verify existing immutable Storage bytes/size/MIME/private metadata at a pinned generation before412 reuse. Resume partial video/poster safely; invalidate cache on successful replay and discard connection when rollback fails.
 - Add [API04 contract](docs/contracts/API_TRANSACTION_MEDIA_RECOVERY.md), ADR0009, source evidence and explicit OPEN durable-intent/orphan-cleanup/retention gates. No runtime/grant/schema/delete/commerce change; ACCEPTED domain decisions retained.
+
+- EVD-API04-001 · verified2026-10-08: source7a3aa187 Foundation37687748134 and Container37687748147 SUCCESS. Contracts12PASS,API21PASS/1SKIP,PostgreSQL2PASS; Date/JSON fixture comparison failure retained in history. PR23 prepared for review;100 relative links valid, V001/001–006 unchanged; no production gate closure.
