@@ -1,5 +1,7 @@
 # Changelog
 
+> **PREP-REL04-001 · 2026-10-08:** [PR25 merge và release preparation](docs/operations/API04_RELEASE_PREPARATION_2026_10_08.md) pins merged source e06d3de8, scoped CI/cloud evidence and candidate/rollback requirements. Web login/read recovered in one observed session without a code change; historical network failure/root cause remains OPEN. Live cloud access, intended service identity, actual registry/encoder digests, SDK warning investigation and full Production Gates remain OPEN. Preparation is NOT READY TO DEPLOY; ACT006 remains last verified runtime.
+
 ## 2026-10-08 — CHG-REL04-LIVE-001
 
 - Observed real encoder/GCS/isolated PostgreSQL recovery PASS at7e3f5ecd; exactly two additional private video/poster objects retained, six total. Recorded generations, launcher pre-write failure/correction and nonfatal SDK listener warnings.

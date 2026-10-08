@@ -1,4 +1,6 @@
 # API-04 — Real encoder / SQL recovery and Firebase follow-up
+
+> **PREP-REL04-001 · 2026-10-08:** [PR25 merge và release preparation](API04_RELEASE_PREPARATION_2026_10_08.md) pins merged source e06d3de8, scoped CI/cloud evidence and candidate/rollback requirements. Web login/read recovered in one observed session without a code change; historical network failure/root cause remains OPEN. Live cloud access, intended service identity, actual registry/encoder digests, SDK warning investigation and full Production Gates remain OPEN. Preparation is NOT READY TO DEPLOY; ACT006 remains last verified runtime.
 `EVD-REL04-VIDEO-SQL-001` · 2026-10-08 · rollout NOT STARTED.
 
 Read [preflight checkpoint](API04_PREFLIGHT_ISOLATED_EVIDENCE_2026_10_08.md) and [deployment plan](API04_DEPLOYMENT_PLAN.md). This follow-up preserves their recorded source/environment boundaries.

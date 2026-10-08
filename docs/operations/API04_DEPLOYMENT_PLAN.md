@@ -1,4 +1,6 @@
 # API-04 — Separate deployment and runtime verification plan
+> Latest [PREP-REL04-001](API04_RELEASE_PREPARATION_2026_10_08.md) freezes PR25 merge source, observed Web recovery, artifact/configuration/rollback proposal and explicit blockers. This earlier scenario plan remains proposed.
+
 `PLAN-API04-DEPLOY-001` · 2026-10-08 · PROPOSED; execution NOT STARTED.
 
 ## Authority and reading order
