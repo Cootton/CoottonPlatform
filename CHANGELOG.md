@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-08 — CHG-REL04-VIDEO-SQL-001
+
+- Added actual encoder/HTTP/PostgreSQL uploadVideo recovery verification to CI, including poster failure, SQL rollback, durable COMMIT loss, original201 replay and409/403 denial without processing.
+- [Scoped follow-up evidence](docs/operations/API04_VIDEO_SQL_FIREBASE_EVIDENCE_2026_10_08.md) pins source7e3f5ecd and successful push CI, records Firebase login blocker/empty-credential REST probe limits and explicitly pending real GCS execution. Two additional private objects were approved; approval is not PASS. No application/production data/IAM/deployment change.
+
 ## 2026-10-08 — CHG-REL04-PREFLIGHT-001
 
 - Added [EVD-REL04-PREFLIGHT-001](docs/operations/API04_PREFLIGHT_ISOLATED_EVIDENCE_2026_10_08.md): exact CI source/results, actual isolated HTTP/PostgreSQL COMMIT retry proof, current read-only cloud baseline and one real GCS four-object run.
