@@ -1,5 +1,7 @@
 # API04 — bản ứng viên và kiểm chứng chuẩn bị release
 
+> **FIX04-READ-OPS-001 · 2026-10-09:** source SDK fix `988c8a83…`, API candidate `7a053d12…`; CI/build PASS, actual-account1.000 reads/0SDK warnings, HTTP read/negative checks PASS. Read [scoped SDK/HTTP evidence](API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) and [observed config / proposed thresholds](API04_RUNTIME_CONFIG_AND_THRESHOLDS_2026_10_09.md). API588 evidence below remains historical. ACT006 remains serving; no serving deployment/traffic change. Thresholds/deadline changes are PROPOSED, full gates and API04-RECOVERY-002 remain OPEN. **NOT READY TO DEPLOY**.
+
 `PREP04-CANDIDATE-001` · tổng hợp 2026-10-09, Asia/Saigon. Các lượt build/runtime ban đầu chạy ngày 2026-10-08 UTC. **NOT READY TO DEPLOY**.
 
 ## Thẩm quyền và phạm vi
