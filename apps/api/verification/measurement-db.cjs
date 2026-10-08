@@ -51,5 +51,29 @@ test('006 guards legacy and new publication snapshots on cold and cached reads',
   await db.query('UPDATE catalog_core.dictionary SET active=false WHERE id=$1',[measurement]);await expectVisible(false);
   assert.deepEqual((await db.query('SELECT snapshot FROM catalog_core.product_review WHERE id=$1',[review])).rows[0].snapshot.product.version,'2');
   assert.equal((await db.query("SELECT has_table_privilege('cootton_catalog_reader','catalog_core.product_review','SELECT') AS v")).rows[0].v,false);
+
+  // Actual Nest HTTP + local PostgreSQL under the restricted reader role.
+  // Synthetic rows stay in this loopback transaction and are rolled back.
+  const {createApp}=require('../dist/main'),originalDatabase=CatalogRepository.prototype.database;
+  CatalogRepository.prototype.database=()=>({query:(...args)=>db.query(...args)});
+  const app=await createApp();
+  try {
+   await app.listen(0,'127.0.0.1');const origin=await app.getUrl();
+   async function httpRead(route,status){
+    await db.query('SET LOCAL ROLE cootton_catalog_reader');
+    try {const r=await fetch(origin+route);assert.equal(r.status,status);assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(r.headers.get('x-content-type-options'),'nosniff');return await r.json();}
+    finally {await db.query('RESET ROLE');}
+   }
+   await db.query('UPDATE catalog_core.dictionary SET active=true WHERE id=$1',[measurement]);app.get(MemoryCache).invalidate();
+   const list=await httpRead('/v1/catalog/products',200),detail=await httpRead('/v1/catalog/products/'+product,200);
+   assert.equal(list.items.length,1);assert.equal(detail.chart.length,1);
+   function privateFree(value){if(value&&typeof value==='object'){for(const [key,item] of Object.entries(value)){assert.ok(!['actor_id','subject','fingerprint','review_id','rights_evidence_id','origin_evidence_id'].includes(key),'private DTO field');privateFree(item);}}}
+   privateFree(list);privateFree(detail);
+   // Both responses are now cached; revoke without a product version bump.
+   await db.query('UPDATE catalog_core.dictionary SET active=false WHERE id=$1',[measurement]);
+   assert.equal((await httpRead('/v1/catalog/products',200)).items.length,0);
+   await httpRead('/v1/catalog/products/'+product,404);
+   await httpRead('/v1/catalog/media/'+asset+'/'+'a'.repeat(64)+'.webp',404);
+  } finally {await app.close();CatalogRepository.prototype.database=originalDatabase;}
  }finally{await db.query('ROLLBACK').catch(()=>{});await db.end();delete process.env.COOTTON_PUBLICATION_ENABLED;}
 });

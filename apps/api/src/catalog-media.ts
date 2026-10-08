@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { firebaseApp } from './firebase-app';
 import { getStorage } from 'firebase-admin/storage';
+import { readPinnedMedia } from './media-read';
 import { inputObject, inputText } from '@cootton/contracts';
 import { PRODUCT_MEDIA_LIMITS, videoFields } from '@cootton/contracts';
 import { execFile } from 'node:child_process';
@@ -56,7 +57,7 @@ export async function prepareImage(payload: unknown, key: string) {
     }
 }
 export async function previewImage(path: string) {
-    const [bytes] = await bucket().file(path.slice(1)).download();
+    const bytes = await readStoredMedia(path, 3145728, 'image/webp');
     if (bytes.length > 3145728)
         throw new ServiceUnavailableException();
     return { mime: 'image/webp', base64: bytes.toString('base64') };
@@ -74,16 +75,11 @@ export async function storeImmutable(path: string, output: Buffer, contentType: 
             if (!meta.generation || Number(meta.size) !== output.length || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity')) throw new Error();
             // Range is only a transport optimization. Enforce the limit locally
             // even if storage ignores it; never accumulate a download Buffer.
-            const stream = storage.file(name, { generation: meta.generation }).createReadStream({ start: 0, end: output.length, decompress: false });
             let offset = 0;
-            try {
-                for await (const value of stream) {
-                    const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value);
-                    if (chunk.length > output.length - offset || !chunk.equals(output.subarray(offset, offset + chunk.length))) throw new Error();
-                    offset += chunk.length;
-                }
-                if (offset !== output.length) throw new Error();
-            } finally { stream.destroy(); }
+            await readPinnedMedia(name, String(meta.generation), output.length, chunk => {
+                if (!chunk.equals(output.subarray(offset, offset + chunk.length))) throw new Error();
+                offset += chunk.length;
+            });
         } catch { throw new ServiceUnavailableException('MEDIA_RECOVERY_CONFLICT'); }
     }
 }
@@ -91,7 +87,7 @@ export async function prepareThumbnail(imagePath: string, key: string) {
     if (processing) throw new ServiceUnavailableException('MEDIA_BUSY');
     processing = true;
     try {
-        const [bytes] = await bucket().file(imagePath.slice(1)).download();
+        const bytes = await readStoredMedia(imagePath, PRODUCT_MEDIA_LIMITS.imageBytes, 'image/webp');
         if (bytes.length > PRODUCT_MEDIA_LIMITS.imageBytes) throw new BadRequestException();
         const result = await sharp(bytes, { limitInputPixels: 16000000 }).resize({ width: 240, height: 240, fit: 'inside', withoutEnlargement: true }).webp({ quality: 75 }).toBuffer({ resolveWithObject: true });
         const sha = createHash('sha256').update(result.data).digest('hex'), path = '/thumbnails/' + key + '/' + sha + '.webp';
@@ -154,7 +150,20 @@ export async function storeVideoMedia(result: { output: Buffer; poster: Buffer }
     return { path, sha, posterPath };
 }
 export async function previewVideo(path: string) {
-    const [bytes] = await bucket().file(path.slice(1)).download();
+    const bytes = await readStoredMedia(path, PRODUCT_MEDIA_LIMITS.videoBytes, 'video/mp4');
     if (bytes.length > PRODUCT_MEDIA_LIMITS.videoBytes) throw new ServiceUnavailableException();
     return { mime: 'video/mp4', base64: bytes.toString('base64') };
+}
+
+/** Visibility/authorization is checked by the caller; validate private storage before returning bytes. */
+async function readStoredMedia(path: string, limit: number, contentType: string): Promise<Buffer> {
+    try {
+        const name = path.slice(1), [meta] = await bucket().file(name).getMetadata();
+        const size = Number(meta.size), expectedSha = name.split('/').at(-1)?.split('.')[0];
+        if (!meta.generation || !Number.isSafeInteger(size) || size < 1 || size > limit || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity') || !expectedSha || !/^[a-f0-9]{64}$/.test(expectedSha)) throw new Error();
+        const chunks: Buffer[] = [], hash = createHash('sha256');
+        await readPinnedMedia(name, String(meta.generation), size, chunk => { chunks.push(chunk); hash.update(chunk); });
+        if (hash.digest('hex') !== expectedSha) throw new Error();
+        return Buffer.concat(chunks, size);
+    } catch { throw new ServiceUnavailableException('MEDIA_UNAVAILABLE'); }
 }

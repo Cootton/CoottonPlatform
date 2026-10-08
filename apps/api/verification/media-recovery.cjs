@@ -7,14 +7,10 @@ function fixture({ignoreRange=false}={}){
  const storage={file:(name,options)=>({
   save:async(bytes,opts)=>{saves.push(name);assert.equal(opts.preconditionOpts.ifGenerationMatch,0);if(failPoster&&name.startsWith('posters/'))throw {code:503};if(objects.has(name))throw {code:412};objects.set(name,{bytes:Buffer.from(bytes),generation:'7',size:String(bytes.length),contentType:opts.contentType,cacheControl:opts.metadata.cacheControl});},
   getMetadata:async()=>[objects.get(name)],
-  createReadStream:range=>{
-   downloads++;const object=objects.get(name);assert.equal(options.generation,object.generation);assert.equal(range.start,0);assert.equal(range.end,Number(object.size));assert.equal(range.decompress,false);
-   const bytes=ignoreRange?object.bytes:object.bytes.subarray(0,range.end+1);let offset=0;
-   const stream=new Readable({highWaterMark:1,read(){if(offset===bytes.length){this.push(null);return;}const chunk=bytes.subarray(offset,offset+3);offset+=chunk.length;bytesSent+=chunk.length;this.push(chunk);}});
-   streams.push(stream);return stream;
-  }
+  createReadStream:()=>{throw Error('UNEXPECTED_SDK_BODY_READ');}
  })};
- mod.require=id=>id==='firebase-admin/storage'?{getStorage:()=>({bucket:()=>storage})}:id==='./firebase-app'?{firebaseApp:()=>({})}:normal(id);
+ const reader=require('./media-read-fixture.cjs')(async(url,opts)=>{const parsed=new URL(url),name=decodeURIComponent(parsed.pathname.split('/o/')[1]),object=objects.get(name);downloads++;assert.equal(parsed.hostname,'storage.googleapis.com');assert.equal(parsed.searchParams.get('generation'),object.generation);assert.equal(opts.redirect,'error');assert.equal(opts.headers['Accept-Encoding'],'identity');const range={start:0,end:Number(opts.headers.Range.split('-')[1])};assert.equal(range.end,Number(object.size));const bytes=ignoreRange?object.bytes:object.bytes.subarray(0,range.end+1);let offset=0;const stream=new Readable({highWaterMark:1,read(){if(offset===bytes.length){this.push(null);return;}const chunk=bytes.subarray(offset,offset+3);offset+=chunk.length;bytesSent+=chunk.length;this.push(chunk);}});streams.push(stream);return new Response(Readable.toWeb(stream),{status:206,headers:{'x-goog-generation':object.generation}});});
+ mod.require=id=>id==='./media-read'?reader:id==='firebase-admin/storage'?{getStorage:()=>({bucket:()=>storage})}:id==='./firebase-app'?{firebaseApp:()=>({})}:normal(id);
  mod._compile(fs.readFileSync(filename,'utf8'),filename);process.env.COOTTON_MEDIA_BUCKET='recovery-fixture';
  return {media:mod.exports,objects,saves,streams,failPoster:value=>failPoster=value,downloads:()=>downloads,bytesSent:()=>bytesSent};
 }

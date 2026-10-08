@@ -1,5 +1,7 @@
 # API-04 verification evidence
 
+> **FIX04-READ-OPS-001 · 2026-10-09:** SDK body reads are replaced in source `988c8a83…` by the bounded native generation-pinned reader, retaining metadata/integrity/authorization and immutable SDK save semantics. Historical SDK `decompress:false`/stream-destroy descriptions below refer to the earlier implementation; current helper rejects non-identity encoding and cancels/releases native body in finally. [Latest runtime evidence](../operations/API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) gives scoped1.000read/0warning PASS; full identity/write/publication/operations gates remain OPEN. ACT006 has not received this source.
+
 ID: `API04-EVIDENCE-001`. Date:2026-10-07. Base: API03 PR22 head f9557969fa978a4e77fe0e092b478a233a6cdd8b. Production authority remains ACT006; no runtime operation performed.
 
 Prepared source: verified412 reuse, partial video/poster persistence helper, cache invalidation on replay, pooled connection discard on rollback failure. Tests: [storage recovery](../../apps/api/verification/media-recovery.cjs), [disposable PostgreSQL](../../apps/api/verification/admin-authorization-db.cjs). Trace: [API04 contract](../contracts/API_TRANSACTION_MEDIA_RECOVERY.md), [ADR0009](../adr/0009-command-media-recovery.md).

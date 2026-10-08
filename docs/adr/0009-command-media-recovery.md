@@ -1,5 +1,7 @@
 # ADR0009 — Verified immutable media reuse and command retry recovery
 
+> **FIX04-READ-OPS-001 · 2026-10-09:** SDK body reads are replaced in source `988c8a83…` by the bounded native generation-pinned reader, retaining metadata/integrity/authorization and immutable SDK save semantics. Historical SDK `decompress:false`/stream-destroy descriptions below refer to the earlier implementation; current helper rejects non-identity encoding and cancels/releases native body in finally. [Latest runtime evidence](../operations/API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) gives scoped1.000read/0warning PASS; full identity/write/publication/operations gates remain OPEN. ACT006 has not received this source.
+
 ID: `ADR-0009`. Date:2026-10-07. Status: PROPOSED implementation, pending review/merge. Owner assigned API-04. Prior ACCEPTED domain decisions are preserved.
 
 ## Problem

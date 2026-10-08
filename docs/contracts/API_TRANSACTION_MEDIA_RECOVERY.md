@@ -1,5 +1,7 @@
 # API-04 — Transaction, idempotency, version and media recovery
 
+> **FIX04-READ-OPS-001 · 2026-10-09:** SDK body reads are replaced in source `988c8a83…` by the bounded native generation-pinned reader, retaining metadata/integrity/authorization and immutable SDK save semantics. Historical SDK `decompress:false`/stream-destroy descriptions below refer to the earlier implementation; current helper rejects non-identity encoding and cancels/releases native body in finally. [Latest runtime evidence](../operations/API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) gives scoped1.000read/0warning PASS; full identity/write/publication/operations gates remain OPEN. ACT006 has not received this source.
+
 Stable ID: `API04-TX-001`. Status: source proposal for review, stacked on API-03; production validation OPEN. [ADR0009](../adr/0009-command-media-recovery.md) records implementation choices. [Evidence](../governance/API04_EVIDENCE.md) distinguishes CI from runtime.
 
 ## Reading order and authority

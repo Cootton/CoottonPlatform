@@ -14,9 +14,10 @@ module.exports=async function videoSqlRecovery({maintenance,writer,service,send,
  const storage={file:(name,options)=>({
   save:async(bytes,opts)=>{assert.equal(opts.preconditionOpts.ifGenerationMatch,0);if(posterFault&&name.startsWith('posters/')){posterFault=false;throw {code:503};}assert.ok(planned.has(name),'only two predetermined object paths permitted');if(real){await realBucket.file(name).save(bytes,opts);const [m]=await realBucket.file(name).getMetadata();objects.set(name,{...m,bytes:Buffer.from(bytes)});return;}if(objects.has(name))throw {code:412};assert.ok(objects.size<2);objects.set(name,{bytes:Buffer.from(bytes),generation:String(objects.size+1),size:String(bytes.length),contentType:opts.contentType,cacheControl:opts.metadata.cacheControl});},
   getMetadata:async()=>real?realBucket.file(name).getMetadata():[objects.get(name)],
-  createReadStream:opts=>{const object=objects.get(name);assert.equal(options.generation,object.generation);assert.equal(opts.decompress,false);return real?realBucket.file(name,options).createReadStream(opts):Readable.from([object.bytes]);}
+  createReadStream:()=>{throw Error('UNEXPECTED_SDK_BODY_READ');}
  })};
- mod.require=id=>id==='firebase-admin/storage'?{getStorage:()=>({bucket:()=>storage})}:id==='./firebase-app'&&!real?{firebaseApp:()=>({})}:normal(id);
+ const transport=real?null:require('./media-read-fixture.cjs')(async(url,opts)=>{const u=new URL(url),name=decodeURIComponent(u.pathname.split('/o/')[1]),object=objects.get(name);assert.equal(u.searchParams.get('generation'),object.generation);assert.equal(opts.headers['Accept-Encoding'],'identity');return new Response(object.bytes,{status:206,headers:{'x-goog-generation':object.generation}});});
+ mod.require=id=>id==='./media-read'&&!real?transport:id==='firebase-admin/storage'?{getStorage:()=>({bucket:()=>storage})}:id==='./firebase-app'&&!real?{firebaseApp:()=>({})}:normal(id);
  mod._compile(syncfs.readFileSync(filename,'utf8'),filename);
  const counts=async()=>Object.fromEntries(await Promise.all(['audit','outbox','command','evidence','video_asset','product_video'].map(async t=>[t,(await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+t)).rows[0].n])));
  const unchanged=async expected=>assert.deepEqual(await counts(),expected);
