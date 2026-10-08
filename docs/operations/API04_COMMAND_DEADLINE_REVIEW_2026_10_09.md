@@ -1,6 +1,6 @@
 # API04 command deadline source review · 2026-10-09
 
-Status: **45s COMMAND DEADLINE ACCEPTED BY USER — implementation/CI under review; API04 NOT READY FOR DEPLOY**.
+Status: **45s COMMAND DEADLINE ACCEPTED BY USER — SOURCE CHECKS PASS at 92f4ec0; draft review/runtime evidence separate; API04 NOT READY FOR DEPLOY**.
 
 ## Authority and baseline
 
@@ -28,7 +28,7 @@ Disconnection or timeout after sending COMMIT is not proof of rollback. Never de
 
 Physical cancellation of in-flight opaque SDK writes and Sharp work is not claimed. A source HTTP deadline bounds admission and response, not guaranteed provider quiescence; deadline-sensitive downstream effects are gated and uncertain dispatched effects retained for reconciliation.
 
-## Planned verification and scope limits
+## Verification scope and observed results
 
 `verification/command-budget.cjs` exercises compiled production helpers: concurrent contexts, late identity/read completion, delayed pool acquisition, discarded SQL leases, real child-process termination, native-reader cancellation, opaque immutable-write late settlement, actual Nest late-verifier response, and a stalled body parser. No Firebase or GCS operation occurs in these tests.
 
@@ -50,6 +50,20 @@ Remaining release evidence: a new frozen build of this exact source, real Fireba
 | User continuation | EXPLICIT USER REQUEST | Source workflow continuation; no numerical operating signoff |
 | 45s Admin command deadline | ACCEPTED — EXPLICIT USER APPROVAL | Current Work thread, 2026-10-09: “chấp nhận mốc 45s”; no runtime configuration applied |
 | Implementation of the accepted deadline | ASSISTANT PROPOSAL / UNDER REVIEW | Requires final-head CI and separate exact-build/runtime evidence |
-| New source tests and CI | PENDING | Record final head/run/log evidence before updating |
+| New source tests and CI | PASS — OBSERVED SOURCE CHECKS | Exact tested source92f4ec0; run/log references below; no runtime acceptance implied |
 | Old 7a053 candidate probes | HISTORICAL OBSERVED | Different source; cannot transfer certification |
 | Real deployment, maximum-load and operating signoff | MISSING / OPEN | API04 remains NOT READY |
+
+## Reviewed source checkpoint
+
+Exact tested source: `92f4ec008d9c773b09a2d327dd75ae6206a105ed`, tree `fdce9ae3f83674e7c9490e07aa4bd22cf5007feb`, base main `02bfad3020f0265219055dd9991108cfa87f625c`. [PR30](https://github.com/Cootton/CoottonPlatform/pull/30) remains draft/unmerged. A later evidence-only commit may update this document; these observed results refer specifically to the source checkpoint above. PR checks record the latest head status.
+
+- [Foundation37861076535](https://github.com/Cootton/CoottonPlatform/actions/runs/37861076535): SUCCESS. Full build/type checks, contracts12/12; API38 passed,0 failed,1 skipped; disposable database2/2 passed. The skipped API short-video fixture was not supplied to that general suite; the actual playable encoder/SQL recovery check ran successfully in the database suite and the actual short-video container check also passed.
+- [Container37861076464](https://github.com/Cootton/CoottonPlatform/actions/runs/37861076464): SUCCESS for API and Web, no credentials/deployment. API native-read5/5 and actual short-video2/2 passed. These are ephemeral CI builds, not a registry-frozen serving candidate.
+- `REL04-DEADLINE-DB-001`: actual pg_sleep lease discarded; replacement lease healthy; actual restricted-role COMMIT completed before delayed acknowledgement/deadline503; exact request/key replay preserved one command/audit/outbox. This is a disposable local PostgreSQL fixture, not a production write or real Firebase identity acceptance.
+- Nine new compiled-helper/HTTP deadline tests passed. Native-read cancellation and encoder child-close proof passed; late upload fixture retained its one immutable object and did not start poster/deletion. Opaque media-slot lifetime follows awaited settlement in source; no provider-wide physical-cancellation proof is claimed.
+- Compared15 changed files with base main: source, fixtures, package verification script and two operations documents only. V001, business contracts, lockfile, Dockerfiles, applied migrations001–006, credential/TLS pool construction and feature flags unchanged. Two updated documents contain seven valid local file links.
+
+Failures preserved: initial source `cd45015a` failed Foundation37860759487 / Container37860759483 on proxy-handler syntax; corrected `2b40174a` built/type-checked but Foundation37860878573 failed an existing HTTP fixture lacking EventEmitter lease methods. Final source updates corrected the fixtures instead of weakening the production pool adapter. Legacy borrowed-writer fixtures emulate disposal through test-only rollback; new deadline tests exercise actual pooled lease destruction separately.
+
+**No blocking source finding remains in this scoped review.** This is assistant review, not independent reviewer signoff or release acceptance. Maximum-video/concurrency/resource behavior under45s and all separately listed release gates remain OPEN.

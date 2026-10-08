@@ -40,7 +40,7 @@ Job proof dùng1task/parallelism1/maxretries0,1CPU/512MiB/300s; HTTP jobs chỉ 
 
 Source API mới: native media read15s (credential + body); encoder có các giới hạn riêng ffprobe10s + ffmpeg80s + ffprobe10s + poster10s = **110s upper budget chỉ cho các subprocess**. Storage save/getMetadata, SQL/authorization, queue và truyền response còn ngoài con số này. Cloud Run API60s và Web60s hiện tại có thể hết thời gian trước handler; Web Admin BFF source timeout120s không làm Cloud Run60s dài hơn. Web catalog18s/media20s; media read15s cộng SQL/metadata chưa có một deadline toàn request. Liveness/fixture nhỏ PASS không giải quyết mismatch.
 
-**STOP trước release video:** chưa có deadline hợp nhất/cancellation, proof max-input/concurrent requests, tổng budget SQL/storage metadata/save và config review. SQL per-statement timeout không tự giới hạn toàn transaction. Tăng Cloud Run timeout đơn lẻ không chứng minh an toàn và không ngăn side effects sau HTTP timeout. Unknown COMMIT phải tra durable state rồi retry cùng request/key còn được phép; không tạo key mới hoặc xóa media.
+**STOP trước release video:** PR30 đã chuẩn bị shared deadline45s/cancellation và source CI PASS; serving vẫn dùng ACT006. Chưa có exact-build/runtime proof cho deadline mới, max-input/concurrent requests, thời gian settlement của opaque SDK writes và complete config review. SQL per-statement timeout không tự giới hạn toàn transaction. Tăng Cloud Run timeout đơn lẻ không chứng minh an toàn và không ngăn side effects sau HTTP timeout. Unknown COMMIT phải tra durable state rồi retry cùng request/key còn được phép; không tạo key mới hoặc xóa media.
 
 Budget hiện tại và phần còn đề xuất, chưa áp dụng serving:
 
