@@ -4822,3 +4822,8 @@ Owner ACCEPTED:
 > Mỗi endpoint phải mô tả request/response, quyền truy cập, điều kiện dữ liệu, tác động nghiệp vụ, hành vi khi retry hoặc xung đột, và bằng chứng kiểm thử.
 
 [Required endpoint fields and review record](docs/engineering/ENDPOINT_CONTRACT_RULE.md) · REQ-API-CONTRACT-001 · ADR-KNOWLEDGE-003. Applies to every endpoint; preserve existing accepted contracts. Compliance requires scoped implementation/test evidence; existing endpoints are not automatically certified and Production Gates remain unchanged.
+
+
+## KN-REVIEW-002 — knowledge review and detailed plan · 2026-10-08
+
+Owner requested review, knowledge unification and detailed planning against Cootton/CoottonPlatform, permitting necessary revisions. See [repository knowledge master](docs/knowledge/MASTER_ARCHITECTURE.md), [plan/backlog](docs/knowledge/DETAILED_PLAN.md) and [approval/source register](docs/knowledge/SOURCE_EVIDENCE_REGISTER.md). General learning approval is explicit but specific artifact/contract adoption remains PENDING_SCOPE_MAPPING. Existing ACCEPTED decisions, D01–D10, V001 version and applied SQL001–006 are preserved. Main review source e06d3de8e74bc7cb431734d32d339ef63e1824ef is separate from ACT006 runtime and unmerged PR26 head cad72a773383a0ef145dcc1467ab5d3ea52030a4. New plan prioritizes release evidence/catalog acceptance before conditional commerce execution. All new work packages PROPOSED; no new runtime verification, application code, grants, product mutation, migration or deploy occurred.

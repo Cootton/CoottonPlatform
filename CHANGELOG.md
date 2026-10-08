@@ -140,3 +140,11 @@ Owner ACCEPTED:
 
 - EVD-PR23-F001: sourcee75e757f Foundation37688677208/Container37688677294 SUCCESS; contracts12PASS,API24PASS/1SKIP,PostgreSQL2PASS. Review finding resolved for source; production/cleanup gates remain OPEN.
 
+
+
+## 2026-10-08 — KN-REVIEW-002 repository knowledge edition v0.2.0
+
+- Added a knowledge entry point, repository review, authority mapping, milestone plan, 23 work packages, decision/evidence matrix and source register under docs/knowledge.
+- Corrected blanket missing-implementation assumptions from the standalone v0.1.0 library; reused D01–D10, DEC/API contracts and recorded scoped evidence.
+- Distinguished main e06d3de8, ACT006 runtime and explicitly unmerged PR26 cad72a77 overlay; browser recovery/config-read claims remain scenario-scoped and full release gaps OPEN.
+- Preserved V001 in place, ACCEPTED decisions and SQL001–006. Documentation only; no application tests/runtime actions executed in this review. New plan is proposed for review, not release authorization.
