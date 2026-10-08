@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-10-08 — CHG-REL04-LIVE-001
+
+- Observed real encoder/GCS/isolated PostgreSQL recovery PASS at7e3f5ecd; exactly two additional private video/poster objects retained, six total. Recorded generations, launcher pre-write failure/correction and nonfatal SDK listener warnings.
+- Observed actual existing-human Firebase password token admitted by unmodified revocation-aware source guard at a9f5b01d; missing/tampered401; deployed ACT006 owner session200. Masked input; no credentials/UID/tokens persisted or committed, no account mutation or production command.
+- Updated scoped evidence and current notices explicitly; browser login network failure, full identity matrix, service-identity/repeated-workload/release gates remain OPEN. No rollout, new IAM, production SQL write, publish or delete.
+
+## 2026-10-08 — CHG-REL04-VIDEO-SQL-001
+
+- Added actual encoder/HTTP/PostgreSQL uploadVideo recovery verification to CI, including poster failure, SQL rollback, durable COMMIT loss, original201 replay and409/403 denial without processing.
+- [Scoped follow-up evidence](docs/operations/API04_VIDEO_SQL_FIREBASE_EVIDENCE_2026_10_08.md) pins source7e3f5ecd and successful push CI, records Firebase login blocker/empty-credential REST probe limits and explicitly pending real GCS execution. Two additional private objects were approved; approval is not PASS. No application/production data/IAM/deployment change.
+
+## 2026-10-08 — CHG-REL04-PREFLIGHT-001
+
+- Added [EVD-REL04-PREFLIGHT-001](docs/operations/API04_PREFLIGHT_ISOLATED_EVIDENCE_2026_10_08.md): exact CI source/results, actual isolated HTTP/PostgreSQL COMMIT retry proof, current read-only cloud baseline and one real GCS four-object run.
+- Preserved initial fixture failure history, transport/ADC/encoder limits, ACT006 runtime and all ACCEPTED decisions. Actual human Firebase admission and full preflight/Production Gates remain OPEN; no application deploy, production SQL mutation, IAM change, publish or delete.
+- Linked index/current state/traceability/gate records to the new scoped checkpoint without rewriting historical evidence or V001.
+
 > **MERGE-API04-001 · 2026-10-08:** PR19–23 đã merge theo dependency; source baseline `d2b34490385c20de773a81fdc1e6f58ca8d4ef08`. Đọc [merge checkpoint và kế hoạch triển khai riêng](docs/operations/API04_MERGE_CHECKPOINT_2026_10_08.md). Các ghi chú open/stacked/source proposal trước đây là lịch sử. ACT006 vẫn là runtime checkpoint đã kiểm chứng gần nhất; task này chưa triển khai hay kiểm chứng retry/media recovery trên production. API04-RECOVERY-002 và full Production Gates vẫn OPEN.
 
 ## 2026-10-07 — CHG-VERIFY-001

@@ -97,6 +97,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   await revoker.query('BEGIN');await guard(revoker);await revoker.query('UPDATE catalog_core.principal SET active=false WHERE id=$1',[owner]);await revoker.query('COMMIT');
   await assert.rejects(authorizeOwnerCatalog(maintenance,req,'session'),e=>e.getStatus()===403);
   assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,5);
+  await require('./api04-runtime-retry.cjs')({maintenance,writer,req,owner});
  }finally{
   releaseWriter();if(clientsConnected){await writer.query('ROLLBACK').catch(()=>{});await revoker.query('ROLLBACK').catch(()=>{});await writer.end();await revoker.end();}
   await maintenance.query('ROLLBACK').catch(()=>{});
