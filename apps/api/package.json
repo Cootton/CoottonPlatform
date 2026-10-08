@@ -6,7 +6,7 @@
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
     "verify:media": "node verification/media.cjs",
-    "verify": "node --test verification/cache.cjs verification/publication.cjs verification/media.cjs verification/video.cjs verification/firebase-media.cjs verification/http-contract.cjs verification/web-http.cjs verification/admin-authorization.cjs verification/media-recovery.cjs",
+    "verify": "node --test verification/cache.cjs verification/publication.cjs verification/media.cjs verification/video.cjs verification/firebase-media.cjs verification/http-contract.cjs verification/web-http.cjs verification/admin-authorization.cjs verification/media-recovery.cjs verification/media-read.cjs",
     "verify:db": "node --test --test-concurrency=1 verification/measurement-db.cjs verification/admin-authorization-db.cjs",
     "dev": "pnpm build && node dist/main.js",
     "start": "node dist/main.js",
