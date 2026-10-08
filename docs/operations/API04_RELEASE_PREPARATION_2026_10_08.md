@@ -1,4 +1,7 @@
 # API-04 — PR25 merge and release preparation
+
+> **PREP04-CANDIDATE-001 · 2026-10-09:** [Candidate/checkpoint](API04_CANDIDATE_REVIEW_2026_10_09.md) records API/Web immutable registry digests built from e06d3de8, actual API service-account metadata + 200 generation-pinned reads PASS on two retained fixtures, and candidate identical-input encoder repeatability PASS for one clip. Warning reproduced: 200 SDK listener warnings; leak/root-cause/remedy remains OPEN. [Rollback runbook](API04_ROLLBACK_RUNBOOK.md) separates containment from traffic-only regression. Older UNBUILT/unrecorded/all-runtime-reads-untested notices are historical for these specific scenarios. Actual create/412 under service identity, full identity/config/HTTP/rollback/operations evidence and API04-RECOVERY-002 remain OPEN. **NOT READY TO DEPLOY**. Build/diagnostic workloads ran; serving API/Web traffic, IAM, SQL and product state were not changed by this preparation. No new ACCEPTED decision or rollout approval.
+
 `PREP-REL04-001` · 2026-10-08 · Asia/Saigon · **NOT READY TO DEPLOY**.
 
 ## Current configuration checkpoint — PREP04-CLOUD-READ-003
