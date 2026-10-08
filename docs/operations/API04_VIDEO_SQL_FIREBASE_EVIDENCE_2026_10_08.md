@@ -17,10 +17,14 @@ Actual HTTP uploadVideo and restricted-role PostgreSQL prove:
 
 Storage and identity in this CI run are **explicit transport fixtures**. The existing API video test's skip remains recorded; the new integrated helper actually runs the encoder and SQL scenarios.
 
-## Real GCS follow-up — approved, result pending
+## Real GCS follow-up — PASS, isolated SQL and operator ADC
 Owner explicitly approved **two additional** private video/poster objects, bringing the total fixture budget to six, plus PostgreSQL16 temporary on Cloud Shell localhost only. Optional real-GCS mode is disabled in CI and requires exact project/bucket/scope flags, bucket uniform/PAP checks and exactly two precomputed output paths. No automatic rerun with fresh IDs, delete, IAM change, production database write or publication.
 
-Manual launcher first stopped before any Docker/GCS operation because its task-directory variable was not exported to the child shell. Corrected invocation passes that variable explicitly. This failed launch created zero additional objects. A pending or approved execution is not PASS; actual manifest/generation/count results must be appended after observation.
+Manual launcher first stopped before any Docker/GCS operation because its task-directory variable was not exported to the child shell. Corrected invocation passes that variable explicitly. This failed launch created zero additional objects. The corrected invocation subsequently PASSed both PostgreSQL tests and REL04-VIDEO-SQL-001 with real GCS. Exactly two additional objects were retained: video generation1791426801241775,2204 bytes,video/mp4; poster generation1791426801948489,294 bytes,image/webp; both private,no-store. Total approved fixture count is six. Exact names remain in the local manifest. PostgreSQL was disposable/localhost; identity remained a transport fixture.
+
+The real run observed repeatable encoder bytes, pinned generation reuse, partial poster recovery, SQL rollback with no attachment, durable COMMIT with one evidence/video attachment/audit/outbox/receipt, exact201 replay,409 without processing and cooperating canonical-owner revocation403. Source7e3f5ecd, Cloud Shell operator ADC; no Cloud Run service-identity operation or deployed application recovery claimed.
+
+Nonfatal SDK/stream warnings reported11 error/close listeners on a PassThrough (MaxListenersExceededWarning). Passing this bounded run does not prove a leak or its absence. Preserve the warning for transport/dependency and repeated-workload investigation; do not suppress it with a larger listener limit to manufacture clean evidence.
 
 ## Firebase — OPEN, observed login blocker
 The Admin page showed auth/network-request-failed; owner reported the same error in regular Chrome/Edge. No successful new human ID token or SDK verifyIdToken(...,true) evidence exists.
@@ -32,4 +36,4 @@ The Admin page showed auth/network-request-failed; owner reported the same error
 
 REST probe behavior follows [Firebase Auth REST reference](https://firebase.google.com/docs/reference/rest/auth); the SDK error is documented by [Firebase auth errors](https://firebase.google.com/docs/reference/node/firebase.auth.Error). Transport evidence is not actual identity verification.
 
-REL04-V01 and full Production Gates remain OPEN. REL04-V07 is partially evidenced in CI; it awaits real GCS results and does not certify production runtime service identity or release. ACT006 remains deployed authority; all ACCEPTED decisions and applied SQL001–006 are preserved.
+REL04-V01 and full Production Gates remain OPEN. REL04-V07 now has real encoder/GCS/isolated SQL recovery evidence for the stated scenarios; it does not certify production runtime service identity, human playback, cross-encoder determinism or release. ACT006 remains deployed authority; all ACCEPTED decisions and applied SQL001–006 are preserved.
