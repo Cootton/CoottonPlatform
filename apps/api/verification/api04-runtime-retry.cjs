@@ -57,7 +57,9 @@ module.exports=async function runtimeRetry({maintenance,writer,req,owner}){
   assert.deepEqual(await response(await send(input),201),receipt);
   assert.equal((await maintenance.query('SELECT version::text FROM catalog_core.product WHERE id=$1',[receipt.id])).rows[0].version,'2');
   await response(await send({...archive,key:randomUUID()}),409,'CONFLICT');
-  const final=await counts();for(const [table,n]of Object.entries(before))assert.equal(final[table],n+2);
+  const preVideo=await counts();for(const [table,n]of Object.entries(before))assert.equal(preVideo[table],n+2);
+  await require('./api04-video-sql-recovery.cjs')({maintenance,writer,service,send,response});
+  const final=await counts();
   await admission(false);await response(await send(input),403,'FORBIDDEN');assert.deepEqual(await counts(),final);
   console.log('REL04-HTTP-DB-001 PASS: restricted writer, HTTP503 after real COMMIT,201 exact replay,409 conflicts, revoked receipt403, atomic counts; identity transport fixture');
  }finally{

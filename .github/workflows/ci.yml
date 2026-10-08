@@ -33,6 +33,7 @@ jobs:
       - run: pnpm check
       - run: pnpm verify:contracts
       - run: pnpm verify:api
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
       - run: pnpm verify:api:db
         env:
           COOTTON_TEST_DATABASE_URL: postgres://cootton_test:local-ci-only@127.0.0.1:5432/cootton_api_test
