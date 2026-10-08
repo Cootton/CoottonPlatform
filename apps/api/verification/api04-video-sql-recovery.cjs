@@ -41,7 +41,7 @@ module.exports=async function videoSqlRecovery({maintenance,writer,service,send,
   service.database=()=>({query:(...args)=>writer.query(...args),connect:async()=>({query:async(sql,...args)=>{
    if(sqlFault&&sql.startsWith('INSERT INTO catalog_core.outbox')){sqlFault=false;throw Error('Isolated video SQL rollback');}
    const result=await writer.query(sql,...args);if(sql==='COMMIT'&&lostCommit){lostCommit=false;throw Error('Isolated video durable COMMIT acknowledgement lost');}return result;
-  },release(){}})});
+  },on:(...args)=>writer.on(...args),removeListener:(...args)=>writer.removeListener(...args),release(destroy){if(destroy)writer.query('ROLLBACK').catch(()=>{});}})});
   await response(await send(upload),503,'UNAVAILABLE');assert.equal(objects.size,1);assert.equal(preparations,1);await unchanged(before);
   const videoGeneration=[...objects.values()][0].generation;
   await response(await send(upload),503,'UNAVAILABLE');assert.equal(objects.size,2);assert.equal(preparations,2);await unchanged(before);
@@ -68,3 +68,5 @@ module.exports=async function videoSqlRecovery({maintenance,writer,service,send,
   if(folder)await fs.rm(folder,{recursive:true,force:true});
  }
 };
+
+

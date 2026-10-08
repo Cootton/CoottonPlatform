@@ -35,9 +35,11 @@ module.exports=async function runtimeRetry({maintenance,writer,req,owner}){
   };
   app=await createApp();
   const service=app.get(AdminCatalogService),cache=app.get(MemoryCache);
+  // Legacy transport fixture borrows a connected writer: emulate disposal by
+  // queuing fixture-only ROLLBACK. Real lease destruction is tested separately.
   service.database=()=>({
    query:(...args)=>writer.query(...args),
-   connect:async()=>({query:async(sql,...args)=>{const result=await writer.query(sql,...args);if(sql==='COMMIT'&&loseCommit){loseCommit=false;throw Error('Isolated lost COMMIT acknowledgement');}return result;},release(){}})
+   connect:async()=>({query:async(sql,...args)=>{const result=await writer.query(sql,...args);if(sql==='COMMIT'&&loseCommit){loseCommit=false;throw Error('Isolated lost COMMIT acknowledgement');}return result;},on:(...args)=>writer.on(...args),removeListener:(...args)=>writer.removeListener(...args),release(destroy){if(destroy)writer.query('ROLLBACK').catch(()=>{});}})
   });
   await app.listen(0,'127.0.0.1');const endpoint=(await app.getUrl())+'/v1/admin/catalog/commands';
   const send=(body,authorized=true)=>fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',...(authorized?{Authorization:'Bearer isolated-runtime-fixture'}:{})},body:JSON.stringify(body),signal:AbortSignal.timeout(5000)});
@@ -69,3 +71,4 @@ module.exports=async function runtimeRetry({maintenance,writer,req,owner}){
   if(restricted)await writer.query('RESET ROLE');
  }
 };
+

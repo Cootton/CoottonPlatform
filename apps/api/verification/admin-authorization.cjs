@@ -58,7 +58,7 @@ test('owner policy covers every8 read/13 command; unknown action, forged claims 
 });
 test('real service replay paths reauthorize all13 actions; revoked owner cannot receive receipt',async()=>{
  process.env.COOTTON_PUBLICATION_ENABLED='true';let active=true,receiptReads=0;
- const db={query:async(sql)=>{if(sql.includes('FROM catalog_core.principal'))return {rows:active?[{id:owner}]:[]};if(sql.includes('fingerprint,result')){receiptReads++;return {rows:[{fingerprint:currentFingerprint,result:{id:product,version:'2'}}]};}return {rows:[]};},connect:async()=>({...db,release(){}})};
+ const db={query:async(sql)=>{if(sql.includes('FROM catalog_core.principal'))return {rows:active?[{id:owner}]:[]};if(sql.includes('fingerprint,result')){receiptReads++;return {rows:[{fingerprint:currentFingerprint,result:{id:product,version:'2'}}]};}return {rows:[]};},connect:async()=>Object.assign(new (require('node:events').EventEmitter)(),db,{release(){}})};
  let currentFingerprint;const canonical=x=>Array.isArray(x)?'['+x.map(canonical).join(',')+']':x&&typeof x==='object'?'{'+Object.entries(x).sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>JSON.stringify(k)+':'+canonical(v)).join(',')+'}':JSON.stringify(x);
  const service=new AdminCatalogService(new MemoryCache());service.database=()=>db;
  const req={headers:{},method:'POST',adminIdentity:identity()};
@@ -71,7 +71,7 @@ test('actual HTTP private endpoints deny absent/invalid identity and every nonow
  const Guard=fixtureGuard(async(value)=>{if(value==='invalid')throw {code:'auth/invalid-id-token'};return token(value==='owner'?'owner-fixture':value);});
  const originalGuard=AdminIdentityGuard.prototype.canActivate,originalDatabase=AdminCatalogService.prototype.database;
  let privateReads=0,unavailable=false;
- const db={query:async(sql,params)=>{if(unavailable)throw Error('private database outage');if(sql.includes('FROM catalog_core.principal'))return {rows:params[1]==='owner-fixture'?[{id:owner}]:[]};if(/FROM catalog_core\.(product|dictionary|asset|video_asset)|FROM catalog_core\.media_thumbnail/.test(sql))privateReads++;return {rows:[],rowCount:0};},connect:async()=>({...db,release(){}})};
+ const db={query:async(sql,params)=>{if(unavailable)throw Error('private database outage');if(sql.includes('FROM catalog_core.principal'))return {rows:params[1]==='owner-fixture'?[{id:owner}]:[]};if(/FROM catalog_core\.(product|dictionary|asset|video_asset)|FROM catalog_core\.media_thumbnail/.test(sql))privateReads++;return {rows:[],rowCount:0};},connect:async()=>Object.assign(new (require('node:events').EventEmitter)(),db,{release(){}})};
  AdminIdentityGuard.prototype.canActivate=Guard.prototype.canActivate;AdminCatalogService.prototype.database=()=>db;
  const app=await createApp();
  const reads=['session','catalog/products','catalog/products/'+product,'catalog/dictionaries','catalog/products/'+product+'/images/'+asset,'catalog/products/'+product+'/thumbnails/'+asset,'catalog/products/'+product+'/video','catalog/products/'+product+'/video/poster'];
@@ -90,3 +90,4 @@ test('actual HTTP private endpoints deny absent/invalid identity and every nonow
   assert.equal((await fetch(origin+'/v1/health/live')).status,200);
  }finally{await app.close();AdminIdentityGuard.prototype.canActivate=originalGuard;AdminCatalogService.prototype.database=originalDatabase;delete process.env.COOTTON_PUBLICATION_ENABLED;}
 });
+

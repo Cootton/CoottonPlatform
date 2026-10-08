@@ -1,17 +1,21 @@
 # API04 command deadline source review · 2026-10-09
 
-Status: **SOURCE PROPOSAL — verification pending; API04 NOT READY FOR DEPLOY**.
+Status: **45s COMMAND DEADLINE ACCEPTED BY USER — implementation/CI under review; API04 NOT READY FOR DEPLOY**.
 
 ## Authority and baseline
 
-The user's latest instruction, “tiếp tục workflow”, continues API04 source/tests work after authorized review and merge of PR28 then PR29. PR29 merged at `02bfad3020f0265219055dd9991108cfa87f625c`; this change starts from that main commit. This is assistant-proposed implementation, not a new business contract or an owner-approved operating threshold. No new deployment, traffic switch, IAM, production SQL, object write or object deletion is included.
+The user's latest instruction, “tiếp tục workflow”, continues API04 source/tests work after authorized review and merge of PR28 then PR29. PR29 merged at `02bfad3020f0265219055dd9991108cfa87f625c`; this change starts from that main commit. The implementation was proposed by the assistant. The user then explicitly accepted the 45s Admin command deadline; remaining operating thresholds and implementation/runtime evidence have separate states. No new deployment, traffic switch, IAM, production SQL, object write or object deletion is included.
 
 The previously frozen API digest `sha256:7a053d1292af650ec14f207c4bc16562d5be5493209e2d655988ce35ba640017` predates this source change. Its SDK/read-only runtime evidence cannot certify this new source. ACT006 remains the serving checkpoint. See [SDK/HTTP evidence](API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md), [configuration and threshold register](API04_RUNTIME_CONFIG_AND_THRESHOLDS_2026_10_09.md) and [rollback runbook](API04_ROLLBACK_RUNBOOK.md).
+
+## Explicit approval evidence
+
+Decision ID: **API04-DEADLINE-45-001**. Source: direct human user message in the current Work thread, 2026-10-09 (Asia/Saigon). Exact wording: **“chấp nhận mốc 45s”**. It replies to the preceding proposal of a 45-second Admin command deadline. This approval covers that value; it does not approve other thresholds, the implementation without review, an upward override, merge/deployment, production writes or a traffic switch. No message ID/export timestamp was provided; none is invented.
 
 ## Prepared behavior
 
 - One monotonic request budget begins before the Admin command JSON parser. It includes parsing, identity verification, pool acquisition, SQL, media preparation, native reads and immutable uploads. Scope: `POST /v1/admin/catalog/commands`; other endpoints retain their existing behavior.
-- Source default: **45,000ms**, chosen conservatively below the last observed 60s API serving timeout. `COOTTON_COMMAND_DEADLINE_MS` rejects malformed values and values outside 1,000–150,000ms. An upward override needs coordinated API/Web timeout review; this patch neither applies nor approves such a configuration. The earlier 150/180/195/210s proposal and performance thresholds remain unapproved.
+- User-approved Admin command deadline: **45,000ms**, below the last observed 60s API serving timeout. `COOTTON_COMMAND_DEADLINE_MS` rejects malformed values and values outside 1,000–150,000ms. An upward override needs coordinated API/Web timeout review; this patch neither applies nor approves such a configuration. The earlier 150s command budget is superseded by this 45s decision. The 180/195/210s extension scenario is historical and unapproved; other performance/monitoring thresholds remain unapproved.
 - Deadline expiry produces one safe HTTP503 envelope with `no-store` and `nosniff`. A late verifier result cannot authorize a command; later errors cannot write a second response. Disconnection also cancels the command context.
 - Pool acquisition completing late destroys its acquired lease. Deadline, connection failure or SQL error discards the checked-out lease; later SQL cannot reuse it. TLS, credentials, role grants, schema and existing transaction/idempotency rules are preserved.
 - Encoder subprocesses receive the shared abort signal and the remaining stage budget. Direct processes are killed with SIGKILL and awaited through close before media slot release or temporary-directory removal. No shell or new input protocol is introduced.
@@ -44,7 +48,8 @@ Remaining release evidence: a new frozen build of this exact source, real Fireba
 | Item | State | Meaning |
 | --- | --- | --- |
 | User continuation | EXPLICIT USER REQUEST | Source workflow continuation; no numerical operating signoff |
-| 45s source default and implementation | ASSISTANT PROPOSAL | Must be reviewed and verified; no runtime configuration applied |
+| 45s Admin command deadline | ACCEPTED — EXPLICIT USER APPROVAL | Current Work thread, 2026-10-09: “chấp nhận mốc 45s”; no runtime configuration applied |
+| Implementation of the accepted deadline | ASSISTANT PROPOSAL / UNDER REVIEW | Requires final-head CI and separate exact-build/runtime evidence |
 | New source tests and CI | PENDING | Record final head/run/log evidence before updating |
 | Old 7a053 candidate probes | HISTORICAL OBSERVED | Different source; cannot transfer certification |
 | Real deployment, maximum-load and operating signoff | MISSING / OPEN | API04 remains NOT READY |
