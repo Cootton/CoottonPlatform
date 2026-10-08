@@ -1,5 +1,7 @@
 # API04 — SDK, HTTP/public-read và cấu hình vận hành
 
+> **REVIEW-API04-PR28-29-001 · 2026-10-09:** Owner assigned review/merge PR28→PR29. PR28 merged main59ad8560; PR29 now targets main. [Review/read-order checkpoint](API04_PR28_PR29_REVIEW_2026_10_09.md) distinguishes source merge from serving runtime and deploy approval. Earlier draft/stacked notes are historical. Operational thresholds/deadline changes are still PROPOSED; ACT006 remains runtime, API04-RECOVERY-002 and full release gates OPEN. **NOT READY TO DEPLOY**.
+
 `FIX04-READ-OPS-001` · 2026-10-09, Asia/Saigon · **NOT READY TO DEPLOY**.
 
 ## Thẩm quyền và trạng thái
@@ -10,7 +12,7 @@ Các kết quả quan sát bên dưới là bằng chứng thực thi có phạm
 
 ## Source, artifact và CI
 
-Source sửa lỗi cố định: `988c8a83e5d617bf6143149985c156066721dfe3`. [PR29](https://github.com/Cootton/CoottonPlatform/pull/29) là draft, xếp trên [PR28](https://github.com/Cootton/CoottonPlatform/pull/28). Merge hoặc CI không có nghĩa là deploy.
+Source sửa lỗi cố định: `988c8a83e5d617bf6143149985c156066721dfe3`. [PR29](https://github.com/Cootton/CoottonPlatform/pull/29) được chuẩn bị trên PR28; PR28 đã merge tại59ad8560 và PR29 chuyển về main theo giao việc review/merge09/10. Đọc [review checkpoint](API04_PR28_PR29_REVIEW_2026_10_09.md) và actual GitHub merge state. Merge hoặc CI không có nghĩa là deploy.
 
 | Thành phần | Bằng chứng |
 |---|---|
