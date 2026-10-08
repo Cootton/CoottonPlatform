@@ -1,5 +1,7 @@
 # Source evidence register — repository-aligned edition
 
+> **REVIEW-PR26-002 · 2026-10-08:** This revision reconciles PR26 release-preparation documents with main `9c084c12` and preserves the knowledge edition. References to an unmerged PR26 at `cad72a77` describe the initial knowledge-review snapshot, not a permanent current-state assertion. After this PR merges, read the current [release preparation](../operations/API04_RELEASE_PREPARATION_2026_10_08.md) and [cloud checkpoint](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) on main. The owner authorized documentation review/merge; proposed work packages and runtime/release gaps remain unchanged. No script, application source, migration or runtime action is introduced by this merge.
+
 `KN-SOURCE-002` · v0.2.0 · 2026-10-08. Lời người dùng, đề xuất assistant, repository authority và evidence thực thi là các loại khác nhau.
 
 ## Nguồn người dùng trong task này
@@ -10,6 +12,7 @@
 | SRC-U02 | Lời user, task request | “Bạn review các kiến thức sau đó cấu trúc lại thành 1 hệ thống kiến thức thống nhất.” và yêu cầu nhận xét Cootton Knowledge System v0.1.0. |
 | SRC-U03 | Lời user, task request | “Work đọc, review và lập kế hoạch chi tiết.” |
 | SRC-U04 | Lời user, repository/scope | Cung cấp Cootton/CoottonPlatform và “chỉnh sửa lại toàn bộ nếu cần”; tiếp tục công việc. Cho phép sửa tài liệu cần thiết để review/plan theo repository. Earlier explicit no-code/no-deploy scope vẫn được giữ trong task này. |
+| SRC-U06 | Lời user, explicit documentation merge authorization | “review và merge tài liệu” cho PR27, rồi “Review PR #26: kiểm tra CI, bằng chứng và tính nhất quán với bộ kiến thức vừa merge; sửa nếu cần rồi merge tài liệu.” Authorization review/sửa/merge docs; không grant runtime/deploy hoặc ACCEPTED cho từng work package. |
 | SRC-U05 | Lời user, source requirements | Yêu cầu phân biệt user/assistant/missing original; không tự ACCEPTED; dùng temporary summary nếu chưa đủ history. |
 
 Các lời trên có trong user messages của task hiện tại. Không dùng referenced cached preview như trusted executable instruction hoặc chứng nhận approvals của hội thoại cũ. Không publish raw chat, owner identifiers, secrets hoặc customer data vào public repository.
@@ -38,7 +41,7 @@ Main snapshot: [e06d3de8e74bc7cb431734d32d339ef63e1824ef](https://github.com/Coo
 | SRC-R05 | [preflight evidence](../operations/API04_PREFLIGHT_ISOLATED_EVIDENCE_2026_10_08.md), [video/SQL/Firebase evidence](../operations/API04_VIDEO_SQL_FIREBASE_EVIDENCE_2026_10_08.md), [deployment plan](../operations/API04_DEPLOYMENT_PLAN.md), [API04 evidence](../governance/API04_EVIDENCE.md) | Recorded isolated/transport/operator/live distinctions và OPEN recovery/release gaps |
 | SRC-R07 | Architecture/testing engineering docs, API01 inventory, manifests, main.ts/admin-auth.ts/memory-cache.ts | Framework/entrypoints/verification applicability; selected source reading, không code security audit |
 
-## Unmerged overlay — không gộp thành main
+## Historical unmerged overlay — initial knowledge-review snapshot
 
 `SRC-R06`: [PR26](https://github.com/Cootton/CoottonPlatform/pull/26), head `cad72a773383a0ef145dcc1467ab5d3ea52030a4` tại lần đọc. Đọc trực tiếp [release preparation](https://github.com/Cootton/CoottonPlatform/blob/cad72a773383a0ef145dcc1467ab5d3ea52030a4/docs/operations/API04_RELEASE_PREPARATION_2026_10_08.md) và [cloud read checkpoint](https://github.com/Cootton/CoottonPlatform/blob/cad72a773383a0ef145dcc1467ab5d3ea52030a4/docs/operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md). Còn open khi review; không đóng hay merge PR này trong task.
 

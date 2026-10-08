@@ -1,0 +1,77 @@
+# API-04 — PR25 merge and release preparation
+`PREP-REL04-001` · 2026-10-08 · Asia/Saigon · **NOT READY TO DEPLOY**.
+
+## Current configuration checkpoint — PREP04-CLOUD-READ-003
+[Direct Cloud Shell read evidence](API04_CLOUD_READ_EVIDENCE_2026_10_08.md) at08:14Z confirms API100% ACT006, Web100%00006-7c9 and matching attached-account IAM. Earlier pending/BLOCKED notices below are historical for operator cloud reads; runtime GCS and full release gates remain OPEN. Candidate images remain UNBUILT/UNRECORDED. No deployment occurred.
+
+## Authority and reading order
+[Master Plan](../../COOTTON_MASTER_PLAN.md) → [current state](../governance/CURRENT_STATE.md) → this checkpoint → [deployment plan](API04_DEPLOYMENT_PLAN.md) → [transaction/media contract](../contracts/API_TRANSACTION_MEDIA_RECOVERY.md).
+Owner assigned review/merge PR25, release-condition checks and preparation of a concrete rollout/rollback proposal. No traffic change, new IAM, migration, production fault injection, product command or additional GCS fixture was executed. Full Production Gates and API04-RECOVERY-002 remain OPEN.
+
+## REVIEW-PR25-001 — merged, scoped acceptance
+[PR25](https://github.com/Cootton/CoottonPlatform/pull/25), reviewed head `25388315cc08257f17e617cc608ffd12bc89ecb6`, merged into main at **`e06d3de8e74bc7cb431734d32d339ef63e1824ef`**. Review found no blocking finding in its 13 verification/CI/documentation files. Application/contract source and SQL migration blobs were compared with base e667bec1 and unchanged.
+- Foundation [37719063355](https://github.com/Cootton/CoottonPlatform/actions/runs/37719063355) SUCCESS: build/check, contracts12 PASS, API24 PASS/1 SKIP, disposable PostgreSQL2 PASS including real encoder helper.
+- Container [37719063295](https://github.com/Cootton/CoottonPlatform/actions/runs/37719063295) SUCCESS: actual API container video tests2 PASS/0 SKIP, cache3/media2/publication4 PASS. This confirms encoder availability in that built container, not equality with Ubuntu6.1.1 or a pushed release digest.
+- Merged-source Foundation [37742425087](https://github.com/Cootton/CoottonPlatform/actions/runs/37742425087) and CodeQL “Push on main” [37742423811](https://github.com/Cootton/CoottonPlatform/actions/runs/37742423811) SUCCESS. Separate Dependabot update jobs failed; those are not Foundation or artifact certification.
+- [Real encoder/GCS/SQL and Firebase evidence](API04_VIDEO_SQL_FIREBASE_EVIDENCE_2026_10_08.md): scoped PASS using existing operator ADC and isolated SQL; six retained private fixture objects total. Actual revocation-aware Firebase admission and deployed ACT006 owner read PASS. No Cloud Run service-identity operation is inferred.
+
+## WEB-AUTH-OBS-001 — observed recovery, root cause OPEN
+At09:47 Asia/Saigon owner retried the existing Web Admin form; browser displayed “Đã xác minh quyền quản trị”, authenticated controls and existing product list. A subsequent read-only reload completed with controls enabled, without an error. Error/warning capture returned no entries. No application/configuration/deployment change was recorded or executed during this observed recovery; its cause remains unestablished.
+This supersedes the older assertion “Web login still fails” only for this observed session. Historical network-request-failed remains evidence; root cause and sustained recurrence testing remain OPEN. No email/password/token/UID was collected or published. This observation does not close the full identity matrix.
+
+## Release-condition checks
+| ID | Evidence observed | Decision / work required |
+|---|---|---|
+| PREP04-SA | Direct08:14Z read confirms API attached cootton-auth-verifier and unconditional bucket Object Creator + Viewer, project Firebase Auth Viewer; earlier private/PAP/uniform checks used operator ADC | Config identity/bindings recorded. **OPEN:** effective generation-pinned object operations under intended identity; operator success does not prove runtime rights or authorize new grants. |
+| PREP04-ENC | Dockerfile.api uses node24-bookworm-slim, installs ffmpeg; container video checks PASS; isolated Ubuntu FFmpeg6.1.1-3ubuntu5 repeatability PASS | **OPEN:** build/push exact release digest, record base digest + ffmpeg/ffprobe/package versions and hashes, run identical-input repeatability on candidate. Same unfinished media retry across encoder versions must not create a different hash/path. Persistent conflict stops for reconciliation. |
+| PREP04-SDK | Local Node24.21.0 + Storage8.2.0,100 bounded generation/range reads,0 warnings; each completed stream destroyed; error/close listeners first/last1/3, max1/3 | **OPEN:** actual GCS run previously warned11 listeners. Local transport is not real GCS or exact repository transitive lockfile. No proof of absence of a leak; repeat read workload against already-retained fixtures under intended identity with warning stack and bounded RSS/handles review. No listener-limit suppression. |
+| PREP04-ACCESS | Direct Cloud Shell operator read COMPLETE at08:14Z; prior AUTH_REQUIRED and local cache write restrictions preserved in history | Operator config read blocker resolved for this run. Local cache limitation unchanged; effective runtime operations and full release preflight remain OPEN. Re-read before rollout. |
+
+Local listener probe uses actual Storage SDK with HTTP server on127.0.0.1 and no cloud auth/objects. Initial reporting failed because SDK package.json is not an exported subpath; no PASS was reported then. Corrected reporting reran all100 reads successfully. The fixture does not test actual gaxios/ADC error/retry paths or prove bounded process memory; only per-stream listener observations are claimed.
+
+## Candidate release record — PLAN, not an artifact
+| Field | Frozen value / acceptance requirement |
+|---|---|
+| Source | e06d3de8e74bc7cb431734d32d339ef63e1824ef; this preparation PR changes documentation only |
+| Target | project cootton-firebase, region asia-southeast1; existing cootton-api and compatible cootton-web |
+| API build | Dockerfile.api from frozen source; registry asia-southeast1-docker.pkg.dev/cootton-firebase/cootton-containers/api |
+| Web build | Dockerfile.web from same source; compare API02–04 proxy/status compatibility before deciding whether existing Web may be retained |
+| New API/Web digest and build ID | **UNBUILT/UNRECORDED — mandatory STOP**; never use a mutable tag as the approved release |
+| Runtime identity | Direct08:14Z: API cootton-auth-verifier; Web cootton-web-runtime, both @cootton-firebase.iam.gserviceaccount.com. Runtime operations OPEN; re-read before release; no privilege expansion |
+| Environment | FIREBASE_PROJECT_ID=cootton-firebase; COOTTON_MEDIA_BUCKET=cootton-catalog-media-524673981677; publication flag true is historical baseline and must be re-read |
+| Database secrets | Existing restricted reader/admin references; exact secret version pins must be re-read without exposing values; no maintenance credential in runtime |
+| Data/schema | SQL001–006 unchanged; hash/applied-state read-only verification required; no migration as part of application deployment |
+| Resources | Prior baseline1CPU/512MiB/port8080; actual concurrency, timeout, max instances and encoder memory/latency must be recorded and accepted before traffic |
+| Product visibility | Preserve Boxy DRAFTv23/sample DRAFTv5, public catalog empty, noindex and commerce/points inactive; verify live rather than treating historical values as current |
+| API rollback | cootton-api-act006-3c768d6,100% named-revision traffic directly re-read08:14Z. Retention/compatibility/actual rollback still require validation before rollout |
+| API rollback digest | asia-southeast1-docker.pkg.dev/cootton-firebase/cootton-containers/api@sha256:75065b4658ce021d8a7777f9261a9837759982954ff49b1b64b021538ee42d54 — service image revalidated by direct08:14Z read; prior operator fragment reports matching resolved revision digest |
+| Web rollback | cootton-web-00006-7c9,100% latestRevision=true traffic; image asia-southeast1-docker.pkg.dev/cootton-firebase/cootton-containers/web@sha256:92d914e98c00088a35cc32042c6300c62eb526f7fece7f9b2d534f78122aeb2a. Direct08:14Z service read; operator fragment reports matching resolved revision digest. Identifiers recorded; rollback execution/compatibility OPEN; review latestRevision vs named pin behavior |
+| Traffic proposal | Existing100% ACT006 until no-traffic candidate checks pass; proposed5%→25%→100%, operator hold after each step. Schedule/observation window/error/latency thresholds unapproved: **STOP**, no automatic progression |
+
+## Ordered execution and stop criteria
+1. Authorized operator configuration read COMPLETE at08:14Z (PREP04-CLOUD-READ-003). Before release re-read exact service/revision/traffic/identity/env/secret-version/resource and existing registry metadata; reconcile operator-reported details with complete sanitized manifest. Prove current SQL hashes and restricted-role capabilities without production writes.
+2. Freeze candidate digests and encoder/base versions. Verify repeated normalization and original-key recovery with candidate container and isolated SQL. Compare old/new encoder bytes before resuming any unfinished media command; source success is not cross-encoder compatibility.
+3. Under the intended service identity, read only the six retained fixture objects using pinned generation; confirm identity encoding, exact bytes and private metadata. A creator permission check and actual create-if-generation-match0 write require a separately bounded fixture authorization if not already in the release scope. Do not grant Token Creator or Storage Admin to manufacture evidence.
+4. Investigate real SDK warning using existing-object reads, safe warning stacks, listener/active-handle/RSS observations over repeated workload; no new random fixture IDs, secrets, token logging or limit suppression. Unexplained growth/failed integrity is a STOP. Local100-read result alone cannot close this gate.
+5. Complete required isolated identity/concurrency/publication-withdrawal checks and backup/restore/monitoring/threshold signoff. This plan does not close V01…V08 automatically. Full gates stay OPEN.
+6. Present exact candidate API/Web digests, configuration diff, rollback manifest and allowed production checks for scoped release approval. Then deploy no-traffic revisions; existing IAM only, no new public tag/invoker exposure. Verify permitted readiness/read-only auth/public-denial checks before approved traffic steps.
+7. At each step stop on authorization/visibility invariant failure, duplicate effects, overwrite/integrity mismatch, leaked transaction, incompatible Web status, unavailable encoder or required check failure. Missing baseline/threshold/signoff also stops progression.
+8. After authorized rollout, verify exact201 replay, changed-fingerprint/new-key stale409, no duplicate version/audit/outbox/receipt and media recovery on the named nonpublic controlled product/prefix. Injected poster/SQL/COMMIT failures remain isolated unless explicitly approved for production. Never republish Boxy or replace a retry key after unknown503.
+9. On STOP restore the recorded compatible traffic configuration to retained ACT006 (historically100%) and recorded Web rollback revision, after re-reading both. ACT006 predates API02–04 authorization/retry improvements: review this regression and contain affected Admin commands where necessary. Preserve SQL006, receipts, review history and private objects; no database rollback or orphan deletion. Observe independent durable state before retrying.
+10. Append a deployment checkpoint with exact digests/revisions/timestamps/statuses/counts/limits; update traceability and gates only for observed scenarios.
+
+## Gate disposition and handoff
+**Merge complete; operator configuration read complete; release preparation incomplete at runtime identity/artifact gates.** Immediate dependencies are effective service-identity operation proof, immutable candidate artifacts/encoder compatibility, SDK warning investigation and rollback validation. No rollout approval is requested while these blockers remain. All ACCEPTED decisions, V001 and applied SQL001–006 remain unchanged; Kafka/microservices/orphan cleanup remain outside this scope.
+
+## PREP04-CLOUD-READ-001 — historical helper preparation, superseded by READ-003
+[Historical read-only Cloud Shell helper](https://github.com/Cootton/CoottonPlatform/blob/cad72a773383a0ef145dcc1467ab5d3ea52030a4/tools/api04-cloud-read-preflight.py) reads API/Web service and ready-revision configuration, digest/resource/traffic and secret name/version references, plus bucket/project IAM bindings only for attached service accounts. It neither reads secret values nor changes cloud resources. gcloud stderr is captured and not exported; errors report only command family/exit code. Timeout/parse failures stop with partial sanitized evidence.
+Local syntax and synthetic secret-filter validation PASS; this is not live cloud evidence. Operator reported Cloud Shell ready in Codex, but the browser control snapshot still did not expose terminal. Manual execution/output is pending; do not mark cloud preflight PASS from that report.
+Historical invocation was `python3 tools/api04-cloud-read-preflight.py` from the reviewed helper source. The script is retained at the immutable history link above and is excluded from this documentation-only merge. A future operator run needs its own scoped assignment and reviewed helper checkout; only filtered JSON may be returned, never token, raw service JSON or auth diagnostics. Configured IAM does not prove actual runtime object operations.
+
+### PREP04-CLOUD-READ-002 — historical reported STOP, superseded by READ-003
+Operator returned helper JSON at2026-10-08T07:37:59.805947Z (14:37:59 Asia/Saigon): STOP, services[], READ_FAILED:run/services:exit1. This is reported execution evidence, not an independently observed service/IAM result. The first service read failed before any configuration was obtained; no cloud mutation is present in this helper. Exit1 alone does not distinguish missing auth, permissions, API availability or transport failure.
+The helper now exports only fixed error categories from captured stderr (AUTH_REQUIRED, LOCAL_CREDENTIAL_CACHE, API_DISABLED, PERMISSION_DENIED, NOT_FOUND, NETWORK, CLI_ARGUMENT, UNCLASSIFIED); raw stderr/account/token values remain withheld. Local classification checks PASS. Diagnostic rerun/output pending; live cloud preflight remains STOP. No auth/IAM/API settings were changed to manufacture PASS.
+
+### PREP04-CLOUD-READ-003 — direct execution complete
+
+The08:14Z direct run and [EVD-REL04-CLOUD-001](API04_CLOUD_READ_EVIDENCE_2026_10_08.md) supersede execution-pending/STOP above for the operator configuration read. Success output has no status field; STOP is emitted only on failure. Runtime GCS, candidate artifacts/encoder/SDK, rollback validation and full Production Gates remain OPEN. Earlier failures and operator-reported details remain distinctly labeled; no new ACCEPTED decision or deployment approval.

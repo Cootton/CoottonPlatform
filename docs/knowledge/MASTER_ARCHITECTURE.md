@@ -1,5 +1,7 @@
 # Cootton Knowledge System — repository edition v0.2.0
 
+> **REVIEW-PR26-002 · 2026-10-08:** This revision reconciles PR26 release-preparation documents with main `9c084c12` and preserves the knowledge edition. References to an unmerged PR26 at `cad72a77` describe the initial knowledge-review snapshot, not a permanent current-state assertion. After this PR merges, read the current [release preparation](../operations/API04_RELEASE_PREPARATION_2026_10_08.md) and [cloud checkpoint](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) on main. The owner authorized documentation review/merge; proposed work packages and runtime/release gaps remain unchanged. No script, application source, migration or runtime action is introduced by this merge.
+
 `KN-MASTER-002` · Review ngày 2026-10-08 · Trạng thái bộ tài liệu: PROPOSED FOR REVIEW.
 
 Đây là điểm đọc đầu tiên của **bộ kiến thức**, sau đó Work phải tuân theo [COOTTON_MASTER_PLAN](../../COOTTON_MASTER_PLAN.md) và thứ tự đọc bắt buộc của repository. Không thay V001, contracts hay các quyết định đã có bằng bản tóm tắt này.

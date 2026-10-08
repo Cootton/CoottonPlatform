@@ -1,5 +1,7 @@
 # Decision gaps và verification matrix
 
+> **REVIEW-PR26-002 · 2026-10-08:** This revision reconciles PR26 release-preparation documents with main `9c084c12` and preserves the knowledge edition. References to an unmerged PR26 at `cad72a77` describe the initial knowledge-review snapshot, not a permanent current-state assertion. After this PR merges, read the current [release preparation](../operations/API04_RELEASE_PREPARATION_2026_10_08.md) and [cloud checkpoint](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) on main. The owner authorized documentation review/merge; proposed work packages and runtime/release gaps remain unchanged. No script, application source, migration or runtime action is introduced by this merge.
+
 `KN-GAPS-002` · v0.2.0 · Đọc [plan](DETAILED_PLAN.md) và [register](SOURCE_EVIDENCE_REGISTER.md). Đây là register review, không reviewer signoff hoặc full gate certification.
 
 ## Không mở lại những điều đã có authority
@@ -11,7 +13,7 @@ NestJS/TypeScript modular monolith/shared Next.js, PostgreSQL canonical/Neon hi�
 | ID | Gap / trạng thái | Ai giải quyết / evidence cần | Chặn việc gì |
 |---|---|---|---|
 | KN-G01 | General knowledge approval: explicit, PENDING_SCOPE_MAPPING | Owner map artifact/version/scope; không biến thành blanket runtime grant | Adoption của đề xuất mới, không chặn đọc/review |
-| KN-G02 | PR26 overlay unmerged | Maintainer reconcile head/merge status và governing docs; không copy branch status thành main | Current-state reconciliation |
+| KN-G02 | Documentation reconciliation completed in this proposed merge revision; cad72a77 was unmerged at initial review | Owner explicitly authorized review/merge; current-state references follow merged release documents after publication. Runtime checks remain separate. | Documentation publication pending PR merge; không chặn bởi historical unmerged label |
 | KN-G03 | Candidate artifacts/encoder compatibility OPEN | Immutable API/Web/base digests, encoder versions, repeatability/retry bytes và proxy compatibility | Release |
 | KN-G04 | Intended identity actual GCS operations OPEN | Generation-pinned operations dưới runtime account; configured IAM và operator ADC không đủ | Runtime media readiness |
 | KN-G05 | Actual SDK listener warnings OPEN | Repeated workload, safe warning stack/handles/RSS; no listener-limit suppression | Resource/operational readiness |
