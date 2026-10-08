@@ -102,7 +102,7 @@ export function commandPool(pool: Pool): Pool {
         catch (error) { release(true); throw error; }
       };
       const value = Reflect.get(target, property); return typeof value === 'function' ? value.bind(target) : value;
-    });
+    }});
   });
   return new Proxy(pool, { get(target, property) {
     if (property === 'connect') return connect;
@@ -112,7 +112,7 @@ export function commandPool(pool: Pool): Pool {
       finally { client.release(); }
     };
     const value = Reflect.get(target, property); return typeof value === 'function' ? value.bind(target) : value;
-  });
+  }});
 }
 
 export function commandDeadlineMiddleware(milliseconds = commandTimeoutMs()) {
