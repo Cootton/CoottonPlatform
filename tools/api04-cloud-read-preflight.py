@@ -1,9 +1,23 @@
 # PREP04-CLOUD-READ-001: existing operator access; no mutation/secret values.
 import json,subprocess,datetime
 PROJECT="cootton-firebase";REGION="asia-southeast1";BUCKET="cootton-catalog-media-524673981677"
+def error_category(text):
+    text=text.lower()
+    categories=[
+        ("AUTH_REQUIRED",["gcloud auth login","no credentialed accounts","do not currently have an active account","reauthentication","problem refreshing","invalid_grant","unauthenticated","authorize cloud shell","authorization is required"]),
+        ("LOCAL_CREDENTIAL_CACHE",["unable to create private file","configuration directory may not be writable"]),
+        ("API_DISABLED",["service_disabled","has not been used in project","api has not been enabled"]),
+        ("PERMISSION_DENIED",["permission_denied","permission denied","does not have permission","forbidden"]),
+        ("NOT_FOUND",["not_found","could not be found","not found"]),
+        ("NETWORK",["connectionerror","connection refused","connection reset","name resolution","sslerror","timed out","proxyerror"]),
+        ("CLI_ARGUMENT",["unrecognized arguments","invalid choice","argument --"])
+    ]
+    for category,patterns in categories:
+        if any(pattern in text for pattern in patterns):return category
+    return "UNCLASSIFIED"
 def read(args):
     p=subprocess.run(["gcloud",*args,"--quiet","--format=json"],capture_output=True,text=True,timeout=90)
-    if p.returncode: raise RuntimeError("READ_FAILED:"+args[0]+"/"+args[1]+":exit"+str(p.returncode))
+    if p.returncode: raise RuntimeError("READ_FAILED:"+args[0]+"/"+args[1]+":exit"+str(p.returncode)+":"+error_category(p.stderr))
     return json.loads(p.stdout)
 def config(s):
     spec=s.get("spec",{});template=spec.get("template",{});runtime=template.get("spec",spec)
