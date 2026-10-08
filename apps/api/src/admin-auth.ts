@@ -1,3 +1,4 @@
+import { commandWait } from './command-budget';
 import { CanActivate, ExecutionContext, Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { firebaseApp } from './firebase-app';
 import { getAuth } from 'firebase-admin/auth';
@@ -24,7 +25,7 @@ export class AdminIdentityGuard implements CanActivate {
     }
     try {
       const app = firebaseApp();
-      const token = await getAuth(app).verifyIdToken(authorization.slice(7), true);
+      const token = await commandWait(() => getAuth(app).verifyIdToken(authorization.slice(7), true));
       const now = Math.floor(Date.now()/1000);
       if (token.aud !== project || token.iss !== `https://securetoken.google.com/${project}` ||
           typeof token.uid!=='string' || !token.uid || token.uid.length>128 || token.sub!==token.uid ||
