@@ -59,3 +59,8 @@ Local listener probe uses actual Storage SDK with HTTP server on127.0.0.1 and no
 
 ## Gate disposition and handoff
 **Merge complete; release preparation incomplete at cloud/artifact gates.** Immediate dependency is restored authorized cloud access, then service-identity proof and immutable candidate artifacts. No rollout approval is requested while these blockers remain. All ACCEPTED decisions, V001 and applied SQL001–006 remain unchanged; Kafka/microservices/orphan cleanup remain outside this scope.
+
+## PREP04-CLOUD-READ-001 — prepared manual check, execution pending
+[Read-only Cloud Shell helper](../../tools/api04-cloud-read-preflight.py) reads API/Web service and ready-revision configuration, digest/resource/traffic and secret name/version references, plus bucket/project IAM bindings only for attached service accounts. It neither reads secret values nor changes cloud resources. gcloud stderr is captured and not exported; errors report only command family/exit code. Timeout/parse failures stop with partial sanitized evidence.
+Local syntax and synthetic secret-filter validation PASS; this is not live cloud evidence. Operator reported Cloud Shell ready in Codex, but the browser control snapshot still did not expose terminal. Manual execution/output is pending; do not mark cloud preflight PASS from that report.
+Run from a reviewed frozen source checkout: `python3 tools/api04-cloud-read-preflight.py`. Return only this helper's JSON; never token, raw service JSON or gcloud auth diagnostics. Its configured IAM report does not prove actual runtime object operations.
