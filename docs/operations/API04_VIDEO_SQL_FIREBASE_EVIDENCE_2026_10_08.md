@@ -26,8 +26,8 @@ The real run observed repeatable encoder bytes, pinned generation reuse, partial
 
 Nonfatal SDK/stream warnings reported11 error/close listeners on a PassThrough (MaxListenersExceededWarning). Passing this bounded run does not prove a leak or its absence. Preserve the warning for transport/dependency and repeated-workload investigation; do not suppress it with a larger listener limit to manufacture clean evidence.
 
-## Firebase — OPEN, observed login blocker
-The Admin page showed auth/network-request-failed; owner reported the same error in regular Chrome/Edge. No successful new human ID token or SDK verifyIdToken(...,true) evidence exists.
+## Firebase — SDK PASS; Web login remains OPEN
+Earlier the Admin page showed auth/network-request-failed; owner reported the same error in regular Chrome/Edge. That browser failure is retained; subsequent masked Cloud Shell login successfully provided actual identity evidence below.
 - Source uses inMemoryPersistence; opening a new Admin tab does not restore the former session.
 - Read-only HTTP Admin response had no Content-Security-Policy header.
 - A REST probe used the page's existing Firebase Web API key with no email/password, and actual Admin Origin/Referer. Firebase responded400 MISSING_EMAIL with Access-Control-Allow-Origin matching that Admin origin. Public authDomain was cootton-firebase.firebaseapp.com.
@@ -36,4 +36,14 @@ The Admin page showed auth/network-request-failed; owner reported the same error
 
 REST probe behavior follows [Firebase Auth REST reference](https://firebase.google.com/docs/reference/rest/auth); the SDK error is documented by [Firebase auth errors](https://firebase.google.com/docs/reference/node/firebase.auth.Error). Transport evidence is not actual identity verification.
 
-REL04-V01 and full Production Gates remain OPEN. REL04-V07 now has real encoder/GCS/isolated SQL recovery evidence for the stated scenarios; it does not certify production runtime service identity, human playback, cross-encoder determinism or release. ACT006 remains deployed authority; all ACCEPTED decisions and applied SQL001–006 are preserved.
+### REL04-FIREBASE-SDK-001 — PASS, existing human owner scope
+Owner explicitly approved masked credential entry in the existing Cloud Shell and entered credentials there. [Manual harness](../../apps/api/verification/api04-real-firebase.cjs), source `a9f5b01df720f069ba4655882d7c51e952f8026b`, ran once with existing ADC and no database URLs:
+- Actual Firebase Auth password sign-in returned a fresh ID token; no credential, refresh token, UID or ID token was printed or persisted to disk.
+- The unmodified source AdminIdentityGuard admitted it using actual Firebase Admin SDK verifyIdToken(token,true). Project, subject binding, issuer/audience, password provider and <=1h freshness are enforced by that guard.
+- Missing token and a signature-tampered token returned401 through the source guard. A successful revocation-aware check is not an experiment revoking a real account.
+- The real token read deployed ACT006 /v1/admin/session successfully200; no product command/write was sent. This confirms existing owner's current runtime read admission, not deployment of API02–04 source.
+- No Firebase user/provider/IAM/credential creation, change, disable, revocation or production SQL mutation occurred. Credential entry was masked and tokens stayed only in the short-lived process.
+
+This is actual source SDK identity proof, distinct from the transport identity fixture in video/SQL tests. Valid nonowner/custom/anonymous/revoked/expired token and verifier-outage cases are still source-fixture evidence or unexecuted live scenarios. The existing Web login network error is not fixed by this diagnostic CLI login and remains a release issue. Account/provider credentials do work in the observed CLI path; the failing browser credential-bearing request still needs diagnosis.
+
+REL04-V01 as a full matrix and full Production Gates remain OPEN. REL04-V07 now has real encoder/GCS/isolated SQL recovery evidence for the stated scenarios; it does not certify production runtime service identity, human playback, cross-encoder determinism or release. ACT006 remains deployed authority; all ACCEPTED decisions and applied SQL001–006 are preserved.

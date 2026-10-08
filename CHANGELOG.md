@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-08 — CHG-REL04-LIVE-001
+
+- Observed real encoder/GCS/isolated PostgreSQL recovery PASS at7e3f5ecd; exactly two additional private video/poster objects retained, six total. Recorded generations, launcher pre-write failure/correction and nonfatal SDK listener warnings.
+- Observed actual existing-human Firebase password token admitted by unmodified revocation-aware source guard at a9f5b01d; missing/tampered401; deployed ACT006 owner session200. Masked input; no credentials/UID/tokens persisted or committed, no account mutation or production command.
+- Updated scoped evidence and current notices explicitly; browser login network failure, full identity matrix, service-identity/repeated-workload/release gates remain OPEN. No rollout, new IAM, production SQL write, publish or delete.
+
 ## 2026-10-08 — CHG-REL04-VIDEO-SQL-001
 
 - Added actual encoder/HTTP/PostgreSQL uploadVideo recovery verification to CI, including poster failure, SQL rollback, durable COMMIT loss, original201 replay and409/403 denial without processing.
