@@ -1,5 +1,7 @@
 # Changelog
 
+> **PREP04-CLOUD-READ-003 / EVD-REL04-CLOUD-001 · 2026-10-08 08:14 UTC:** [Cloud Shell read checkpoint](docs/operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) directly confirms API100% ACT006, Web100% cootton-web-00006-7c9, immutable baseline images and matching attached-account IAM bindings. This supersedes earlier cloud-read BLOCKED/pending notices for the operator configuration read only. Web rollback identifiers are recorded; actual runtime GCS operations, rollback validation, candidate image/FFmpeg, SDK investigation, API04-RECOVERY-002 and full Production Gates remain OPEN. **NOT READY TO DEPLOY**. Older snapshots below retain historical scope.
+
 > **PREP-REL04-001 · 2026-10-08:** [PR25 merge và release preparation](docs/operations/API04_RELEASE_PREPARATION_2026_10_08.md) pins merged source e06d3de8, scoped CI/cloud evidence and candidate/rollback requirements. Web login/read recovered in one observed session without a code change; historical network failure/root cause remains OPEN. Live cloud access, intended service identity, actual registry/encoder digests, SDK warning investigation and full Production Gates remain OPEN. Preparation is NOT READY TO DEPLOY; ACT006 remains last verified runtime.
 
 ## 2026-10-08 — CHG-REL04-LIVE-001
@@ -142,3 +144,9 @@ Owner ACCEPTED:
 
 - EVD-PR23-F001: sourcee75e757f Foundation37688677208/Container37688677294 SUCCESS; contracts12PASS,API24PASS/1SKIP,PostgreSQL2PASS. Review finding resolved for source; production/cleanup gates remain OPEN.
 
+
+## 2026-10-08 — CHG-REL04-CLOUD-001
+
+- Added EVD-REL04-CLOUD-001 / PREP04-CLOUD-READ-003 for the direct08:14Z Cloud Shell configuration read; preserved prior STOP reports as historical.
+- Revalidated API100% ACT006 and recorded Web00006-7c9 immutable rollback baseline/100% latestRevision traffic. Configured attached-account IAM is distinct from runtime operations.
+- Corrected success-report status interpretation: helper success has no status field. Candidate artifact/encoder/SDK/runtime/recovery/rollback/full Production Gates remain OPEN. No code, migrations, IAM or deployment changes.

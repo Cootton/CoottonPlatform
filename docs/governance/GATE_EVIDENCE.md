@@ -1,5 +1,7 @@
 # Gate evidence sau synchronization
 
+> **PREP04-CLOUD-READ-003 / EVD-REL04-CLOUD-001 · 2026-10-08 08:14 UTC:** [Cloud Shell read checkpoint](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) directly confirms API100% ACT006, Web100% cootton-web-00006-7c9, immutable baseline images and matching attached-account IAM bindings. This supersedes earlier cloud-read BLOCKED/pending notices for the operator configuration read only. Web rollback identifiers are recorded; actual runtime GCS operations, rollback validation, candidate image/FFmpeg, SDK investigation, API04-RECOVERY-002 and full Production Gates remain OPEN. **NOT READY TO DEPLOY**. Older snapshots below retain historical scope.
+
 > **PREP-REL04-001 · 2026-10-08:** [PR25 merge và release preparation](../operations/API04_RELEASE_PREPARATION_2026_10_08.md) pins merged source e06d3de8, scoped CI/cloud evidence and candidate/rollback requirements. Web login/read recovered in one observed session without a code change; historical network failure/root cause remains OPEN. Live cloud access, intended service identity, actual registry/encoder digests, SDK warning investigation and full Production Gates remain OPEN. Preparation is NOT READY TO DEPLOY; ACT006 remains last verified runtime.
 
 > **EVD-REL04-VIDEO-SQL-001 · 2026-10-08:** [Video/SQL and Firebase follow-up](../operations/API04_VIDEO_SQL_FIREBASE_EVIDENCE_2026_10_08.md) records actual encoder + HTTP + disposable PostgreSQL recovery PASS at7e3f5ecd. CI storage/identity are transport fixtures; a subsequent real GCS + isolated PostgreSQL run PASSed with exactly two additional private video/poster objects (six total). Identity remains a fixture; SDK listener warnings are retained for investigation. Actual human Firebase source SDK verification PASSed via masked Cloud Shell (a9f5b01d), with missing/tampered401 and deployed ACT006 owner session200. Browser Web login still fails with network-request-failed; the full identity matrix remains OPEN. Historical one-run GCS evidence is preserved; no rollout or full gate PASS.
@@ -52,3 +54,7 @@ Recheck triggers: code/schema/auth/media/cache/permission changes; redeploy ho�
 ## API04 scoped overlay · 2026-10-07
 
 [API04 evidence](API04_EVIDENCE.md) records source CI proof separately from production. Real disposable DB and Storage transport fixtures exercise API04-I01–I07; no production crash/failover, real Storage retry, orphan cleanup or restore is claimed. API04-RECOVERY-002 remains OPEN. Full gates and ACT006 runtime checkpoint are unchanged.
+
+## EVD-REL04-CLOUD-001 — bounded configuration evidence
+
+[Cloud read checkpoint](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md), directly observed08:14Z, closes the operator configuration-read blocker only. API100% ACT006, Web100%00006-7c9 and corresponding images/accounts/IAM are recorded. Effective GCS generation/create/retry operations, candidate encoder compatibility, SDK warning, rollback execution, SQL/data and full security/performance/operations/release matrices remain OPEN. No aggregate gate is promoted PASS; recheck on configuration/traffic/image/IAM changes and before release.
