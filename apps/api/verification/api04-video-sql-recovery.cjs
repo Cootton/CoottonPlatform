@@ -16,7 +16,7 @@ module.exports=async function videoSqlRecovery({maintenance,writer,service,send,
   getMetadata:async()=>real?realBucket.file(name).getMetadata():[objects.get(name)],
   createReadStream:()=>{throw Error('UNEXPECTED_SDK_BODY_READ');}
  })};
- const transport=real?null:require('./media-read-fixture')(async(url,opts)=>{const u=new URL(url),name=decodeURIComponent(u.pathname.split('/o/')[1]),object=objects.get(name);assert.equal(u.searchParams.get('generation'),object.generation);assert.equal(opts.headers['Accept-Encoding'],'identity');return new Response(object.bytes,{status:206,headers:{'x-goog-generation':object.generation}});});
+ const transport=real?null:require('./media-read-fixture.cjs')(async(url,opts)=>{const u=new URL(url),name=decodeURIComponent(u.pathname.split('/o/')[1]),object=objects.get(name);assert.equal(u.searchParams.get('generation'),object.generation);assert.equal(opts.headers['Accept-Encoding'],'identity');return new Response(object.bytes,{status:206,headers:{'x-goog-generation':object.generation}});});
  mod.require=id=>id==='./media-read'&&!real?transport:id==='firebase-admin/storage'?{getStorage:()=>({bucket:()=>storage})}:id==='./firebase-app'&&!real?{firebaseApp:()=>({})}:normal(id);
  mod._compile(syncfs.readFileSync(filename,'utf8'),filename);
  const counts=async()=>Object.fromEntries(await Promise.all(['audit','outbox','command','evidence','video_asset','product_video'].map(async t=>[t,(await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.'+t)).rows[0].n])));

@@ -7,7 +7,7 @@ test('cold public image initializes backend app without an Admin request or netw
  process.env.FIREBASE_PROJECT_ID='cootton-firebase';process.env.COOTTON_MEDIA_BUCKET='test-private-bucket';delete process.env.FIREBASE_AUTH_EMULATOR_HOST;
  for(const app of getApps())await deleteApp(app);
  const sha=require('node:crypto').createHash('sha256').update('stub-webp').digest('hex');
- const transport=require('./media-read-fixture')(async()=>{downloads++;return new Response(Buffer.from('stub-webp'),{status:206,headers:{'x-goog-generation':'7'}});},()=>({options:{credential:{getAccessToken:async()=>({access_token:'transport-fixture'})}}}));
+ const transport=require('./media-read-fixture.cjs')(async()=>{downloads++;return new Response(Buffer.from('stub-webp'),{status:206,headers:{'x-goog-generation':'7'}});},()=>({options:{credential:{getAccessToken:async()=>({access_token:'transport-fixture'})}}}));
  let downloads=0;const filename=path.resolve(__dirname,'../dist/catalog-media.js');const normal=createRequire(filename);
  const mod=new Module(filename);mod.filename=filename;mod.require=id=>id==='./media-read'?transport:id==='firebase-admin/storage'?{getStorage:app=>{assert.equal(app.name,'cootton-admin');return {bucket:name=>{assert.equal(name,'test-private-bucket');return {file:p=>({getMetadata:async()=>{assert.match(p,/^media\//);return [{generation:'7',size:'9',contentType:'image/webp',cacheControl:'private, no-store'}];},download:()=>{throw Error('UNEXPECTED_SDK_BODY_READ');}})};}};}}:normal(id);
  mod._compile(fs.readFileSync(filename,'utf8'),filename);

@@ -1,5 +1,5 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
-const load=require('./media-read-fixture');
+const load=require('./media-read-fixture.cjs');
 const name='media/11111111-1111-4111-8111-111111111111/'+'a'.repeat(64)+'.webp';
 process.env.COOTTON_MEDIA_BUCKET='transport-fixture';
 function fixture({chunks=[Buffer.from('bytes')],status=206,headers={},failure=false}={}){
