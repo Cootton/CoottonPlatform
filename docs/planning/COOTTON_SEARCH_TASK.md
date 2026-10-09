@@ -15,3 +15,6 @@ Evidence: [EVD-SEARCH-001](../governance/COOTTON_SEARCH_EVIDENCE.md); actual pro
 GitHub handoff: source publication blocked by automatic approval-review input capacity; no PR created. Local code and full patch prepared. Remote task branch remains at original baseline; main unchanged. See EVD-SEARCH-001 for exact failures and reviewer limits.
 
 SEARCH-PUBLISH-002: latest owner explicitly authorizes merge or deploy. Proceed with source review/merge of search and advertising simulation; production gates remain OPEN. Main baseline is 696a462f0c23da87c30c66f24401a7d0265617a2; retain preceding blocked-publication text as historical evidence, superseded only by observed remote PR/merge evidence. Follow RULE-GITHUB-001; no approval bypass or activation of proposed policy.
+
+
+SEARCH-PUBLISH-003: source pushed and PR #34 opened at 63a3d84588b11259b0cd47a8771bf238efc30668 on 2026-10-09. Earlier no-PR/blocked statements are historical. Source review completed with no blocking finding in scope; status SOURCE_REVIEWED, CI_PENDING before merge. Use the exact PR head checks and merged state as final publication evidence. Runtime rollout remains NOT_READY; experimental formulas remain PROPOSED.
