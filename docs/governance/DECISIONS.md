@@ -84,3 +84,7 @@ Owner explicitly yêu cầu tạo rule để tránh lỗi đọc/publish quá l�
 ## DEC-CLOUDSHELL-001 — Owner upload authorization · 2026-10-09
 
 Lời owner: ‘tạo rule cho Cloud Shell( cho phép upload file lên nếu cần để chạy cloud shell)’. OWNER_AUTHORIZED: upload file cần thiết cho nhiệm vụ Cootton đã giao vào Cloud Shell của người dùng, không hỏi lại trong cùng phạm vi. [RULE-CLOUDSHELL-001](CLOUD_SHELL_TRANSFER_RULE.md) ghi nguồn và quy trình assistant; không tự phê duyệt lệnh ngoài scope, secret transfer, IAM/migrations/production mutation hay deploy. Owner đã giao publish/merge quy tắc; có hiệu lực cùng AGENTS khi merge vào main. Không thêm ACCEPTED business policy.
+
+## DEC-GHACTIONS-001 — Owner-approved repository workflow permissions · 2026-10-09
+
+Owner selects actual GitHub Actions permissions for all work in CoottonPlatform, then explicitly confirms ‘Đồng ý cả hai thay đổi’ to default Read and write permissions and Allow GitHub Actions to create and approve pull requests, after their scope/effect is explained. Settings saved and both enabled states directly observed. OWNER_AUTHORIZED / APPLIED_VERIFIED for these two settings only; not deploy/cloud IAM or business-policy approval. [RULE-GHACTIONS-001](GITHUB_ACTIONS_PERMISSION_RULE.md) records prior values, evidence, job boundaries and recovery.
