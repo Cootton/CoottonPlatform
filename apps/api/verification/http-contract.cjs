@@ -30,8 +30,8 @@ test('actual Nest HTTP transport:201 command/replay, safe errors, parser limits 
  }finally{await app.close();[AdminIdentityGuard.prototype.canActivate,AdminCatalogService.prototype.command,CatalogRepository.prototype.image]=originals;}
 });
 
-test('OpenAPI: all13 operations have success schemas, safe errors and contract references',()=>{
- const operations=Object.values(spec.paths).flatMap(p=>Object.values(p));assert.equal(operations.length,13);
+test('OpenAPI: all14 operations have success schemas, safe errors and contract references',()=>{
+ const operations=Object.values(spec.paths).flatMap(p=>Object.values(p));assert.equal(operations.length,14);
  for(const op of operations){assert.equal(op['x-contract-record'],'docs/contracts/API_ENDPOINT_CONTRACTS.md');for(const [status,response] of Object.entries(op.responses)){assert.ok(response.headers['Cache-Control']);assert.ok(response.content);if(Number(status)>=400)assert.equal(response.content['application/json'].schema.$ref,'#/components/schemas/SafeError');}}
  assert.ok(spec.paths['/v1/catalog/media/{seller}/{file}'].get.responses['400']);
  assert.equal(spec.paths['/v1/admin/session'].get.responses['409'],undefined);

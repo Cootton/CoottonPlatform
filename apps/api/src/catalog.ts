@@ -4,6 +4,7 @@ import type { Pool } from 'pg';
 import { createDatabasePool } from './database';
 import { MemoryCache } from './memory-cache';
 import { previewImage } from './catalog-media';
+import { searchPlan, searchCursor } from './catalog-search';
 
 const fields = 'id,version,category,title,brand,description,form,material,origin,care,images';
 interface Cursor { readonly version: 1; readonly mode: SalesMode; readonly category: CategoryCode | null; readonly limit: number; readonly at: string; readonly id: string }
@@ -45,6 +46,17 @@ export class CatalogRepository implements OnModuleDestroy {
     }catch(e){if(e instanceof NotFoundException)throw e;throw new ServiceUnavailableException();}
   }
   async onModuleDestroy(): Promise<void> { await this.pool?.end(); }
+  async search(query: Record<string,unknown>): Promise<CatalogPage> {
+    let plan: ReturnType<typeof searchPlan>;
+    try { plan=searchPlan(query); } catch { throw new BadRequestException('INVALID_INPUT'); }
+    try {
+      const result=await this.database().query<Record<string,unknown> & {id:string;search_rank:number;cursor_at:string}>(plan.text,plan.values);
+      const rows=result.rows.slice(0,plan.input.limit), items=rows.map(publicProduct), last=rows.at(-1);
+      // Never retain query results in a cache; reject publication changes during this read.
+      if (!await this.visible(items)) throw new ServiceUnavailableException('UNAVAILABLE');
+      return {items,nextCursor:result.rows.length>plan.input.limit && last ? searchCursor(plan.input,last):null,mode:plan.input.mode,commerceEnabled:false};
+    } catch { throw new ServiceUnavailableException('UNAVAILABLE'); }
+  }
   async list(query: Record<string,unknown>): Promise<CatalogPage> {
     const {mode,cat,limit,cursor}=parameters(query);
     const key = 'catalog:list:' + JSON.stringify([mode,cat,limit,cursor]);
@@ -103,5 +115,10 @@ class PublicMediaController {
   constructor(private readonly catalog:CatalogRepository) {}
   @Get(':seller/:file') async image(@Param('seller') seller:string,@Param('file') file:string,@Res() response:{type:(v:string)=>void;send:(v:Buffer)=>void}) {const data=await this.catalog.image(seller,file);response.type('image/webp');response.send(data);}
 }
-@Module({controllers:[CatalogController,PublicMediaController],providers:[CatalogRepository]})
+@Controller('catalog/search')
+class CatalogSearchController {
+  constructor(private readonly catalog:CatalogRepository) {}
+  @Get() search(@Query() query:Record<string,unknown>):Promise<CatalogPage>{return this.catalog.search(query);}
+}
+@Module({controllers:[CatalogController,PublicMediaController,CatalogSearchController],providers:[CatalogRepository]})
 export class CatalogModule {}

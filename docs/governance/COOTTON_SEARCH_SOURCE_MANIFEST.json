@@ -1,0 +1,98 @@
+{
+  "baseline": "02bfad3020f0265219055dd9991108cfa87f625c",
+  "normalization": "UTF8 LF",
+  "files": [
+    {
+      "path": "apps/api/src/catalog-search.ts",
+      "sha256": "29ec2a4456c97253c7bfd3c6f70e517e2e30518ff5974c8c99db7941db29e883"
+    },
+    {
+      "path": "apps/api/verification/catalog-search-db.cjs",
+      "sha256": "9b2f8330ff162e04d3f527eefea0ef549c15e4e4f3b22ca4dcab3cd39af939f9"
+    },
+    {
+      "path": "apps/api/verification/catalog-search.cjs",
+      "sha256": "60e94ac6b722d39916c81908e6c6228e55a17069800b3845d2bca23c71864bff"
+    },
+    {
+      "path": "apps/api/verification/search-ssr.cjs",
+      "sha256": "abeb911fa7090aa52ae103467ea171db46cb717c0d61b65e53ab289561cf7754"
+    },
+    {
+      "path": "apps/api/verification/search-web.cjs",
+      "sha256": "8f70e7a0b351a3829260a05c7c4600e789a22218724a0a1c077eeb7e504151dd"
+    },
+    {
+      "path": "apps/web/app/api/catalog/products/[id]/visibility/route.ts",
+      "sha256": "4c69c2996e2b788dd04ba59d784e2291ea5db2f937eb5ad443ac60d7180dbca5"
+    },
+    {
+      "path": "apps/web/app/api/catalog/search/route.ts",
+      "sha256": "1215d81863c5723e7eee607ddae8589fad15cbee153fa12eb6fcde19b5395eaf"
+    },
+    {
+      "path": "apps/web/components/ad-auction-workbench.tsx",
+      "sha256": "f6661116cc8bf5faa83d13bb8b9f18cabbe96fa907d969e7ba9f3f85340ab485"
+    },
+    {
+      "path": "apps/web/components/product-search.tsx",
+      "sha256": "c752d03334803b6af33fb4b750aec14e0215af4e84c8e450ac88064b91d10210"
+    },
+    {
+      "path": "packages/contracts/src/discovery-scoring.ts",
+      "sha256": "feb71604e187e4ef434e380e9af3ccd15797f76c0e6886b89a88b2d1332f35f8"
+    },
+    {
+      "path": "packages/contracts/src/search.ts",
+      "sha256": "367f86d5f5fa3df5da2cb933d350825b0a24144ae266ec7c2332a288629ce50e"
+    },
+    {
+      "path": "packages/contracts/verification/search.cjs",
+      "sha256": "6bbe589cdd26ca539a6c66628a0cbea267807f7a385daea6e8630d328b1e170d"
+    },
+    {
+      "path": "apps/api/package.json",
+      "sha256": "380c59d66c36e525a211aeeade9f8f5acf61cb08dca80626b5a767e19dbef3a2"
+    },
+    {
+      "path": "apps/api/src/catalog.ts",
+      "sha256": "1b7f0334cf97a7d436fb1f3f54da56e67159ceb1a9b8c297ca0e0fe9eb17d753"
+    },
+    {
+      "path": "apps/api/verification/http-contract.cjs",
+      "sha256": "f8b0a2ca8678ffb483cc4e03c8a6087eb06e8981370651f6eb07b12980ed45fc"
+    },
+    {
+      "path": "apps/api/verification/measurement-db.cjs",
+      "sha256": "f784a700a3922939f8c4da47687381772a0f6fa2f1f3556724d72111aa368750"
+    },
+    {
+      "path": "apps/web/app/globals.css",
+      "sha256": "672e8db6f5f5de5f6a146dd38c505284d2a946632bdb889ded81359e82e226d4"
+    },
+    {
+      "path": "apps/web/components/admin-panel.tsx",
+      "sha256": "20375858beaa2794d849967bfc2ce9591970a0731df7016e315e362a16ac4fc7"
+    },
+    {
+      "path": "apps/web/components/catalog.tsx",
+      "sha256": "81c5bb68175387aca4506ff5e05186ed5983af899b5c7d019ce248e2a5851e52"
+    },
+    {
+      "path": "apps/web/lib/catalog.ts",
+      "sha256": "1e12b602a0280b9cd39c1c6e2abcfbfbc09fbb0fb8815a106f62508ea66d94d4"
+    },
+    {
+      "path": "docs/contracts/openapi.json",
+      "sha256": "0d68259a506a441064b6c72e7e4875aa088d63263c13c4dfd99ab54f6bff77a5"
+    },
+    {
+      "path": "packages/contracts/package.json",
+      "sha256": "190c6d733997fd80221135600976b78175e329549387a49e3140477a1a1a4a43"
+    },
+    {
+      "path": "packages/contracts/src/index.ts",
+      "sha256": "f401343413fd20b2549c1362ebc0bc00f00ae2f0336beca9a57508a90e84b4cb"
+    }
+  ]
+}
