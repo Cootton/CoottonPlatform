@@ -83,3 +83,7 @@ HTTP-WEB-MEDIA-001 GET /media/{seller}/{file}: legacy asset UUID+SHA.webp allowl
 | F006 |13 action records plus shared transaction/retry/storage effects and schemas | OPEN API-04 deeper transaction/media recovery proof |
 
 REQ-API-CONTRACT-002 → RULE-API-001 / CORE / ADR0004–0007 → OpenAPI + this record + transport source → http-contract.cjs / web-http.cjs + existing scoped tests → GATE-CONTRACT-001,SEC,DATA,RELEASE. Test doubles certify transport and schema structure, not Firebase/grants/database correctness. Exact test/CI result is recorded in API02_EVIDENCE.md; pending is never PASS. Full Production Gates remain open. ACCEPTED business decisions and ACT006 runtime evidence retain original scope.
+
+## HTTP-API-014 — Native public catalog search
+
+GET /v1/catalog/search receives bounded mode/q/category/brand/form/color/size/limit/cursor and returns the public CatalogPage allowlist. Public read-only; restricted visible views, same-SKU color/size and ID/version revalidation; no mutation, rating/private evidence/price/stock/ads authority. Safe retry re-evaluates current publication. Unknown/duplicate query, invalid bounds/cursor400; dependency or mid-read withdrawal503. no-store/nosniff. Cursor binds relevance/order and all filters. Existing list/detail contracts stay separate. Full request/response/access/preconditions/retry/evidence: [SEARCH-ADS-001](COOTTON_SEARCH_ADVERTISING.md), [OpenAPI](openapi.json), [EVD-SEARCH-001](../governance/COOTTON_SEARCH_EVIDENCE.md). Source tests are not production proof.

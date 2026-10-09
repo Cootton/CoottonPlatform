@@ -179,3 +179,10 @@ Owner ACCEPTED:
 - Added owner-requested RULE-GITHUB-001 and AGENTS/read-order links: scoped SHA-pinned reads, payload inventory, complete review packages, supported Git handoff and mandatory fail-closed after reviewer failure.
 - Distinguished GitHub Contents/tree/rate limits from output/reviewer caps; recorded actual file/patch sizes and unknown account quota/reviewer limit. Internal thresholds are workflow guardbands, not vendor claims.
 - Documentation only, local source; no retry of blocked publication, credential changes, application/runtime changes or deployment.
+
+## 2026-10-09 — CHG-SEARCH-001
+
+- Added native catalog/search endpoint, bounded Vietnamese/literal matching, same-SKU filters and filter-bound relevance keyset cursors over restricted public views. Existing catalog list/detail and applied migrations unchanged.
+- Added purple/white storefront, SSR fallback, live search/BFF, cancellation, statuses and responsive controls.
+- Added pure three-criterion score and exact-integer CPM auction with an authenticated Admin workbench using current products. Owner selected criteria/CPM/Cootton-first and explicitly retained formulas as PROPOSED; no live ratings/ads/billing.
+- Recorded build/declared suite/SQL/SSR fixture evidence and missing browser/PG16/production performance evidence. No deploy, commerce, new seller grants or resume of paused API04.

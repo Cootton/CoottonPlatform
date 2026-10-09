@@ -80,3 +80,7 @@ SRC-PR16-18768A1, EVD-DEPLOY-20261004 và EVD-BROWSER-20261007 bổ sung các so
 ## RULE-GITHUB-001 — Owner-requested contributor workflow2026-10-09
 
 Owner explicitly yêu cầu tạo rule để tránh lỗi đọc/publish quá lớn. [Quy tắc](GITHUB_REVIEW_CAPACITY_RULE.md) và AGENTS xác định metadata/scoped reads, review package, soft payload guardbands, standard Git khi được duyệt và fail-closed sau review rejection. Numeric defaults là lựa chọn workflow nội bộ, không ACCEPTED vendor limits/approval override. Không thay domain ACCEPTED policies; source local, publication pending.
+
+## DEC-SEARCH-001 / DEC-ADS-001 — Owner direction2026-10-09
+
+Direct owner assignment authorizes native Cootton application source and purple/white interface. Owner selects three natural-ranking criteria: keyword relevance, verified reviews, seller trust; advertising CPM; Cootton first with multi-seller later. Owner explicitly replies “Giữ đề xuất để thử nghiệm” for weights60/25/15, CPM×quality and first-price auction: these remain PROPOSED, not ACCEPTED runtime policy. No rating evidence, valid-impression/budget/debit contract or release approval supplied. Detailed provenance/boundaries: SEARCH-ADS-001 and ADR0010. Historical decisions remain unchanged.

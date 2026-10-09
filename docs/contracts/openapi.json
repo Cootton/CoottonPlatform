@@ -2281,6 +2281,228 @@
         "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
         "x-query-policy": "Ignored"
       }
+    },
+    "/v1/catalog/search": {
+      "get": {
+        "operationId": "searchCatalogProducts",
+        "parameters": [
+          {
+            "name": "mode",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "B2C",
+                "B2B"
+              ],
+              "default": "B2C"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "CREWNECK_TSHIRT",
+                "HOODIE",
+                "SWEATER",
+                "SHORTS",
+                "TROUSERS"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]{1,1024}$"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "description": "At most eight whitespace-separated words; literal matching, no wildcard syntax."
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "description": "Normalized exact public catalog label."
+          },
+          {
+            "name": "form",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": "Normalized exact public catalog label."
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": "Normalized exact public catalog label."
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": "Normalized exact public catalog label."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safe public catalog response. No price, inventory or purchase authority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "items",
+                    "nextCursor",
+                    "mode",
+                    "commerceEnabled"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "$ref": "#/components/schemas/PublicProduct"
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "mode": {
+                      "enum": [
+                        "B2C",
+                        "B2B"
+                      ]
+                    },
+                    "commerceEnabled": {
+                      "const": false
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unconfigured or dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected framework/application failure; safe JSON where application controls response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on backend; private, no-store on Admin Web proxy"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "const": "nosniff"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-record": "docs/contracts/API_ENDPOINT_CONTRACTS.md",
+        "description": "HTTP-API-014. Public read-only Vietnamese search. Unknown/duplicate parameters rejected. q<=160 characters/8 tokens. brand/form/color/size normalized exact labels, color+size match the same visible SKU. Order: relevance, timestamp, UUID descending. Cursor bound to all filters, mode and limit. No ads, ratings, stock or price authority. No search-result cache."
+      }
     }
   },
   "components": {

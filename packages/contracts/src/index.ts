@@ -28,3 +28,5 @@ export * from './catalog';
 export * from './admin';
 export * from './intake';
 export * from './media';
+export * from './search';
+export * from './discovery-scoring';

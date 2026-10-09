@@ -7,7 +7,6 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
-    "verify": "node --test verification/core.cjs verification/catalog.cjs verification/admin.cjs verification/intake.cjs"
+    "verify": "node --test verification/core.cjs verification/catalog.cjs verification/admin.cjs verification/intake.cjs verification/search.cjs"
   }
 }
-

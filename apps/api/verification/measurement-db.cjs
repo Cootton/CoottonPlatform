@@ -37,8 +37,8 @@ test('006 guards legacy and new publication snapshots on cold and cached reads',
    await db.query('SET LOCAL ROLE cootton_catalog_reader');
    try{for(const view of ['visible_product','visible_sku','visible_media','visible_size_chart'])assert.equal((await db.query('SELECT * FROM catalog_read.'+view)).rowCount,visible?1:0);}
    finally{await db.query('RESET ROLE');}
-   if(visible){assert.equal((await repository.detail(product,{})).chart.length,1);assert.equal((await repository.list({})).items.length,1);}
-   else{await assert.rejects(repository.detail(product,{}),e=>e.getStatus()===404);assert.equal((await repository.list({})).items.length,0);await assert.rejects(repository.image(asset,'a'.repeat(64)+'.webp'),e=>e.getStatus()===404);}
+   if(visible){assert.equal((await repository.detail(product,{})).chart.length,1);assert.equal((await repository.list({})).items.length,1);assert.equal((await repository.search({q:'CI product'})).items.length,1);}
+   else{await assert.rejects(repository.detail(product,{}),e=>e.getStatus()===404);assert.equal((await repository.list({})).items.length,0);assert.equal((await repository.search({q:'CI product'})).items.length,0);await assert.rejects(repository.image(asset,'a'.repeat(64)+'.webp'),e=>e.getStatus()===404);}
   }
   process.env.COOTTON_PUBLICATION_ENABLED='true';
   await expectVisible(false);await db.query('UPDATE catalog_core.dictionary SET active=true WHERE id=$1',[measurement]);cache.invalidate();await expectVisible(true);
