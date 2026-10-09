@@ -149,3 +149,7 @@ Owner read-only preflight assignment → helper a137fbd2 → directly observed08
 ## RULE-GITHUB-001 — Review capacity2026-10-09
 
 Owner yêu cầu kiểm tra giới hạn và tạo rule → TASK-GITHUB-001 → [RULE-GITHUB-001](GITHUB_REVIEW_CAPACITY_RULE.md)/AGENTS. Evidence: Contents/tree/rate-limit docs chính thức được đọc, actual pre-execution reviewer rejection, local33files955402bytes/patch124522bytes. Reviewer token cap và account quota UNKNOWN; internal32/64KiB là guardbands, không provider limit hay approval bypass. Local docs only; GitHub publication pending. Không code/runtime/grants/deploy từ rule.
+
+## RULE-CLOUDSHELL-001 — File transfer · 2026-10-09
+
+Owner giao upload gói search → Cloud Shell UI xác nhận Success tại home → owner giao quy tắc upload khi cần → [RULE-CLOUDSHELL-001](CLOUD_SHELL_TRANSFER_RULE.md)/AGENTS/master. Source chuẩn bị 2c34b45; upload không là integrity/import/push/CI/merge/deploy proof. Quyền upload OWNER_AUTHORIZED; quy trình kiểm chứng do assistant đề xuất; không override RULE-GITHUB-001 hoặc paused API04. Owner đã giao publication/merge quy tắc; trạng thái hoàn tất cần exact PR/head/main evidence.

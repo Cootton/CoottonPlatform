@@ -1,5 +1,7 @@
 # COOTTON MASTER PLAN — Index cho Work và engineering
 
+Cloud Shell file transfer: đọc [RULE-CLOUDSHELL-001](docs/governance/CLOUD_SHELL_TRANSFER_RULE.md). Owner cho phép upload file cần thiết cho nhiệm vụ đã giao; kiểm chứng upload/integrity và giữ scope chạy lệnh/merge/deploy riêng.
+
 > **REVIEW-API04-PR28-29-001 · 2026-10-09:** Owner assigned review/merge PR28→PR29. PR28 merged main59ad8560; PR29 now targets main. [Review/read-order checkpoint](docs/operations/API04_PR28_PR29_REVIEW_2026_10_09.md) distinguishes source merge from serving runtime and deploy approval. Earlier draft/stacked notes are historical. Operational thresholds/deadline changes are still PROPOSED; ACT006 remains runtime, API04-RECOVERY-002 and full release gates OPEN. **NOT READY TO DEPLOY**.
 
 > **FIX04-READ-OPS-001 · 2026-10-09:** source SDK fix `988c8a83…`, API candidate `7a053d12…`; CI/build PASS, actual-account1.000 reads/0SDK warnings, HTTP read/negative checks PASS. Read [scoped SDK/HTTP evidence](docs/operations/API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) and [observed config / proposed thresholds](docs/operations/API04_RUNTIME_CONFIG_AND_THRESHOLDS_2026_10_09.md). API588 evidence below remains historical. ACT006 remains serving; no serving deployment/traffic change. Thresholds/deadline changes are PROPOSED, full gates and API04-RECOVERY-002 remain OPEN. **NOT READY TO DEPLOY**.

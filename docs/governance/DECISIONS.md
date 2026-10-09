@@ -80,3 +80,7 @@ SRC-PR16-18768A1, EVD-DEPLOY-20261004 và EVD-BROWSER-20261007 bổ sung các so
 ## RULE-GITHUB-001 — Owner-requested contributor workflow2026-10-09
 
 Owner explicitly yêu cầu tạo rule để tránh lỗi đọc/publish quá lớn. [Quy tắc](GITHUB_REVIEW_CAPACITY_RULE.md) và AGENTS xác định metadata/scoped reads, review package, soft payload guardbands, standard Git khi được duyệt và fail-closed sau review rejection. Numeric defaults là lựa chọn workflow nội bộ, không ACCEPTED vendor limits/approval override. Không thay domain ACCEPTED policies; source local, publication pending.
+
+## DEC-CLOUDSHELL-001 — Owner upload authorization · 2026-10-09
+
+Lời owner: ‘tạo rule cho Cloud Shell( cho phép upload file lên nếu cần để chạy cloud shell)’. OWNER_AUTHORIZED: upload file cần thiết cho nhiệm vụ Cootton đã giao vào Cloud Shell của người dùng, không hỏi lại trong cùng phạm vi. [RULE-CLOUDSHELL-001](CLOUD_SHELL_TRANSFER_RULE.md) ghi nguồn và quy trình assistant; không tự phê duyệt lệnh ngoài scope, secret transfer, IAM/migrations/production mutation hay deploy. Owner đã giao publish/merge quy tắc; có hiệu lực cùng AGENTS khi merge vào main. Không thêm ACCEPTED business policy.
