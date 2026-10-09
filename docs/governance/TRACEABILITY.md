@@ -153,3 +153,7 @@ Owner yêu cầu kiểm tra giới hạn và tạo rule → TASK-GITHUB-001 → 
 ## RULE-CLOUDSHELL-001 — File transfer · 2026-10-09
 
 Owner giao upload gói search → Cloud Shell UI xác nhận Success tại home → owner giao quy tắc upload khi cần → [RULE-CLOUDSHELL-001](CLOUD_SHELL_TRANSFER_RULE.md)/AGENTS/master. Source chuẩn bị 2c34b45; upload không là integrity/import/push/CI/merge/deploy proof. Quyền upload OWNER_AUTHORIZED; quy trình kiểm chứng do assistant đề xuất; không override RULE-GITHUB-001 hoặc paused API04. Owner đã giao publication/merge quy tắc; trạng thái hoàn tất cần exact PR/head/main evidence.
+
+## RULE-GHACTIONS-001 — Actual Actions permission evidence · 2026-10-09
+
+Owner actual-permissions request → recipient clarified GitHub Actions, repository Cootton/CoottonPlatform → action-time confirmation of two exact settings → saved-message and enabled UI states → [RULE-GHACTIONS-001](GITHUB_ACTIONS_PERMISSION_RULE.md). Current repository baseline459aca83 includes merged Cloud Shell rule PR32. Existing CI contents:read preserved. No workflow write/deploy run, cloud IAM, source search merge or production readiness inferred; config and code/gates remain separate.

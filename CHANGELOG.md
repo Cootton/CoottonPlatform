@@ -185,3 +185,9 @@ Owner ACCEPTED:
 - Added owner-authorized Cloud Shell upload rule with AGENTS/master and governance traceability links.
 - Defined destination/content/integrity checks and separate upload, execution, publication, merge and deployment evidence.
 - Documentation only; no Cloud Shell settings, credential, IAM, runtime or deployment changes. Owner assigned publication/merge; repository adoption follows the verified merged PR.
+
+## 2026-10-09 — CHG-GHACTIONS-001
+
+- Recorded explicit owner approval and verified GitHub Actions default read/write plus create/approve PR settings.
+- Added RULE-GHACTIONS-001 and contributor/master/governance links. Existing CI permissions remain read-only; cloud IAM/deploy, application source and proposed search/ads policies unchanged.
+- Settings evidence is APPLIED_VERIFIED; successful publish/merge/deploy workflow execution is not inferred.
