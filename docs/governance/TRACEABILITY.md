@@ -145,3 +145,7 @@ PR23-F001 → API04-I06 / ADR0009 follow-up → catalog-media generation-pinned 
 ## PREP04-CLOUD-READ-003 — release configuration traceability
 
 Owner read-only preflight assignment → helper a137fbd2 → directly observed08:14Z service/traffic/attached-account IAM summary → [EVD-REL04-CLOUD-001](../operations/API04_CLOUD_READ_EVIDENCE_2026_10_08.md) → PREP04-ACCESS configured read COMPLETE; PREP04-SA runtime operations, PREP04-ENC/SDK, rollback validation, API04-RECOVERY-002 and full release gates OPEN. Candidate source remains e06d3de8; observed deployed API remains ACT006. No new ADR decision or production mutation.
+
+## RULE-GITHUB-001 — Review capacity2026-10-09
+
+Owner yêu cầu kiểm tra giới hạn và tạo rule → TASK-GITHUB-001 → [RULE-GITHUB-001](GITHUB_REVIEW_CAPACITY_RULE.md)/AGENTS. Evidence: Contents/tree/rate-limit docs chính thức được đọc, actual pre-execution reviewer rejection, local33files955402bytes/patch124522bytes. Reviewer token cap và account quota UNKNOWN; internal32/64KiB là guardbands, không provider limit hay approval bypass. Local docs only; GitHub publication pending. Không code/runtime/grants/deploy từ rule.

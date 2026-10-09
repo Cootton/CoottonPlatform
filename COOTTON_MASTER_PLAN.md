@@ -116,3 +116,7 @@ API04-TX-001: owner assigned source verification. Read [transaction and recovery
 ## KN-REVIEW-002 — repository-aligned knowledge review · 2026-10-08
 
 [Knowledge System repository edition v0.2.0](docs/knowledge/MASTER_ARCHITECTURE.md) maps the captured learning library to existing D01–D10/DEC/API authority. Read its [review](docs/knowledge/REVIEW_REPORT.md), [detailed plan](docs/knowledge/DETAILED_PLAN.md), [23-item backlog](docs/knowledge/EXECUTION_BACKLOG.md) and [source/evidence register](docs/knowledge/SOURCE_EVIDENCE_REGISTER.md). This index remains the repository entry point and V001 remains in place. Frozen review main e06d3de8e74bc7cb431734d32d339ef63e1824ef; PR26 head cad72a773383a0ef145dcc1467ab5d3ea52030a4 is an explicitly unmerged overlay. Its recorded browser recovery and operator cloud reads supersede older failure/pending claims only within their observed scenarios. Root cause/recurrence, effective runtime identity/media operations, candidate artifacts/encoder, SDK warnings, rollback and applicable gates remain OPEN. New work packages are PROPOSED; no new ACCEPTED decision, coding, migration, grant, product/payment action or deployment from this review.
+
+## GitHub read/review handoff
+
+Contributor đọc [RULE-GITHUB-001](docs/governance/GITHUB_REVIEW_CAPACITY_RULE.md) trước GitHub read/publish: giới hạn GitHub, output truncation và reviewer capacity khác nhau; source/docs local không là published/merged. Không bypass approvals.
