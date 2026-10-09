@@ -98,6 +98,7 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   await assert.rejects(authorizeOwnerCatalog(maintenance,req,'session'),e=>e.getStatus()===403);
   assert.equal((await maintenance.query('SELECT count(*)::int AS n FROM catalog_core.command')).rows[0].n,5);
   await require('./api04-runtime-retry.cjs')({maintenance,writer,req,owner});
+  await require('./command-deadline-db.cjs')({maintenance,req,owner});
  }finally{
   releaseWriter();if(clientsConnected){await writer.query('ROLLBACK').catch(()=>{});await revoker.query('ROLLBACK').catch(()=>{});await writer.end();await revoker.end();}
   await maintenance.query('ROLLBACK').catch(()=>{});
@@ -105,3 +106,4 @@ test('disposable PostgreSQL: singleton owner, cross-product media, revoked repla
   await maintenance.end();[media.previewImage,media.previewVideo]=originals;media.prepareImage=originals[3];if(originals[2]===undefined)delete process.env.COOTTON_PUBLICATION_ENABLED;else process.env.COOTTON_PUBLICATION_ENABLED=originals[2];
  }
 });
+

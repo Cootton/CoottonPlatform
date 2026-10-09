@@ -1,3 +1,4 @@
+import { commandPool, commandWait, assertCommandActive } from './command-budget';
 import { BadRequestException, Body, ConflictException, Controller, ForbiddenException, Get, HttpCode, Injectable, Module, NotFoundException, Param, Post, Query, Req, ServiceUnavailableException, UseGuards, type OnModuleDestroy } from '@nestjs/common';
 import { createHash, randomUUID } from 'node:crypto';
 import type { Pool, PoolClient } from 'pg';
@@ -107,6 +108,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         }
     }
     async command(request: AdminRequest, body: unknown) {
+        assertCommandActive();
         let input: Record<string, unknown>, key: string, action: string, id: string | null, version: string | null;
         try {
             input = inputObject(body, ['key', 'action', 'id', 'expectedVersion', 'payload']);
@@ -130,7 +132,7 @@ export class AdminCatalogService implements OnModuleDestroy {
         let video: Awaited<ReturnType<typeof prepareVideo>> | undefined;
         try {
             if (['uploadImage', 'setImageColor', 'uploadVideo'].includes(action)) {
-                const db = this.database();
+                const db = commandPool(this.database());
                 const actor = await this.actor(db, request, 'command:'+action);
                 const replay = (await db.query('SELECT fingerprint,result FROM catalog_core.command WHERE actor_id=$1 AND operation=$2 AND key=$3', [actor, action, key])).rows[0];
                 if (replay) {
@@ -155,7 +157,7 @@ export class AdminCatalogService implements OnModuleDestroy {
                     if (!asset.thumbnail) thumbnail = await prepareThumbnail(asset.path, key);
                 }
             }
-            client = await this.database().connect();
+            client = await commandPool(this.database()).connect();
             await client.query('BEGIN');
             const identity = request.adminIdentity!;
             // Bootstrap/revoke maintenance must acquire this same subject guard.
@@ -365,7 +367,7 @@ class AdminCatalogController {
     @Req()
     request: AdminRequest, 
     @Body()
-    body: unknown) { return this.catalog.command(request, body); }
+    body: unknown) { return commandWait(() => this.catalog.command(request, body)); }
     @Get('catalog/products/:id/thumbnails/:asset')
     thumbnail(@Req() request: AdminRequest, @Param('id') id: string, @Param('asset') asset: string) { return this.catalog.image(request,id,asset,true); }
     @Get('catalog/products/:id/video')

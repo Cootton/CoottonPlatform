@@ -1,8 +1,8 @@
 # API04 — manifest cấu hình và ngưỡng vận hành
 
-`FIX04-CONFIG-OPS-001` · 2026-10-09, Asia/Saigon. Observed configuration + **PROPOSED FOR REVIEW**; không ACCEPTED, không deploy.
+`FIX04-CONFIG-OPS-001` · 2026-10-09, Asia/Saigon. Observed configuration + **45s Admin command deadline ACCEPTED**; các ngưỡng khác PROPOSED FOR REVIEW, không deploy.
 
-Đọc [SDK/HTTP evidence](API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) và [rollback runbook](API04_ROLLBACK_RUNBOOK.md). Các setting quan sát không phải quyết định tối ưu; các số đề xuất dưới đây chưa trở thành SLO hay cấu hình serving.
+Đọc [SDK/HTTP evidence](API04_SDK_HTTP_OPERATIONS_EVIDENCE_2026_10_09.md) và [rollback runbook](API04_ROLLBACK_RUNBOOK.md). Các setting quan sát không phải quyết định tối ưu; ngoại trừ deadline Admin45s được phê duyệt riêng bên dưới, các số đề xuất chưa trở thành SLO hay cấu hình serving.
 
 ## Cấu hình serving quan sát
 
@@ -30,25 +30,31 @@ Effective Admin metadata: current_user=cootton_catalog_admin, không superuser/C
 
 Job proof dùng1task/parallelism1/maxretries0,1CPU/512MiB/300s; HTTP jobs chỉ gắn reader secret:1, không admin secret. Job creation không thay service configuration. Không lập schedule; job retained để provenance, chạy lại cần scoped assignment.
 
-## Deadline hiện tại và điểm chặn
+## Phê duyệt deadline Admin45s
+
+**API04-DEADLINE-45-001 · ACCEPTED**. Lời người dùng trực tiếp trong Work ngày2026-10-09 (Asia/Saigon): **“chấp nhận mốc 45s”**, trả lời đề xuất deadline toàn request cho lệnh Admin. Phạm vi phê duyệt:45s; không bao gồm ngưỡng p95/RSS/canary/alert, tăng timeout, deploy, production writes hoặc chuyển traffic. Không có message ID/export timestamp kèm theo; không tự tạo bằng chứng này.
+
+[PR30](https://github.com/Cootton/CoottonPlatform/pull/30) chuẩn bị deadline45s trước body parser, cancellation encoder/native read và chặn bước SQL/storage tiếp theo. Implementation/CI và runtime acceptance là các bằng chứng riêng; [hồ sơ deadline](API04_COMMAND_DEADLINE_REVIEW_2026_10_09.md). Chưa áp dụng cấu hình serving. Đề xuất150s handler bị thay thế; phương án180/195/210s là lịch sử chưa phê duyệt.
+
+## Serving và source trước PR30: điểm chặn
 
 Source API mới: native media read15s (credential + body); encoder có các giới hạn riêng ffprobe10s + ffmpeg80s + ffprobe10s + poster10s = **110s upper budget chỉ cho các subprocess**. Storage save/getMetadata, SQL/authorization, queue và truyền response còn ngoài con số này. Cloud Run API60s và Web60s hiện tại có thể hết thời gian trước handler; Web Admin BFF source timeout120s không làm Cloud Run60s dài hơn. Web catalog18s/media20s; media read15s cộng SQL/metadata chưa có một deadline toàn request. Liveness/fixture nhỏ PASS không giải quyết mismatch.
 
-**STOP trước release video:** chưa có deadline hợp nhất/cancellation, proof max-input/concurrent requests, tổng budget SQL/storage metadata/save và config review. SQL per-statement timeout không tự giới hạn toàn transaction. Tăng Cloud Run timeout đơn lẻ không chứng minh an toàn và không ngăn side effects sau HTTP timeout. Unknown COMMIT phải tra durable state rồi retry cùng request/key còn được phép; không tạo key mới hoặc xóa media.
+**STOP trước release video:** PR30 đã chuẩn bị shared deadline45s/cancellation và source CI PASS; serving vẫn dùng ACT006. Chưa có exact-build/runtime proof cho deadline mới, max-input/concurrent requests, thời gian settlement của opaque SDK writes và complete config review. SQL per-statement timeout không tự giới hạn toàn transaction. Tăng Cloud Run timeout đơn lẻ không chứng minh an toàn và không ngăn side effects sau HTTP timeout. Unknown COMMIT phải tra durable state rồi retry cùng request/key còn được phép; không tạo key mới hoặc xóa media.
 
-Đề xuất kỹ thuật để review, chưa áp dụng:
+Budget hiện tại và phần còn đề xuất, chưa áp dụng serving:
 
 | Tầng / ngân sách | Giá trị đề xuất | Điều kiện |
 |---|---:|---|
 | Public read handler toàn request |≤15s|Phân bổ SQL/auth/metadata/body trong tổng budget; không cộng các timeout riêng rồi gọi15s là toàn request|
 | Public catalog BFF / media proxy |18s /20s|Giữ source hiện tại, kiểm upstream deadline + overhead|
-| Admin/video handler toàn request |≤150s|110s subprocess +≤30s tổng auth/SQL/storage +10s dự phòng; phải có per-stage/cancellation thật và kiểm COMMIT semantics|
-| Cloud Run API |180s|Chỉ đề xuất sau khi handler bound150s được kiểm chứng|
-| Web Admin BFF |195s|Cần source change và kiểm request abort/uncertain outcome; hiện tại120s|
-| Cloud Run Web |210s|Đủ BFF195s + margin; cần owner/operator signoff và đồng bộ rollout|
+| Admin/video handler toàn request |45s — ACCEPTED|PR30 chuẩn bị shared budget/cancellation; cần benchmark max-input và uncertain COMMIT proof trên exact build|
+| Cloud Run API |60s observed|Giữ hiện tại; không có phê duyệt tăng timeout|
+| Web Admin BFF |120s source hiện tại|Chưa đổi; cần kiểm propagation/HTTP overhead với45s upstream|
+| Cloud Run Web |60s observed|Giữ hiện tại; cần paired HTTP/runtime evidence|
 | Initial isolated acceptance load |concurrency1, sau đó10 ở1CPU/512MiB|Giữ serving concurrency10; không giả lập rằng encoder processing guard là queue hoặc admission control toàn hệ thống|
 
-Các150/180/195/210s là **assistant proposal**, chưa có benchmark maximum video để chấp nhận. Nếu bounded handler không đạt, giữ STOP và review kiến trúc xử lý riêng; không âm thầm bỏ budget hoặc chuyển sang async job.
+Các150/180/195/210s trước đây là **assistant proposal lịch sử**, chưa áp dụng. User đã chấp nhận45s cho Admin command; không suy ra rằng mọi video60s input xử lý được trong45s. Nếu maximum/concurrent input không đạt deadline, giữ STOP và review kiến trúc xử lý riêng; không âm thầm nâng deadline hoặc chuyển sang async job.
 
 ## Ngưỡng nghiệm thu đề xuất
 
@@ -70,6 +76,6 @@ Monitoring cần lưu timestamps, image/config fingerprint, route/status/classif
 
 ## Điều kiện xác nhận và mở lại
 
-Owner/reviewer cần phê duyệt cụ thể bộ ngưỡng, budget, cách canary, operator/alert owner, containment/rollback và phạm vi identity/write tests. Phê duyệt “kiến thức tối nay” không mặc nhiên gắn ACCEPTED cho các giá trị mới trong tài liệu này. Cấu hình quan sát, kết quả probe và đề xuất phải tiếp tục tách biệt.
+Deadline Admin45s đã có phê duyệt tường minh API04-DEADLINE-45-001. Owner/reviewer vẫn cần phê duyệt cụ thể các ngưỡng còn lại, cách canary, operator/alert owner, containment/rollback và phạm vi identity/write tests. Phê duyệt “kiến thức tối nay” không mặc nhiên gắn ACCEPTED cho các giá trị mới trong tài liệu này. Cấu hình quan sát, kết quả probe và đề xuất phải tiếp tục tách biệt.
 
 Chỉ đóng GATE-PERF/OPS sau đủ sample/max-input/concurrency, exact API/Web pair, monitoring/backup-restore/rollback evidence và signoff. Đổi source/digest/Node/SDK/encoder/resource/concurrency/secrets/grants/schema/flags/origins hoặc traffic phải kiểm lại affected proof. **API04 NOT READY TO DEPLOY**.

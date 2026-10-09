@@ -1,3 +1,4 @@
+import { commandBudget, commandWait, commandWrite, assertCommandActive, executeCommandFile } from './command-budget';
 import { BadRequestException, ServiceUnavailableException } from '@nestjs/common';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
@@ -6,12 +7,9 @@ import { getStorage } from 'firebase-admin/storage';
 import { readPinnedMedia } from './media-read';
 import { inputObject, inputText } from '@cootton/contracts';
 import { PRODUCT_MEDIA_LIMITS, videoFields } from '@cootton/contracts';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
 import { mkdtemp, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-const execute = promisify(execFile);
 sharp.cache({ memory: 16, files: 0, items: 32 });
 sharp.concurrency(1);
 let processing = false;
@@ -26,15 +24,16 @@ export async function normalizeImage(bytes: Buffer) {
         throw new BadRequestException('INVALID_IMAGE');
     try {
         const image = sharp(bytes, { limitInputPixels: 16000000, failOn: 'warning' });
-        const meta = await image.metadata();
+        const meta = await commandWrite(() => image.metadata());
         if (!['jpeg', 'png', 'webp'].includes(meta.format ?? '') || !meta.width || !meta.height || meta.width > 8192 || meta.height > 8192 || (meta.pages ?? 1) !== 1)
             throw new Error();
-        const result = await image.rotate().resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true }).webp({ quality: 82 }).toBuffer({ resolveWithObject: true });
+        const result = await commandWrite(() => image.rotate().resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true }).webp({ quality: 82 }).toBuffer({ resolveWithObject: true }));
         if (result.data.length > 3145728)
             throw new Error();
         return { output: result.data, width: result.info.width, height: result.info.height, sha: createHash('sha256').update(result.data).digest('hex') };
     }
     catch {
+        assertCommandActive();
         throw new BadRequestException('INVALID_IMAGE');
     }
 }
@@ -65,13 +64,13 @@ export async function previewImage(path: string) {
 
 export async function storeImmutable(path: string, output: Buffer, contentType: string) {
     const storage = bucket(), name = path.slice(1), file = storage.file(name);
-    try { await file.save(output, { resumable: false, contentType, preconditionOpts: { ifGenerationMatch: 0 }, metadata: { cacheControl: 'private, no-store' } }); }
+    try { await commandWrite(() => file.save(output, { resumable: false, contentType, timeout: commandBudget()?.remaining(10000) ?? 10000, preconditionOpts: { ifGenerationMatch: 0 }, metadata: { cacheControl: 'private, no-store' } })); }
     catch (e) {
         if (!(e && typeof e === 'object' && 'code' in e && Number(e.code) === 412)) throw new ServiceUnavailableException('MEDIA_UNAVAILABLE');
         // A partial upload/retry may reuse only the exact immutable object. Pin
         // the generation so replacement between metadata and download cannot pass.
         try {
-            const [meta] = await file.getMetadata();
+            const [meta] = await commandWait(() => file.getMetadata());
             if (!meta.generation || Number(meta.size) !== output.length || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity')) throw new Error();
             // Range is only a transport optimization. Enforce the limit locally
             // even if storage ignores it; never accumulate a download Buffer.
@@ -89,7 +88,7 @@ export async function prepareThumbnail(imagePath: string, key: string) {
     try {
         const bytes = await readStoredMedia(imagePath, PRODUCT_MEDIA_LIMITS.imageBytes, 'image/webp');
         if (bytes.length > PRODUCT_MEDIA_LIMITS.imageBytes) throw new BadRequestException();
-        const result = await sharp(bytes, { limitInputPixels: 16000000 }).resize({ width: 240, height: 240, fit: 'inside', withoutEnlargement: true }).webp({ quality: 75 }).toBuffer({ resolveWithObject: true });
+        const result = await commandWrite(() => sharp(bytes, { limitInputPixels: 16000000 }).resize({ width: 240, height: 240, fit: 'inside', withoutEnlargement: true }).webp({ quality: 75 }).toBuffer({ resolveWithObject: true }));
         const sha = createHash('sha256').update(result.data).digest('hex'), path = '/thumbnails/' + key + '/' + sha + '.webp';
         await storeImmutable(path, result.data, 'image/webp');
         return { path, sha, width: result.info.width, height: result.info.height };
@@ -111,18 +110,20 @@ export async function normalizeVideo(bytes: Buffer) {
     let folder: string | undefined;
     try {
         if (!bytes.length || bytes.length > PRODUCT_MEDIA_LIMITS.videoBytes || bytes.toString('ascii', 4, 8) !== 'ftyp' || !['isom', 'iso2', 'mp41', 'mp42', 'avc1'].includes(bytes.toString('ascii', 8, 12))) throw new BadRequestException('INVALID_VIDEO');
+        assertCommandActive();
         folder = await mkdtemp(join(tmpdir(), 'cootton-video-'));
+        assertCommandActive();
         const source = join(folder, 'input.mp4'), output = join(folder, 'output.mp4'), poster = join(folder, 'poster.webp');
-        await writeFile(source, bytes);
-        const inspected = await execute('ffprobe', ['-v', 'error', '-protocol_whitelist', 'file,pipe', '-show_streams', '-show_format', '-of', 'json', source], { timeout: 10000, maxBuffer: 262144 });
+        await commandWrite(() => writeFile(source, bytes));
+        const inspected = await executeCommandFile('ffprobe', ['-v', 'error', '-protocol_whitelist', 'file,pipe', '-show_streams', '-show_format', '-of', 'json', source], 10000);
         validateVideoProbe(JSON.parse(inspected.stdout));
-        await execute('ffmpeg', ['-nostdin', '-v', 'error', '-y', '-threads', '1', '-protocol_whitelist', 'file,pipe', '-i', source, '-map', '0:v:0', '-an', '-map_metadata', '-1', '-map_chapters', '-1', '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '26', '-maxrate', '900k', '-bufsize', '1800k', '-pix_fmt', 'yuv420p', '-r', '30', '-movflags', '+faststart', output], { timeout: 80000, maxBuffer: 262144 });
-        const result = await readFile(output);
+        await executeCommandFile('ffmpeg', ['-nostdin', '-v', 'error', '-y', '-threads', '1', '-protocol_whitelist', 'file,pipe', '-i', source, '-map', '0:v:0', '-an', '-map_metadata', '-1', '-map_chapters', '-1', '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '26', '-maxrate', '900k', '-bufsize', '1800k', '-pix_fmt', 'yuv420p', '-r', '30', '-movflags', '+faststart', output], 80000);
+        const result = await commandWrite(() => readFile(output));
         if (!result.length || result.length > PRODUCT_MEDIA_LIMITS.videoBytes) throw new BadRequestException('VIDEO_TOO_LARGE');
-        const checked = await execute('ffprobe', ['-v', 'error', '-protocol_whitelist', 'file,pipe', '-show_streams', '-show_format', '-of', 'json', output], { timeout: 10000, maxBuffer: 262144 });
+        const checked = await executeCommandFile('ffprobe', ['-v', 'error', '-protocol_whitelist', 'file,pipe', '-show_streams', '-show_format', '-of', 'json', output], 10000);
         const metadata = validateVideoProbe(JSON.parse(checked.stdout));
-        await execute('ffmpeg', ['-nostdin', '-v', 'error', '-y', '-threads', '1', '-i', output, '-frames:v', '1', '-vf', 'scale=480:480:force_original_aspect_ratio=decrease', '-c:v', 'libwebp', '-threads', '1', '-quality', '75', poster], { timeout: 10000, maxBuffer: 262144 });
-        const posterBytes = await readFile(poster);
+        await executeCommandFile('ffmpeg', ['-nostdin', '-v', 'error', '-y', '-threads', '1', '-i', output, '-frames:v', '1', '-vf', 'scale=480:480:force_original_aspect_ratio=decrease', '-c:v', 'libwebp', '-threads', '1', '-quality', '75', poster], 10000);
+        const posterBytes = await commandWrite(() => readFile(poster));
         if (posterBytes.length > 262144) throw new BadRequestException('INVALID_POSTER');
         return { ...metadata, output: result, poster: posterBytes };
     } catch (e) {
@@ -158,7 +159,7 @@ export async function previewVideo(path: string) {
 /** Visibility/authorization is checked by the caller; validate private storage before returning bytes. */
 async function readStoredMedia(path: string, limit: number, contentType: string): Promise<Buffer> {
     try {
-        const name = path.slice(1), [meta] = await bucket().file(name).getMetadata();
+        const name = path.slice(1), [meta] = await commandWait(() => bucket().file(name).getMetadata());
         const size = Number(meta.size), expectedSha = name.split('/').at(-1)?.split('.')[0];
         if (!meta.generation || !Number.isSafeInteger(size) || size < 1 || size > limit || meta.contentType !== contentType || meta.cacheControl !== 'private, no-store' || (meta.contentEncoding !== undefined && meta.contentEncoding !== 'identity') || !expectedSha || !/^[a-f0-9]{64}$/.test(expectedSha)) throw new Error();
         const chunks: Buffer[] = [], hash = createHash('sha256');
