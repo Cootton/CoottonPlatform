@@ -77,3 +77,6 @@ ADR ghi context, alternatives, decision status/source, scope, consequences, supe
 ## SYNC-PR16-001 — newer source/evidence overlay
 
 SRC-PR16-18768A1, EVD-DEPLOY-20261004 và EVD-BROWSER-20261007 bổ sung các source rows lịch sử. Đọc CURRENT_STATE/FLOW-CATALOG-001 trước. ADR0004 xác lập human bearer Admin; ADR0005 scoped catalog-only override và migration005 publication pointer thay receipt-renewal model. DEC-CATALOG-001 giữ commerce/offering gates trước purchase. OPEN-001 documentation reconcile đã đóng; published v22 checkpoint đã được browser withdrawal v23 thay làm current state. Không xóa source rows cũ hoặc ratify assistant proposals.
+## RULE-GITHUB-001 — Owner-requested contributor workflow2026-10-09
+
+Owner explicitly yêu cầu tạo rule để tránh lỗi đọc/publish quá lớn. [Quy tắc](GITHUB_REVIEW_CAPACITY_RULE.md) và AGENTS xác định metadata/scoped reads, review package, soft payload guardbands, standard Git khi được duyệt và fail-closed sau review rejection. Numeric defaults là lựa chọn workflow nội bộ, không ACCEPTED vendor limits/approval override. Không thay domain ACCEPTED policies; source local, publication pending.

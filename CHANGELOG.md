@@ -173,3 +173,9 @@ Owner ACCEPTED:
 - Corrected repeated cloud-access summaries: operator configuration read COMPLETE for its recorded run; effective runtime operations and full release remain OPEN. Recovery causality is unestablished.
 - Excluded the new Cloud Shell helper from the documentation-only merge and linked its immutable historical source; no application/tool code or migrations are introduced.
 - Annotated initial PR26 unmerged knowledge references as historical and recorded explicit owner documentation-review/merge authorization. No proposed work package or Production Gate is promoted.
+
+## 2026-10-09 — CHG-GITHUB-RULE-001
+
+- Added owner-requested RULE-GITHUB-001 and AGENTS/read-order links: scoped SHA-pinned reads, payload inventory, complete review packages, supported Git handoff and mandatory fail-closed after reviewer failure.
+- Distinguished GitHub Contents/tree/rate limits from output/reviewer caps; recorded actual file/patch sizes and unknown account quota/reviewer limit. Internal thresholds are workflow guardbands, not vendor claims.
+- Documentation only, local source; no retry of blocked publication, credential changes, application/runtime changes or deployment.
