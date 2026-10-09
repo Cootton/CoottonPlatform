@@ -179,3 +179,9 @@ Owner ACCEPTED:
 - Added owner-requested RULE-GITHUB-001 and AGENTS/read-order links: scoped SHA-pinned reads, payload inventory, complete review packages, supported Git handoff and mandatory fail-closed after reviewer failure.
 - Distinguished GitHub Contents/tree/rate limits from output/reviewer caps; recorded actual file/patch sizes and unknown account quota/reviewer limit. Internal thresholds are workflow guardbands, not vendor claims.
 - Documentation only, local source; no retry of blocked publication, credential changes, application/runtime changes or deployment.
+
+## 2026-10-09 — CHG-CLOUDSHELL-RULE-001
+
+- Added owner-authorized Cloud Shell upload rule with AGENTS/master and governance traceability links.
+- Defined destination/content/integrity checks and separate upload, execution, publication, merge and deployment evidence.
+- Documentation only; no Cloud Shell settings, credential, IAM, runtime or deployment changes. Owner assigned publication/merge; repository adoption follows the verified merged PR.
