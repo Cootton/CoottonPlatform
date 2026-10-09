@@ -4,7 +4,8 @@ const root=require('node:path').resolve(__dirname,'../../..'),node=process.execP
  const backend=http.createServer((request,response)=>{response.setHeader('Content-Type','application/json');response.end(JSON.stringify({items:[],nextCursor:null,mode:new URL(request.url,'http://fixture').searchParams.get('mode')??'B2C',commerceEnabled:false}));});
  await new Promise(resolve=>backend.listen(0,'127.0.0.1',resolve));
  const availablePort=http.createServer();await new Promise(resolve=>availablePort.listen(0,'127.0.0.1',resolve));const webPort=availablePort.address().port;await new Promise(resolve=>availablePort.close(resolve));
- const port=backend.address().port,child=spawn(node,[root+'/node_modules/next/dist/bin/next','start','-p',String(webPort),'-H','127.0.0.1'],{cwd:root+'/apps/web',env:{...process.env,CATALOG_API_ORIGIN:'http://127.0.0.1:'+port},stdio:['ignore','pipe','pipe'],windowsHide:true});
+ const next=require.resolve('next/dist/bin/next',{paths:[root+'/apps/web']});
+ const port=backend.address().port,child=spawn(node,[next,'start','-p',String(webPort),'-H','127.0.0.1'],{cwd:root+'/apps/web',env:{...process.env,CATALOG_API_ORIGIN:'http://127.0.0.1:'+port},stdio:['ignore','pipe','pipe'],windowsHide:true});
  let output='';child.stdout.on('data',v=>output+=v);child.stderr.on('data',v=>output+=v);
  try{
   for(let i=0;i<60;i++){try{await fetch('http://127.0.0.1:'+webPort+'/');break;}catch{await new Promise(resolve=>setTimeout(resolve,200));}}

@@ -13,3 +13,5 @@ Technical ranking and bounds are implementation defaults, not ACCEPTED business 
 Evidence: [EVD-SEARCH-001](../governance/COOTTON_SEARCH_EVIDENCE.md); actual production/visual/performance evidence absent. Recovery: source revert only; runtime rollout NOT_READY. No reviewer signoff or release approval recorded. Owner kept weights/auction formulas as a trial proposal; they are not live ranking, billing or release approval.
 
 GitHub handoff: source publication blocked by automatic approval-review input capacity; no PR created. Local code and full patch prepared. Remote task branch remains at original baseline; main unchanged. See EVD-SEARCH-001 for exact failures and reviewer limits.
+
+SEARCH-PUBLISH-002: latest owner explicitly authorizes merge or deploy. Proceed with source review/merge of search and advertising simulation; production gates remain OPEN. Main baseline is 696a462f0c23da87c30c66f24401a7d0265617a2; retain preceding blocked-publication text as historical evidence, superseded only by observed remote PR/merge evidence. Follow RULE-GITHUB-001; no approval bypass or activation of proposed policy.

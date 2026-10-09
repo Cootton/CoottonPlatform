@@ -16,7 +16,7 @@
     },
     {
       "path": "apps/api/verification/search-ssr.cjs",
-      "sha256": "12911ca01d54b3a79b677016cc88f538b16339a61b96795919883e361aeae62e"
+      "sha256": "abeb911fa7090aa52ae103467ea171db46cb717c0d61b65e53ab289561cf7754"
     },
     {
       "path": "apps/api/verification/search-web.cjs",
